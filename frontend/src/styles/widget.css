@@ -4,61 +4,61 @@
 
 /* --- full-width stat / list widgets --------------------------------------- */
 .dues-stat-widget .dues-card .card-title {
-  font-family: "Oswald", sans-serif;
-  font-style: italic;
-  color: #c1512d;
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  color: var(--color-dark-text);
   font-size: 1.5rem;
   text-align: left;
 }
 
 .dues-stat-widget .dues-card .card-subtitle {
-  font-family: "Lexend Deca", sans-serif;
-  color: #2a2622;
+  font-family: "Inter", sans-serif;
+  color: var(--color-light-text);
   text-align: left;
-  font-size: 1.7rem;
+  font-size: 1.2rem;
 }
 
 .dues-stat-widget .inner-card-header {
-  font-family: "Oswald", sans-serif;
+  font-family: "Inter", sans-serif;
   text-transform: uppercase;
   font-size: 0.85rem;
   letter-spacing: 1px;
-  color: #c1512d;
+  color: var(--color-light-text);
 }
 
 .dues-stat-widget .dues-stat-ratio {
-  font-family: "Oswald", sans-serif;
-  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: 2.5rem;
   line-height: 1;
-  color: #2a2622;
+  color: var(--color-dark-text);
 }
 
 .dues-stat-widget .dues-stat-divider {
-  border-color: #c1512d;
-  opacity: 0.2;
+  border-color: var(--color-border);
+  opacity: 1;
 }
 
 .dues-stat-widget .inner-card-context {
-  font-family: "Lexend Deca", sans-serif;
-  color: #6c757d;
+  font-family: "Inter", sans-serif;
+  color: var(--color-light-text);
 }
 
 /* --- member dashboard widgets --------------------------------------------- */
 .member-dues-widget .dues-card .card-title {
-  font-family: "Oswald", sans-serif;
-  font-style: italic;
-  color: #c1512d;
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  color: var(--color-dark-text);
   font-size: 1.5rem;
   text-align: left;
   margin-bottom: 50px;
 }
 
 .member-dues-widget .dues-card .card-subtitle {
-  font-family: "Lexend Deca", sans-serif;
-  color: #2a2622;
+  font-family: "Inter", sans-serif;
+  color: var(--color-light-text);
   text-align: left;
-  font-size: 2rem;
+  font-size: 1.3rem;
 }
 
 .member-dues-widget .dues-inner-card {
@@ -70,25 +70,25 @@
 }
 
 .member-dues-widget .inner-card-header {
-  font-family: "Oswald", sans-serif;
+  font-family: "Inter", sans-serif;
   text-transform: uppercase;
   font-size: 0.85rem;
   letter-spacing: 1px;
-  color: #c1512d;
+  color: var(--color-light-text);
   margin-bottom: 4px;
 }
 
 .member-dues-widget .inner-card-subheader {
-  font-family: "Oswald", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 2.2rem;
-  font-weight: 600;
-  color: #2a2622;
+  font-weight: 700;
+  color: var(--color-dark-text);
   line-height: 1;
   margin-bottom: 6px;
 }
 
 .member-dues-widget .inner-card-content {
-  font-family: "Lexend Deca", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
-  color: #6c757d;
+  color: var(--color-light-text);
 }

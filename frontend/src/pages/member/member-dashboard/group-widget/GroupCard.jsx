@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 // whether that semester is still the active one.
 export default function GroupCard({ group }) {
   return (
-    <Card className="h-100 dues-card d-flex flex-column justify-content-between">
+    <Card className="h-100 dues-card dues-card-crimson d-flex flex-column justify-content-between">
       <Card.Body className="d-flex flex-column">
         <Card.Title>Your Club</Card.Title>
         <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
@@ -24,7 +24,7 @@ export default function GroupCard({ group }) {
               {group?.name ?? "—"}
             </div>
             <hr className="dues-stat-divider my-2" />
-            <div className="inner-card-context small text-muted">
+            <div className="inner-card-context small text-secondary-muted">
               Join code: {group?.joinCode ?? "—"}
             </div>
           </Card.Body>

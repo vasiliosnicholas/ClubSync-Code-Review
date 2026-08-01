@@ -10,47 +10,146 @@
   min-height: var(--navbar-height);
   display: flex;
   align-items: center;
-  background-color: #f2ede3;
-  border-bottom: 3px solid #d8c9a8;
+  background-color: var(--color-crimson-interactive);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.2);
   padding: 0.75rem 1.5rem;
+}
+
+.top-navbar-container {
+  position: relative;
 }
 
 /* ===========================
      TOP NAVBAR BRAND
    ========================= */
 .top-navbar-brand {
-  font-family: "Racing Sans One", sans-serif;
-  /* scales fluidly with the viewport, capped at the desktop size */
-  font-size: clamp(1.75rem, 6vw, 3.5rem);
-  color: #2a2622;
-  margin-right: 6rem;
-  margin-left: 1rem;
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  color: var(--color-white);
+}
+
+.top-navbar-brand:hover {
+  color: var(--color-dark-text);
+}
+
+.top-navbar-brand-mobile {
+  margin-left: 0.5rem;
+}
+
+.top-navbar-brand-desktop {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .top-navbar-brand-mobile {
+    display: none;
+  }
+
+  .top-navbar-brand-desktop {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .top-navbar-collapse {
+    justify-content: space-between;
+  }
+
+  /* pushes the actions group to the far right even when the left links
+     pill isn't rendered at all (e.g. the guest nav has no page links) */
+  .top-navbar-actions {
+    margin-left: auto;
+  }
+}
+
+/* ===========================
+     PAGE LINKS PILL
+     (also used by the guest Login/Register pill on the right)
+   ========================= */
+.top-navbar-links,
+.top-navbar-guest-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
 /* ===========================
      PAGE LINKS
    ========================= */
 .top-navbar .nav-link {
-  font-family: "Oswald", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
-  color: #2a2622;
-  padding: 0.25rem 0.9rem;
-  border-radius: 6px;
-  font-size: clamp(1.1rem, 3vw, 2.2rem);
-  margin-right: 3rem;
+  text-decoration: none;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 1.5rem;
+}
+
+/* links inside a white pill sit on a white surface, not the crimson bar */
+.top-navbar-links .nav-link,
+.top-navbar-guest-pill .nav-link {
+  color: var(--color-dark-text);
 }
 
 /* ===========================
      PAGE LINKS HOVER
    ========================= */
-.top-navbar .nav-link:hover {
-  background-color: #d8c9a8;
+.top-navbar-links .nav-link:hover,
+.top-navbar-guest-pill .nav-link:hover {
+  background-color: var(--color-border);
 }
 
 /* ===========================
      ACTIVE PAGE LINK
    ========================= */
-.top-navbar .nav-link.active {
-  color: #c1512d;
-  font-weight: 700;
+.top-navbar-links .nav-link.active,
+.top-navbar-guest-pill .nav-link.active {
+  background-color: var(--color-teal-interactive);
+  color: var(--color-white);
 }
+
+.top-navbar-actions .dropdown-menu {
+  font-family: "Inter", sans-serif;
+}
+
+/* ===========================
+     STANDOUT ACTION PILLS
+   ========================= */
+.nav-standout-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+}
+
+.nav-standout-pill-teal {
+  background-color: var(--color-teal-interactive);
+  color: var(--color-white);
+}
+
+.nav-standout-pill-teal:hover,
+.nav-standout-pill-teal.show {
+  background-color: var(--color-teal-interactive-hover);
+  color: var(--color-white);
+}
+
+.nav-standout-pill-crimson {
+  background-color: var(--color-crimson-interactive);
+  color: var(--color-white);
+}
+
+.nav-standout-pill-crimson:hover {
+  background-color: var(--color-crimson-interactive-hover);
+  color: var(--color-white);
+}
+
+

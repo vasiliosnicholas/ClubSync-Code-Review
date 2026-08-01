@@ -2,8 +2,8 @@
    MEMBER DUES WIDGET — component-specific styles
    =========================================================================== */
 .member-dues-widget .dues-card .card-text {
-  font-family: "Lexend Deca", sans-serif;
-  color: #2a2622;
+  font-family: "Inter", sans-serif;
+  color: var(--color-dark-text);
   text-align: left;
   margin-top: 20px;
   margin-bottom: 40px;
@@ -11,13 +11,7 @@
 }
 
 .member-dues-widget .dues-card .card-link {
-  color: #c1512d;
-  font-family: "Oswald", sans-serif;
-  font-weight: 500;
-}
-
-.member-dues-widget .dues-tier-style {
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
+  color: var(--color-teal-interactive);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
 }

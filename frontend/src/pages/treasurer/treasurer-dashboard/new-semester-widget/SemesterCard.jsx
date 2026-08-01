@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 export default function SemesterCard({ active, onStart }) {
   return (
-    <Card className="h-100 dues-card d-flex flex-column justify-content-between">
+    <Card className="h-100 dues-card dues-card-teal d-flex flex-column justify-content-between">
       <Card.Body className="d-flex flex-column">
         <Card.Title>Semester Control</Card.Title>
         <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
@@ -21,14 +21,18 @@ export default function SemesterCard({ active, onStart }) {
               {active?.joinCode ?? "—"}
             </div>
             <hr className="dues-stat-divider my-2" />
-            <div className="inner-card-context small text-muted">
+            <div className="inner-card-context small text-secondary-muted">
               Starting a new semester issues a new join code and clears the
               current roster. Every member must re-join.
             </div>
           </Card.Body>
         </Card>
 
-        <Button variant="primary" className="mt-3" onClick={onStart}>
+        <Button
+          variant={null}
+          className="btn-action-primary mt-3"
+          onClick={onStart}
+        >
           Start New Semester
         </Button>
       </Card.Body>

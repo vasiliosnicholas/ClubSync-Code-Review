@@ -1,5 +1,30 @@
 :root {
   --navbar-height: 100px;
+
+  /* Slate Black for headers, titles, body text */
+  --color-dark-text: #0f172a;
+   /* Slate Gray for secondary/meta text */
+  --color-light-text: #64748b;
+  /* decorative only large scale fills */
+  --color-crimson: #d94638;
+  /* contrast safe crimson buttons/badges/links */
+  --color-crimson-interactive: #c23b2e;
+  /* decorative only fill, pair with dark text */
+  --color-teal: #0ea5e9; 
+  /* contrast safe teal for links, focus, active states */
+  --color-teal-interactive: #0369a1;
+  --color-teal-interactive-hover: #075985;
+  --color-crimson-interactive-hover: #a62f26;
+  /* Off White used for the app background */
+  --color-bg: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-white: #ffffff;
+
+  --color-teal-surface: #dceaf2;
+  --color-teal-surface-border: #a7cade;
+  --color-crimson-surface: #f6e4e2;
+  --color-crimson-surface-border: #eabab6;
+  --color-card-subtitle: #475569; 
 }
 
 .app-content-layout {
@@ -7,64 +32,229 @@
   margin-top: var(--navbar-height);
 }
 
-@media (min-width: 992px) {
-  .app-content-layout {
-    margin-left: 250px;
-    padding: 2rem;
-  }
+body {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  background-color: var(--color-bg);
+  color: var(--color-dark-text);
 }
 
-body {
-  font-family: "Racing Sans One", sans-serif;
-  font-style: normal;
-  background-color: #f2ede3;
+h1,
+h2 {
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  color: var(--color-dark-text);
 }
 
 h1 {
-  font-family: "Oswald", sans-serif;
-  font-weight: 600;
   font-size: 2rem;
-  color: #2a2622;
 }
 
 h2 {
-  font-family: "Oswald", sans-serif;
-  font-weight: 500;
   font-size: 1.5rem;
-  color: #2a2622;
 }
 
 h3 {
-  font-family: "Oswald", sans-serif;
-  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: 1.15rem;
-  color: #2a2622;
+  color: var(--color-dark-text);
 }
 
 p {
-  font-family: "Lexend Deca", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.6;
-  color: #2a2622;
+  color: var(--color-dark-text);
 }
 
+/* ===========================================================================
+   LINKS - always underlined, Teal (contrast-safe shade)
+   =========================================================================== */
+a {
+  color: var(--color-teal-interactive);
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--color-teal-interactive-hover);
+}
+
+/* ===========================================================================
+   UNIVERSAL KEYBOARD FOCUS INDICATOR
+   =========================================================================== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible,
+.nav-link:focus-visible {
+  outline: 3px solid var(--color-dark-text);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* ===========================================================================
+   BUTTONS
+   =========================================================================== */
 .btn {
-  font-family: "Oswald", sans-serif;
-  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
   font-size: 1rem;
   padding: 0.6rem 1.25rem;
   border-radius: 6px;
-  border: none;
+  border: 2px solid transparent;
   cursor: pointer;
-  background-color: #c1512d;
-  color: #ffffff;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
-.btn:hover {
-  background-color: #a8461f;
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.btn:active {
-  background-color: #a1431e;
+/* main action buttons */
+.btn-action-primary {
+  background-color: var(--color-crimson-interactive);
+  border-color: var(--color-crimson-interactive);
+  color: var(--color-white);
+}
+
+.btn-action-primary:hover:not(:disabled) {
+  background-color: var(--color-white);
+  border-color: var(--color-crimson-interactive-hover);
+  color: var(--color-crimson-interactive-hover);
+}
+
+/* secondary / lower-emphasis actions */
+.btn-action-secondary {
+  background-color: transparent;
+  border-color: var(--color-teal-interactive);
+  color: var(--color-teal-interactive);
+}
+
+.btn-action-secondary:hover:not(:disabled) {
+  background-color: var(--color-teal-interactive);
+  color: var(--color-white);
+}
+
+/* positive confirmation actions (e.g. Approve) */
+.btn-action-approve {
+  background-color: var(--color-teal-interactive);
+  border-color: var(--color-teal-interactive);
+  color: var(--color-white);
+}
+
+.btn-action-approve:hover:not(:disabled) {
+  background-color: var(--color-teal-interactive-hover);
+  border-color: var(--color-teal-interactive-hover);
+}
+
+/* destructive/irreversible actions (e.g. Deny, Remove, Cancel Event) */
+.btn-action-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--color-crimson-interactive);
+  border-color: var(--color-crimson-interactive);
+  color: var(--color-white);
+}
+
+.btn-action-danger:hover:not(:disabled) {
+  background-color: var(--color-crimson-interactive-hover);
+  border-color: var(--color-crimson-interactive-hover);
+}
+
+/* ===========================================================================
+   ALERTS - needs-attention / blocking messages
+   =========================================================================== */
+.alert-action-attention {
+  background-color: #fdecea;
+  border: 1px solid var(--color-crimson-interactive);
+  color: var(--color-dark-text);
+  border-radius: 8px;
+}
+
+.alert-action-attention .alert-heading {
+  font-family: "Bitter", serif;
+  color: var(--color-crimson-interactive);
+}
+
+/* ===========================================================================
+   TEXT UTILITIES - replace Bootstrap's text-danger/text-success/text-muted
+   =========================================================================== */
+.text-attention {
+  color: var(--color-crimson-interactive);
+}
+
+.text-positive {
+  color: var(--color-teal-interactive);
+}
+
+.text-secondary-muted {
+  color: var(--color-light-text);
+}
+
+/* ===========================================================================
+   MODALS - match the card treatment (Repetition principle)
+   =========================================================================== */
+.modal-content {
+  background-color: var(--color-teal-surface);
+  border: 1px solid var(--color-teal-surface-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--color-teal-surface-border);
+}
+
+.modal-title {
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  color: var(--color-dark-text);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--color-teal-surface-border);
+}
+
+/* ===========================================================================
+   FORMS
+   =========================================================================== */
+.form-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: var(--color-dark-text);
+}
+
+.form-text {
+  color: var(--color-light-text);
+}
+
+.form-control,
+.form-select {
+  font-family: "Inter", sans-serif;
+  border: 1px solid var(--color-border);
+  color: var(--color-dark-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-teal-interactive);
+  box-shadow: 0 0 0 0.2rem rgba(3, 105, 161, 0.25);
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: var(--color-crimson-interactive);
+}
+
+.invalid-feedback {
+  color: var(--color-crimson-interactive);
 }

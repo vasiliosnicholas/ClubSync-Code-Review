@@ -2,9 +2,9 @@
    SHARED: STATUS / TIER BADGE
    =========================================================================== */
 .status-badge {
-  font-family: "Oswald", sans-serif;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
@@ -13,36 +13,33 @@
   display: inline-block;
   line-height: 1;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(42, 38, 34, 0.05);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
 }
 
-.status-badge.pending {
-  background-color: #d8c9a8;
-  color: #2a2622;
+.status-badge.pending,
+.status-badge.none {
+  background-color: var(--color-border);
+  color: var(--color-dark-text);
 }
 
 .status-badge.approved {
-  background-color: #2a2622;
-  color: #f2ede3;
+  background-color: var(--color-teal);
+  color: var(--color-dark-text);
 }
 
+/* needs attention: denied / not submitted */
 .status-badge.denied,
 .status-badge.not_submitted {
-  background-color: #c1512d;
-  color: #ffffff;
-}
-
-.status-badge.none {
-  background-color: #e8e0d0;
-  color: #2a2622;
+  background-color: var(--color-crimson-interactive);
+  color: var(--color-white);
 }
 
 .status-badge.gold {
   background-color: #c9a227;
-  color: #2a2622;
+  color: var(--color-dark-text);
 }
 
 .status-badge.silver {
   background-color: #b8b8b8;
-  color: #2a2622;
+  color: var(--color-dark-text);
 }
