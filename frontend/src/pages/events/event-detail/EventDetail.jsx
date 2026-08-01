@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import { Button } from "react-bootstrap";
 import { useUser } from "../../../context/UserContext.jsx";
 import RSVPButton from "../rsvp-button/RSVPButton.jsx";
+import WarningIcon from "../../../components/icons/WarningIcon.jsx";
 import "./event-detail.css";
 
 export default function EventDetail() {
@@ -73,7 +74,7 @@ export default function EventDetail() {
   if (error) {
     return (
       <Container className="px-5">
-        <p className="text-danger">{error}</p>
+        <p className="text-attention">{error}</p>
       </Container>
     );
   }
@@ -100,11 +101,16 @@ export default function EventDetail() {
           <div className="mt-3">
             <Link
               to={`/admin/events/${event._id}/edit`}
-              className="btn btn-outline-primary me-2"
+              className="btn btn-action-secondary me-2"
             >
               Edit
             </Link>
-            <Button variant="danger" onClick={handleCancel}>
+            <Button
+              variant={null}
+              className="btn-action-danger"
+              onClick={handleCancel}
+            >
+              <WarningIcon />
               Cancel Event
             </Button>
           </div>

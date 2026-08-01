@@ -1,4 +1,3 @@
-import SideBar from "./sidebar/SideBar.jsx";
 import NavBar from "./navbar/NavBar.jsx";
 import { useState, useEffect } from "react";
 import { UserContext } from "../../context/UserContext.jsx";
@@ -32,8 +31,6 @@ export default function BasePage({ children }) {
 
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
-      <SideBar />
-
       <div className="app-content-layout">
         <NavBar />
 

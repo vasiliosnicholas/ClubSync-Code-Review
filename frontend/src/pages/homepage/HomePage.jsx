@@ -61,7 +61,9 @@ export default function HomePage() {
 
       <Row className="justify-content-center cta-row">
         <Col xs="auto">
-          <Button href="/login">Log In</Button>
+          <Button variant={null} className="btn-action-primary" href="/login">
+            Log In
+          </Button>
         </Col>
       </Row>
     </Container>

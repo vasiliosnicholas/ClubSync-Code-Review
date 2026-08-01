@@ -1,5 +1,5 @@
 /* The whole card is a Link (an anchor). Strip default link styling so it
-   reads as a card, matching the app's cream/tan/rust palette. */
+   reads as a card, not an inline text link. */
 .event-card-link {
   text-decoration: none;
   color: inherit;
@@ -7,21 +7,22 @@
 }
 
 .event-card {
-  background: #ffffff;
-  border: 3px solid #d8c9a8;
+  background: var(--color-teal-surface);
+  border: 1px solid var(--color-teal-surface-border);
   border-radius: 12px;
   padding: 1rem 1.25rem;
   margin-bottom: 1rem;
   margin-top: 1rem;
-  box-shadow: 0 4px 12px rgba(42, 38, 34, 0.08);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
-.event-card-link:hover .event-card {
+.event-card-link:hover .event-card,
+.event-card-link:focus-visible .event-card {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(42, 38, 34, 0.12);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
 }
 
 .event-card h3 {
@@ -30,5 +31,5 @@
 
 .event-card p {
   margin-bottom: 0.25rem;
-  color: #6b5f4f;
+  color: var(--color-card-subtitle);
 }

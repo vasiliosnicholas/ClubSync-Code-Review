@@ -12,16 +12,19 @@ export default function WidgetCard({
   badge,
   footer,
   children,
+  surface = "teal",
 }) {
   return (
     <Col xs={12} md={12} lg={12} className="role-card dues-stat-widget">
-      <Card className="h-100 dues-card d-flex flex-column justify-content-between">
+      <Card
+        className={`h-100 dues-card dues-card-${surface} d-flex flex-column justify-content-between`}
+      >
         <Card.Body className="d-flex flex-column">
           <Card.Title>{title}</Card.Title>
           <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
             {subtitle}
             {badge != null && (
-              <span className="status-badge approved">{badge}</span>
+              <span className="status-badge pending">{badge}</span>
             )}
           </Card.Subtitle>
 
@@ -39,4 +42,5 @@ WidgetCard.propTypes = {
   badge: PropTypes.node,
   footer: PropTypes.node,
   children: PropTypes.node,
+  surface: PropTypes.oneOf(["teal", "crimson"]),
 };

@@ -9,7 +9,7 @@ export default function MemberDashboard() {
   const { user } = useUser();
   return (
     <Container className="px-5">
-      <h1 className="moto">Welcome Back, {user.firstName}</h1>
+      <h1 className="moto">{user.firstName}'s Member Dashboard</h1>
       <p className="lead-text spacing-after-moto">
         Below is your overview into your clubs necessities; updates on dues
         status and upcoming events.

@@ -36,7 +36,7 @@ export default function TreasurerDashboard() {
   return (
     <Container className="px-5">
       <h1 className="moto">
-        Accountability made simple for you, {user.firstName}
+        {user.firstName}'s Treasurer Dashboard
       </h1>
       <p className="lead-text spacing-after-moto">
         Below is your one stop shop for dues statistics, dues approvals, and

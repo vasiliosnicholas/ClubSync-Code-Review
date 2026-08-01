@@ -12,7 +12,7 @@ export default function DuesStatWidget({
 }) {
   return (
     <Col xs={12} md={5} lg={4} className="role-card dues-stat-widget">
-      <Card className="h-100 dues-card d-flex flex-column justify-content-between">
+      <Card className="h-100 dues-card dues-card-crimson d-flex flex-column justify-content-between">
         <Card.Body className="d-flex flex-column">
           <Card.Title>{title}</Card.Title>
           <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
@@ -24,10 +24,10 @@ export default function DuesStatWidget({
               <div className="inner-card-header text-uppercase">{label}</div>
               <div className="inner-card-subheader dues-stat-ratio my-1">
                 {count}
-                {total > 0 && <span className="text-muted fs-4">/{total}</span>}
+                {total > 0 && <span className="text-secondary-muted fs-4">/{total}</span>}
               </div>
               <hr className="dues-stat-divider my-2" />
-              <div className="inner-card-context small text-muted">
+              <div className="inner-card-context small text-secondary-muted">
                 {context}
               </div>
             </Card.Body>

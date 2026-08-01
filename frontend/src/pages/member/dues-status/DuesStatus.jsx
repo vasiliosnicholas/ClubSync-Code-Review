@@ -4,6 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useUser } from "../../../context/UserContext.jsx";
+import WarningIcon from "../../../components/icons/WarningIcon.jsx";
 
 // only these two states allow a (re)submission. anyone already pending/approved
 // shouldn't be able to submit again.
@@ -94,7 +95,10 @@ export default function DuesStatus() {
       <h1 className="moto">Submit Your Dues</h1>
 
       {user?.duesStatus === "denied" && latest?.reviewNote && (
-        <Alert variant="warning" className="spacing-after-moto">
+        <Alert
+          variant={null}
+          className="alert-action-attention spacing-after-moto"
+        >
           <Alert.Heading className="h6">
             Your last submission was denied
           </Alert.Heading>
@@ -103,7 +107,10 @@ export default function DuesStatus() {
       )}
 
       {user?.groupId === null ? (
-        <Alert variant="warning" className="spacing-after-moto">
+        <Alert
+          variant={null}
+          className="alert-action-attention spacing-after-moto"
+        >
           <Alert.Heading className="h6">
             You must join a group on the dashboard before submitting dues
           </Alert.Heading>
@@ -119,13 +126,15 @@ export default function DuesStatus() {
           {user?.duesStatus === "pending" && (
             <>
               <Button
-                variant="outline-danger"
+                variant={null}
+                className="btn-action-danger"
                 onClick={handleWithdraw}
                 disabled={withdrawing}
               >
+                <WarningIcon />
                 Withdraw Submission
               </Button>
-              {error && <div className="text-danger mt-3">{error}</div>}
+              {error && <div className="text-attention mt-3">{error}</div>}
             </>
           )}
         </div>
@@ -146,12 +155,12 @@ export default function DuesStatus() {
               value={paymentReference}
               onChange={(e) => setPaymentReference(e.target.value)}
             />
-            <Form.Text className="text-muted">
+            <Form.Text className="text-secondary-muted">
               Helps your treasurer match your payment when verifying.
             </Form.Text>
           </Form.Group>
-          {error && <div className="text-danger mb-3">{error}</div>}
-          <Button variant="primary" type="submit">
+          {error && <div className="text-attention mb-3">{error}</div>}
+          <Button variant={null} className="btn-action-primary" type="submit">
             Submit Dues
           </Button>
         </Form>

@@ -40,7 +40,7 @@ export default function MyRsvps() {
   if (error) {
     return (
       <Container className="px-5">
-        <p className="text-danger">{error}</p>
+        <p className="text-attention">{error}</p>
       </Container>
     );
   }

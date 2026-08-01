@@ -17,7 +17,7 @@ export default function PreviewList({
     <Card className="dues-inner-card mt-auto">
       <Card.Body className="p-3">
         {total === 0 ? (
-          <div className="inner-card-context small text-muted">
+          <div className="inner-card-context small text-secondary-muted">
             {emptyMessage}
           </div>
         ) : (
@@ -63,7 +63,7 @@ export default function PreviewList({
                     className={
                       col.align === "end"
                         ? "text-end"
-                        : "inner-card-context small text-muted text-truncate"
+                        : "inner-card-context small text-secondary-muted text-truncate"
                     }
                   >
                     {col.render(item)}

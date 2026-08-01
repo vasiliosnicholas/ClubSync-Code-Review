@@ -15,7 +15,8 @@
   max-width: 800px;
   margin: 0 auto;
   border-radius: 12px;
-  border: 3px solid #d8c9a8;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 /* ===========================
@@ -24,8 +25,6 @@
 .what-is-this {
   font-size: 2.6rem;
   text-align: center;
-  color: #c1512d;
-  font-weight: 500;
   margin-top: 4rem;
   margin-bottom: 2rem;
   animation: slideDown 3.8s ease forwards;
@@ -44,7 +43,7 @@
    ========================= */
 .role-title {
   font-size: 1.85rem;
-  color: #c1512d;
+  color: var(--color-dark-text);
   margin-bottom: 0.5rem;
 }
 
@@ -56,7 +55,7 @@
   margin-top: 2rem;
   font-style: italic;
   font-size: 1.4rem;
-  color: #6b5f4f;
+  color: var(--color-light-text);
 }
 
 /* ===========================

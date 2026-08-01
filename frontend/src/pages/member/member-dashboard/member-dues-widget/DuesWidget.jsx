@@ -44,7 +44,7 @@ export default function DuesWidget({ user }) {
 
   return (
     <Col xs={12} md={6} lg={6} className="role-card member-dues-widget">
-      <Card className="h-100 dues-card d-flex flex-column justify-content-between">
+      <Card className="h-100 dues-card dues-card-teal d-flex flex-column justify-content-between">
         <Card.Body className="d-flex flex-column">
           <Card.Title>Financial Overview</Card.Title>
 
@@ -56,11 +56,6 @@ export default function DuesWidget({ user }) {
           </Card.Subtitle>
 
           <Card.Text className="d-flex align-items-center">
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/10235/10235354.png"
-              className="dues-tier-style"
-              alt="shield with checkmark indicating dues status"
-            />
             <span>Tier: {TIER_LABELS[user?.duesTier] || "None"}</span>
           </Card.Text>
 
@@ -74,8 +69,8 @@ export default function DuesWidget({ user }) {
             <Button
               as={Link}
               to="/member/dues-status"
-              variant="primary"
-              className="mt-3"
+              variant={null}
+              className="btn-action-primary mt-3"
             >
               Submit Dues
             </Button>

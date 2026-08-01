@@ -1,5 +1,6 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
+import WarningIcon from "../../../../components/icons/WarningIcon.jsx";
 
 export default function NewSemesterModal({
   show,
@@ -30,13 +31,24 @@ export default function NewSemesterModal({
             onChange={(e) => setName(e.target.value)}
           />
         </Form.Group>
-        {error && <p className="text-danger small mt-2 mb-0">{error}</p>}
+        {error && <p className="text-attention small mt-2 mb-0">{error}</p>}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide} disabled={submitting}>
+        <Button
+          variant={null}
+          className="btn-action-secondary"
+          onClick={onHide}
+          disabled={submitting}
+        >
           Cancel
         </Button>
-        <Button variant="danger" onClick={onConfirm} disabled={submitting}>
+        <Button
+          variant={null}
+          className="btn-action-danger"
+          onClick={onConfirm}
+          disabled={submitting}
+        >
+          <WarningIcon />
           Start Semester
         </Button>
       </Modal.Footer>

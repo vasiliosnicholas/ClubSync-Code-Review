@@ -13,7 +13,7 @@ export default function JoinGroupCard({
   error,
 }) {
   return (
-    <Card className="h-100 dues-card d-flex flex-column justify-content-between">
+    <Card className="h-100 dues-card dues-card-teal d-flex flex-column justify-content-between">
       <Card.Body className="d-flex flex-column">
         <Card.Title>Join Your Club</Card.Title>
         <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
@@ -23,7 +23,7 @@ export default function JoinGroupCard({
 
         <Card className="dues-inner-card mt-auto">
           <Card.Body className="p-3">
-            <div className="inner-card-context small text-muted mb-3">
+            <div className="inner-card-context small text-secondary-muted mb-3">
               Enter the join code your treasurer shared to join this semester's
               roster.
             </div>
@@ -37,8 +37,13 @@ export default function JoinGroupCard({
                   onChange={(e) => setJoinCode(e.target.value)}
                 />
               </Form.Group>
-              {error && <p className="text-danger small mb-3">{error}</p>}
-              <Button variant="primary" type="submit" disabled={submitting}>
+              {error && <p className="text-attention small mb-3">{error}</p>}
+              <Button
+                variant={null}
+                className="btn-action-primary"
+                type="submit"
+                disabled={submitting}
+              >
                 Join Club
               </Button>
             </Form>

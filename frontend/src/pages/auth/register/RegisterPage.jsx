@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import AuthForm from "../AuthForm.jsx";
 
 export default function RegisterPage() {
@@ -55,7 +55,7 @@ export default function RegisterPage() {
       onSuccess={() => navigate("/login")}
     >
       <div>
-        Do you have an account? <a href="/login">Login Here</a>
+        Do you have an account? <Link to="/login">Login Here</Link>
       </div>
     </AuthForm>
   );

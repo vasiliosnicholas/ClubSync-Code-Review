@@ -131,9 +131,9 @@ export default function EventEditForm() {
             </Form.Select>
           </Form.Group>
 
-          {error && <div className="text-danger mb-3">{error}</div>}
+          {error && <div className="text-attention mb-3">{error}</div>}
 
-          <Button variant="primary" type="submit">
+          <Button variant={null} className="btn-action-primary" type="submit">
             Save Changes
           </Button>
         </Form>

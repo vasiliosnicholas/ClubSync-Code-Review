@@ -1,5 +1,6 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
+import WarningIcon from "../../../../components/icons/WarningIcon.jsx";
 
 const formatDate = (value) =>
   value ? new Date(value).toLocaleDateString() : "—";
@@ -61,7 +62,7 @@ export default function DuesReviewModal({
               </Form.Group>
             )}
 
-            {error && <p className="text-danger small mt-2 mb-0">{error}</p>}
+            {error && <p className="text-attention small mt-2 mb-0">{error}</p>}
           </>
         )}
       </Modal.Body>
@@ -69,31 +70,37 @@ export default function DuesReviewModal({
         {decision === "denied" ? (
           <>
             <Button
-              variant="secondary"
+              variant={null}
+              className="btn-action-secondary"
               onClick={() => setDecision(null)}
               disabled={submitting}
             >
               Back
             </Button>
             <Button
-              variant="danger"
+              variant={null}
+              className="btn-action-danger"
               onClick={() => onSubmit("denied")}
               disabled={submitting}
             >
+              <WarningIcon />
               Confirm Denial
             </Button>
           </>
         ) : (
           <>
             <Button
-              variant="danger"
+              variant={null}
+              className="btn-action-danger"
               onClick={() => setDecision("denied")}
               disabled={submitting}
             >
+              <WarningIcon />
               Deny
             </Button>
             <Button
-              variant="success"
+              variant={null}
+              className="btn-action-approve"
               onClick={() => onSubmit("approved")}
               disabled={submitting}
             >

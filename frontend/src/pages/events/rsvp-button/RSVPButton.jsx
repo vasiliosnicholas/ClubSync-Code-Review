@@ -36,13 +36,13 @@ export default function RSVPButton({ eventId, onRsvp }) {
 
   return (
     <div className="rsvp-button">
-      <Button variant="primary" onClick={handleRsvp}>
+      <Button variant={null} className="btn-action-primary" onClick={handleRsvp}>
         RSVP
       </Button>
 
       {/* show the message only when there is one; color it by isError */}
       {message && (
-        <p className={isError ? "text-danger mt-2" : "text-success mt-2"}>
+        <p className={isError ? "text-attention mt-2" : "text-positive mt-2"}>
           {message}
         </p>
       )}

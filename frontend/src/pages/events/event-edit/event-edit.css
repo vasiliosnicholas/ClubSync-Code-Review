@@ -1,10 +1,10 @@
 /* Edit form shell — matches the create form's white card look. */
 .event-edit {
   max-width: 560px;
-  background: #ffffff;
-  border: 3px solid #d8c9a8;
+  background: var(--color-teal-surface);
+  border: 1px solid var(--color-teal-surface-border);
   border-radius: 12px;
   padding: 1.5rem 1.75rem;
   margin-top: 1rem;
-  box-shadow: 0 4px 12px rgba(42, 38, 34, 0.08);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }

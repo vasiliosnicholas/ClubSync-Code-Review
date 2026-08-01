@@ -106,6 +106,7 @@ export default function DuesVerificationWidget({
         title="Pending Dues Verification"
         subtitle="Members Awaiting Approval"
         badge={`${total} Pending`}
+        surface={isPreview ? "crimson" : "teal"}
         footer={
           isPreview && (
             <>

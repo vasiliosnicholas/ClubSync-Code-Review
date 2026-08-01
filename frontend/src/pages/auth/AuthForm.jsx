@@ -68,10 +68,14 @@ export default function AuthForm({
           </Form.Group>
         ))}
 
-        {error && <div className="text-danger mb-3">{error}</div>}
+        {error && <div className="text-attention mb-3">{error}</div>}
 
         <div>
-          <Button className="me-2" variant="primary" type="submit">
+          <Button
+            className="me-2 btn-action-primary"
+            variant={null}
+            type="submit"
+          >
             {submitLabel}
           </Button>
         </div>

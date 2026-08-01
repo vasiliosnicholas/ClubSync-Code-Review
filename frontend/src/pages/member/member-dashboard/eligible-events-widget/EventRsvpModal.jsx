@@ -34,7 +34,7 @@ export default function EventRsvpModal({ event, show, eligible, onHide }) {
             {eligible ? (
               <RSVPButton eventId={event._id} />
             ) : (
-              <p className="text-danger small mb-0">
+              <p className="text-attention small mb-0">
                 This event requires approved {tier} tier dues to RSVP.
               </p>
             )}
@@ -42,7 +42,7 @@ export default function EventRsvpModal({ event, show, eligible, onHide }) {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant={null} className="btn-action-secondary" onClick={onHide}>
           Close
         </Button>
       </Modal.Footer>
