@@ -10,7 +10,6 @@ import "./styles/widget.css";
 import ProtectedRoute from "./pages/auth/ProtectedRoute.jsx";
 import BasePage from "./pages/basepage/BasePage.jsx";
 import HomePage from "./pages/homepage/HomePage.jsx";
-import AboutPage from "./pages/about/AboutPage.jsx";
 import LoginPage from "./pages/auth/login/LoginPage.jsx";
 import RegisterPage from "./pages/auth/register/RegisterPage.jsx";
 import MemberDashboard from "./pages/member/member-dashboard/MemberDashboard.jsx";
@@ -34,7 +33,6 @@ createRoot(document.getElementById("root")).render(
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
 
           {/* Member Role Pages */}
           <Route element={<ProtectedRoute />}>
