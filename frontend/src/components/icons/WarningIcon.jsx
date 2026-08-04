@@ -1,5 +1,3 @@
-// Decorative-only marker for destructive/irreversible actions; the button's
-// visible text label already carries the accessible name.
 export default function WarningIcon() {
   return (
     <svg

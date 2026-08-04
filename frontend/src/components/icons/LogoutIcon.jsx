@@ -1,5 +1,3 @@
-// Decorative-only marker for the logout action; the link's visible text
-// label already carries the accessible name.
 export default function LogoutIcon() {
   return (
     <svg

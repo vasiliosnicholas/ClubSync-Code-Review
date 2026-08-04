@@ -34,9 +34,9 @@ export default function BasePage({ children }) {
       <div className="app-content-layout">
         <NavBar />
 
-        {children}
+        <main role="main">{children}</main>
 
-        <footer className="mt-5">
+        <footer className="mt-5" role="contentinfo">
           <hr />
           <p className="text-center">ClubSync. All Rights Reserved</p>
         </footer>
