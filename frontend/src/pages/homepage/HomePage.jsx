@@ -1,5 +1,6 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import RoleCard from "./RoleCard.jsx";
+import groupJpg from "../../assets/group.jpg";
 import "./homepage.css";
 
 const ROLES = [
@@ -25,8 +26,11 @@ export default function HomePage() {
       <Row className="justify-content-center">
         <Col xs={12} md={8} className="hero-img-col">
           <img
-            src="https://knowledge.wharton.upenn.edu/wp-content/uploads/2024/05/6.5.24-platt-heart-rate-group-decisions-GettyImages-1373240838-650x442.jpg"
-            alt="Group of athletes training together"
+            src={groupJpg}
+            width="500"
+            height="450"
+            fetchPriority="high"
+            alt="Group people meeting in a room, discussing plans for their club"
             className="hero-img"
           />
         </Col>
