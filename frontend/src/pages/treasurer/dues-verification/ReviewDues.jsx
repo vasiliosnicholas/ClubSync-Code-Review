@@ -4,6 +4,14 @@ import DuesVerificationWidget from "../treasurer-dashboard/dues-verification-wid
 export default function ReviewDues() {
   return (
     <Container className="px-5">
+      <title>Dues Review · ClubSync</title>
+      <meta
+        name="description"
+        content="Treasurer only page that will allow the treasurer to view all the dues submissions for a club. 
+        They can see all the details of the submission like name, dues tier, and payment referance. 
+        They can choose to approve the submission or deny it with a message as to why which the member will be able to see."
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">Review Dues Submission</h1>
       <p className="lead-text spacing-after-moto">
         Review all dues submissions from members of your club

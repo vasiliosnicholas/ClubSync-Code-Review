@@ -40,7 +40,15 @@ createRoot(document.getElementById("root")).render(
               path="/member/member-dashboard"
               element={<MemberDashboard />}
             />
-            <Route path="/member/events" element={<EventList />} />
+            <Route
+              path="/member/events"
+              element={
+                <>
+                  <title>Events · ClubSync</title>
+                  <EventList />
+                </>
+              }
+            />
             <Route path="/member/events/:id" element={<EventDetail />} />
             <Route path="/member/my-rsvps" element={<MyRsvps />} />
             <Route path="/member/dues-status" element={<DuesStatus />} />
@@ -59,7 +67,15 @@ createRoot(document.getElementById("root")).render(
           <Route element={<ProtectedRoute allow={["admin"]} />}>
             <Route path="/admin/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/admin/members" element={<MembersPage />} />
-            <Route path="/admin/event-form" element={<EventForm />} />
+            <Route
+              path="/admin/event-form"
+              element={
+                <>
+                  <title>Create Event · ClubSync</title>
+                  <EventForm />
+                </>
+              }
+            />
             <Route path="/admin/events/:id/edit" element={<EventEditForm />} />
           </Route>
         </Routes>

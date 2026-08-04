@@ -67,6 +67,7 @@ export default function EventDetail() {
   if (loading) {
     return (
       <Container className="px-5">
+        <title>Event · ClubSync</title>
         <p>Loading</p>
       </Container>
     );
@@ -74,6 +75,7 @@ export default function EventDetail() {
   if (error) {
     return (
       <Container className="px-5">
+        <title>Event · ClubSync</title>
         <p className="text-attention">{error}</p>
       </Container>
     );
@@ -82,6 +84,14 @@ export default function EventDetail() {
 
   return (
     <Container className="px-5">
+      <title>{`${event.name} · ClubSync`}</title>
+      <meta
+        name="description"
+        content="Landing page for an event created by an admin of the club. This page lists all the details regarding an event, 
+        and allows members to RSVP if they have the correct tier of dues. If the user is an admin, 
+        they can cancel or edit the event and view all the particpents going."
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <div className="event-detail-card">
         <h1>{event.name}</h1>
         <p>

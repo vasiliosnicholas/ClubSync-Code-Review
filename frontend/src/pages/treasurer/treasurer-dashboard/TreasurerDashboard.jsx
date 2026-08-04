@@ -35,6 +35,13 @@ export default function TreasurerDashboard() {
 
   return (
     <Container className="px-5">
+      <title>Treasurer Dashboard · ClubSync</title>
+      <meta
+        name="description"
+        content="Treasurer dashboard page that displays basic club dues info. 
+        Shows a breakdown of total dues paid, how many gold tier members, silver tier members, top 5 oldest dues submissions and also the functionality for starting a new semester. "
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">
         {user.firstName}'s Treasurer Dashboard
       </h1>

@@ -72,6 +72,7 @@ export default function EventEditForm() {
   if (loading) {
     return (
       <Container className="px-5">
+        <title>Edit Event · ClubSync</title>
         <p>Loading…</p>
       </Container>
     );
@@ -79,6 +80,13 @@ export default function EventEditForm() {
 
   return (
     <Container className="px-5">
+      <title>Edit Event · ClubSync</title>
+      <meta
+        name="description"
+        content="Admin only page where admins can edit an existing event created in the club. 
+        It does not have to be the same admin that created an event, as long as they have admin status you can edit the event"
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <div className="event-edit">
         <h2>Edit Event</h2>
 

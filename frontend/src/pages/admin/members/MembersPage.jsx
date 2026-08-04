@@ -67,9 +67,18 @@ export default function MembersPage() {
 
   return (
     <Container className="px-5">
+      <title>Club Members · ClubSync</title>
+      <meta
+        name="description"
+        content="Admin only page where admins can view the total amount of members within the club. 
+        They can view the role of each member, email, and name. They can also change the role of members here. 
+        This is how people become treasurers in a club via admin promotion"
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">Club Members</h1>
       <p className="lead-text spacing-after-moto">
-        View all club Members here and assign treasurer or admin roles to members of your club
+        View all club Members here and assign treasurer or admin roles to
+        members of your club
       </p>
 
       <Row className="justify-content-center gy-4">

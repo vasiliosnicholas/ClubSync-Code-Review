@@ -8,24 +8,32 @@ import EligibleEventsWidget from "./eligible-events-widget/EligibleEventsWidget.
 export default function MemberDashboard() {
   const { user } = useUser();
   return (
-    <Container className="px-5">
-      <h1 className="moto">{user.firstName}'s Member Dashboard</h1>
-      <p className="lead-text spacing-after-moto">
-        Below is your overview into your clubs necessities; updates on dues
-        status and upcoming events.
-      </p>
+    <>
+      <title>Member Dashboard · ClubSync</title>
+      <meta
+        name="description"
+        content="This is a member dashboard page that displays basic member info like upcoming events, the club that you are a part of and quick dues stats"
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
+      <Container className="px-5">
+        <h1 className="moto">{user.firstName}'s Member Dashboard</h1>
+        <p className="lead-text spacing-after-moto">
+          Below is your overview into your clubs necessities; updates on
+          dues status and upcoming events.
+        </p>
 
-      <Row className="justify-content-center gy-4">
-        {user?.groupId ? (
-          <>
-            <DuesWidget user={user} />
-            <GroupWidget />
-            <EligibleEventsWidget previewLimit={5} />
-          </>
-        ) : (
-          <JoinGroupWidget />
-        )}
-      </Row>
-    </Container>
+        <Row className="justify-content-center gy-4">
+          {user?.groupId ? (
+            <>
+              <DuesWidget user={user} />
+              <GroupWidget />
+              <EligibleEventsWidget previewLimit={5} />
+            </>
+          ) : (
+            <JoinGroupWidget />
+          )}
+        </Row>
+      </Container>
+    </>
   );
 }

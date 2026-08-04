@@ -32,6 +32,7 @@ export default function MyRsvps() {
   if (loading) {
     return (
       <Container className="px-5">
+        <title>My RSVPs · ClubSync</title>
         <p>Loading…</p>
       </Container>
     );
@@ -40,6 +41,7 @@ export default function MyRsvps() {
   if (error) {
     return (
       <Container className="px-5">
+        <title>My RSVPs · ClubSync</title>
         <p className="text-attention">{error}</p>
       </Container>
     );
@@ -47,6 +49,13 @@ export default function MyRsvps() {
 
   return (
     <Container className="px-5">
+      <title>My RSVPs · ClubSync</title>
+      <meta
+        name="description"
+        content="Member page that will display all the RSVP's for this user. 
+        This means every event that the user has pressed the RSVP button for will show up on this page"
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">My RSVPs</h1>
 
       {events.length === 0 && (

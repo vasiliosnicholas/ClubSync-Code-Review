@@ -92,6 +92,13 @@ export default function DuesStatus() {
 
   return (
     <div className="dues-status px-5">
+      <title>Dues · ClubSync</title>
+      <meta
+        name="description"
+        content="Dues page for members to view the status of their dues. If they have not submitted their dues for the club, then they can submit them here. 
+        They can revoke submissions and also view the status of their submission after a treasurer has looked it over"
+      />
+      <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">Submit Your Dues</h1>
 
       {user?.duesStatus === "denied" && latest?.reviewNote && (
