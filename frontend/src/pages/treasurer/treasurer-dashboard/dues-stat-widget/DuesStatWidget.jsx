@@ -12,7 +12,7 @@ export default function DuesStatWidget({
 }) {
   return (
     <Col xs={12} md={5} lg={4} className="role-card dues-stat-widget">
-      <Card className="h-100 dues-card dues-card-crimson d-flex flex-column justify-content-between">
+      <Card className="h-100 dues-card d-flex flex-column justify-content-between">
         <Card.Body className="d-flex flex-column">
           <Card.Title>{title}</Card.Title>
           <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">

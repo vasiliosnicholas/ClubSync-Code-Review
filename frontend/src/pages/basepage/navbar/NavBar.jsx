@@ -59,7 +59,7 @@ export default function NavBar() {
   };
 
   return (
-    <Navbar expand="lg" variant="dark" className="top-navbar">
+    <Navbar expand="lg" variant="dark" className="top-navbar" role="navigation">
       <Container fluid className="top-navbar-container">
         <Navbar.Toggle aria-controls="top-navbar-nav" />
 
@@ -104,7 +104,7 @@ export default function NavBar() {
                       as={BSNavLink}
                       id="view-switch-dropdown"
                       aria-haspopup="true"
-                      className="nav-standout-pill nav-standout-pill-teal"
+                      className="nav-standout-pill nav-standout-pill-gold"
                     >
                       <GlassesIcon />
                       {`${view.charAt(0).toUpperCase()}${view.slice(1)} View`}
@@ -120,7 +120,7 @@ export default function NavBar() {
                 )}
                 <Nav.Link
                   onClick={handleLogout}
-                  className="nav-logout-link nav-standout-pill nav-standout-pill-crimson"
+                  className="nav-logout-link nav-standout-pill nav-standout-pill-orange"
                 >
                   <LogoutIcon />
                   Logout

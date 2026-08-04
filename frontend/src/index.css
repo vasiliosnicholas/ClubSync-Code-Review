@@ -1,30 +1,30 @@
 :root {
   --navbar-height: 100px;
 
-  /* Slate Black for headers, titles, body text */
-  --color-dark-text: #0f172a;
-   /* Slate Gray for secondary/meta text */
-  --color-light-text: #64748b;
-  /* decorative only large scale fills */
-  --color-crimson: #d94638;
-  /* contrast safe crimson buttons/badges/links */
-  --color-crimson-interactive: #c23b2e;
-  /* decorative only fill, pair with dark text */
-  --color-teal: #0ea5e9; 
-  /* contrast safe teal for links, focus, active states */
-  --color-teal-interactive: #0369a1;
-  --color-teal-interactive-hover: #075985;
-  --color-crimson-interactive-hover: #a62f26;
-  /* Off White used for the app background */
-  --color-bg: #f8fafc;
-  --color-border: #e2e8f0;
+  /* warm near-black for headers, titles, body text */
+  --color-dark-text: #2a2622;
+  /* warm gray-brown for secondary/meta text (5.3:1 on --color-bg, AA) */
+  --color-light-text: #6b5f4f;
+  /* decorative only large scale fills - do not use for small text */
+  --color-orange: #c1512d;
+  /* contrast safe orange for buttons/badges/links (8.3:1 on white, 7.2:1 on --color-bg, AAA) */
+  --color-orange-interactive: #7d3c00;
+  --color-orange-interactive-hover: #602f00;
+  /* decorative only fill - do not use for small text */
+  --color-gold: #c98a1f;
+  /* contrast safe gold for links, focus, active states (7.9:1 on white, 6.8:1 on --color-bg, AA/near-AAA) */
+  --color-gold-interactive: #6e4a12;
+  --color-gold-interactive-hover: #55380d;
+  /* warm cream used for the app background */
+  --color-bg: #f2ede3;
+  --color-border: #d8c9a8;
   --color-white: #ffffff;
 
-  --color-teal-surface: #dceaf2;
-  --color-teal-surface-border: #a7cade;
-  --color-crimson-surface: #f6e4e2;
-  --color-crimson-surface-border: #eabab6;
-  --color-card-subtitle: #475569; 
+  --color-gold-surface: #f2e4c4;
+  --color-gold-surface-border: #d9bd7c;
+  --color-orange-surface: #f3ddd1;
+  --color-orange-surface-border: #dba98c;
+  --color-card-subtitle: #6b5f4f;
 }
 
 .app-content-layout {
@@ -33,15 +33,16 @@
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Noto Serif", serif;
   font-style: normal;
   background-color: var(--color-bg);
   color: var(--color-dark-text);
 }
 
 h1,
-h2 {
-  font-family: "Bitter", serif;
+h2,
+h3 {
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 700;
   color: var(--color-dark-text);
 }
@@ -55,14 +56,11 @@ h2 {
 }
 
 h3 {
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
   font-size: 1.15rem;
-  color: var(--color-dark-text);
 }
 
 p {
-  font-family: "Inter", sans-serif;
+  font-family: "Noto Serif", serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.6;
@@ -70,15 +68,15 @@ p {
 }
 
 /* ===========================================================================
-   LINKS - always underlined, Teal (contrast-safe shade)
+   LINKS - always underlined, Gold (contrast-safe shade)
    =========================================================================== */
 a {
-  color: var(--color-teal-interactive);
+  color: var(--color-gold-interactive);
   text-decoration: underline;
 }
 
 a:hover {
-  color: var(--color-teal-interactive-hover);
+  color: var(--color-gold-interactive-hover);
 }
 
 /* ===========================================================================
@@ -100,7 +98,7 @@ textarea:focus-visible,
    BUTTONS
    =========================================================================== */
 .btn {
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 600;
   font-size: 1rem;
   padding: 0.6rem 1.25rem;
@@ -120,39 +118,39 @@ textarea:focus-visible,
 
 /* main action buttons */
 .btn-action-primary {
-  background-color: var(--color-crimson-interactive);
-  border-color: var(--color-crimson-interactive);
+  background-color: var(--color-orange-interactive);
+  border-color: var(--color-orange-interactive);
   color: var(--color-white);
 }
 
 .btn-action-primary:hover:not(:disabled) {
   background-color: var(--color-white);
-  border-color: var(--color-crimson-interactive-hover);
-  color: var(--color-crimson-interactive-hover);
+  border-color: var(--color-orange-interactive-hover);
+  color: var(--color-orange-interactive-hover);
 }
 
 /* secondary / lower-emphasis actions */
 .btn-action-secondary {
   background-color: transparent;
-  border-color: var(--color-teal-interactive);
-  color: var(--color-teal-interactive);
+  border-color: var(--color-gold-interactive);
+  color: var(--color-gold-interactive);
 }
 
 .btn-action-secondary:hover:not(:disabled) {
-  background-color: var(--color-teal-interactive);
+  background-color: var(--color-gold-interactive);
   color: var(--color-white);
 }
 
 /* positive confirmation actions (e.g. Approve) */
 .btn-action-approve {
-  background-color: var(--color-teal-interactive);
-  border-color: var(--color-teal-interactive);
+  background-color: var(--color-gold-interactive);
+  border-color: var(--color-gold-interactive);
   color: var(--color-white);
 }
 
 .btn-action-approve:hover:not(:disabled) {
-  background-color: var(--color-teal-interactive-hover);
-  border-color: var(--color-teal-interactive-hover);
+  background-color: var(--color-gold-interactive-hover);
+  border-color: var(--color-gold-interactive-hover);
 }
 
 /* destructive/irreversible actions (e.g. Deny, Remove, Cancel Event) */
@@ -160,40 +158,41 @@ textarea:focus-visible,
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background-color: var(--color-crimson-interactive);
-  border-color: var(--color-crimson-interactive);
+  background-color: var(--color-orange-interactive);
+  border-color: var(--color-orange-interactive);
   color: var(--color-white);
 }
 
 .btn-action-danger:hover:not(:disabled) {
-  background-color: var(--color-crimson-interactive-hover);
-  border-color: var(--color-crimson-interactive-hover);
+  background-color: var(--color-orange-interactive-hover);
+  border-color: var(--color-orange-interactive-hover);
 }
 
 /* ===========================================================================
    ALERTS - needs-attention / blocking messages
    =========================================================================== */
 .alert-action-attention {
-  background-color: #fdecea;
-  border: 1px solid var(--color-crimson-interactive);
+  background-color: var(--color-orange-surface);
+  border: 2px solid var(--color-orange-interactive);
   color: var(--color-dark-text);
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .alert-action-attention .alert-heading {
-  font-family: "Bitter", serif;
-  color: var(--color-crimson-interactive);
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 700;
+  color: var(--color-orange-interactive);
 }
 
 /* ===========================================================================
    TEXT UTILITIES - replace Bootstrap's text-danger/text-success/text-muted
    =========================================================================== */
 .text-attention {
-  color: var(--color-crimson-interactive);
+  color: var(--color-orange-interactive);
 }
 
 .text-positive {
-  color: var(--color-teal-interactive);
+  color: var(--color-gold-interactive);
 }
 
 .text-secondary-muted {
@@ -204,31 +203,31 @@ textarea:focus-visible,
    MODALS - match the card treatment (Repetition principle)
    =========================================================================== */
 .modal-content {
-  background-color: var(--color-teal-surface);
-  border: 1px solid var(--color-teal-surface-border);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+  background-color: var(--color-gold-surface);
+  border: 2px solid var(--color-gold-surface-border);
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 .modal-header {
-  border-bottom: 1px solid var(--color-teal-surface-border);
+  border-bottom: 2px solid var(--color-gold-surface-border);
 }
 
 .modal-title {
-  font-family: "Bitter", serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 700;
   color: var(--color-dark-text);
 }
 
 .modal-footer {
-  border-top: 1px solid var(--color-teal-surface-border);
+  border-top: 2px solid var(--color-gold-surface-border);
 }
 
 /* ===========================================================================
    FORMS
    =========================================================================== */
 .form-label {
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 600;
   color: var(--color-dark-text);
 }
@@ -239,22 +238,22 @@ textarea:focus-visible,
 
 .form-control,
 .form-select {
-  font-family: "Inter", sans-serif;
-  border: 1px solid var(--color-border);
+  font-family: "Noto Serif", serif;
+  border: 2px solid var(--color-border);
   color: var(--color-dark-text);
 }
 
 .form-control:focus,
 .form-select:focus {
-  border-color: var(--color-teal-interactive);
-  box-shadow: 0 0 0 0.2rem rgba(3, 105, 161, 0.25);
+  border-color: var(--color-gold-interactive);
+  box-shadow: none;
 }
 
 .form-control.is-invalid,
 .form-select.is-invalid {
-  border-color: var(--color-crimson-interactive);
+  border-color: var(--color-orange-interactive);
 }
 
 .invalid-feedback {
-  color: var(--color-crimson-interactive);
+  color: var(--color-orange-interactive);
 }

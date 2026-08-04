@@ -2,7 +2,7 @@
    MEMBER DUES WIDGET — component-specific styles
    =========================================================================== */
 .member-dues-widget .dues-card .card-text {
-  font-family: "Inter", sans-serif;
+  font-family: "Noto Serif", serif;
   color: var(--color-dark-text);
   text-align: left;
   margin-top: 20px;
@@ -11,7 +11,7 @@
 }
 
 .member-dues-widget .dues-card .card-link {
-  color: var(--color-teal-interactive);
-  font-family: "Inter", sans-serif;
+  color: var(--color-gold-interactive);
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 600;
 }

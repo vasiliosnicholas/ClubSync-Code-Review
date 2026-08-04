@@ -10,8 +10,9 @@
   min-height: var(--navbar-height);
   display: flex;
   align-items: center;
-  background-color: var(--color-crimson-interactive);
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.2);
+  background-color: var(--color-orange-interactive);
+  border-bottom: 3px solid var(--color-border);
+  box-shadow: none;
   padding: 0.75rem 1.5rem;
 }
 
@@ -23,7 +24,7 @@
      TOP NAVBAR BRAND
    ========================= */
 .top-navbar-brand {
-  font-family: "Bitter", serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 700;
   font-size: clamp(1.5rem, 4vw, 2.25rem);
   color: var(--color-white);
@@ -75,49 +76,77 @@
   align-items: center;
   gap: 0.35rem;
   background-color: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
   padding: 0.35rem 0.6rem;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  box-shadow: none;
 }
 
 /* ===========================
      PAGE LINKS
    ========================= */
 .top-navbar .nav-link {
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 500;
   text-decoration: none;
   padding: 0.4rem 1rem;
-  border-radius: 999px;
+  border-radius: 6px;
   font-size: 1.5rem;
 }
 
-/* links inside a white pill sit on a white surface, not the crimson bar */
+/* links inside a white pill sit on a white surface, not the orange bar */
 .top-navbar-links .nav-link,
 .top-navbar-guest-pill .nav-link {
   color: var(--color-dark-text);
 }
 
 /* ===========================
-     PAGE LINKS HOVER
+     PAGE LINKS FOCUS COLOR FIX
+     (Bootstrap's navbar-dark variant sets .nav-link:focus to a light
+     text color on ANY focus, not just keyboard - including the
+     programmatic focus react-bootstrap returns to a dropdown trigger
+     after it closes. On a white pill that leaves invisible text once
+     the resting background comes back, so pin the color back to normal
+     resting state. The keyboard-only highlight below layers on top.)
    ========================= */
-.top-navbar-links .nav-link:hover,
-.top-navbar-guest-pill .nav-link:hover {
+.top-navbar .top-navbar-links .nav-link:focus,
+.top-navbar .top-navbar-guest-pill .nav-link:focus {
+  color: var(--color-dark-text);
+}
+
+/* ===========================
+     PAGE LINKS HOVER + KEYBOARD-VISIBLE FOCUS
+   ========================= */
+.top-navbar .top-navbar-links .nav-link:hover,
+.top-navbar .top-navbar-guest-pill .nav-link:hover,
+.top-navbar .top-navbar-links .nav-link:focus-visible,
+.top-navbar .top-navbar-guest-pill .nav-link:focus-visible {
   background-color: var(--color-border);
+  color: var(--color-dark-text);
 }
 
 /* ===========================
      ACTIVE PAGE LINK
    ========================= */
-.top-navbar-links .nav-link.active,
-.top-navbar-guest-pill .nav-link.active {
-  background-color: var(--color-teal-interactive);
+.top-navbar .top-navbar-links .nav-link.active,
+.top-navbar .top-navbar-guest-pill .nav-link.active {
+  background-color: var(--color-gold-interactive);
+  color: var(--color-white);
+}
+
+.top-navbar .top-navbar-links .nav-link.active:focus {
+  color: var(--color-white);
+}
+
+.top-navbar .top-navbar-links .nav-link.active:focus-visible,
+.top-navbar .top-navbar-guest-pill .nav-link.active:focus-visible {
+  background-color: var(--color-gold-interactive-hover);
   color: var(--color-white);
 }
 
 .top-navbar-actions .dropdown-menu {
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
+  border: 2px solid var(--color-border);
 }
 
 /* ===========================
@@ -127,29 +156,42 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  border-radius: 999px;
+  border-radius: 8px;
   padding: 0.4rem 1rem;
+  background-color: var(--color-white);
+  border: 2px solid transparent;
 }
 
-.nav-standout-pill-teal {
-  background-color: var(--color-teal-interactive);
+.nav-standout-pill-gold {
+  border-color: var(--color-gold-interactive);
+  color: var(--color-gold-interactive);
+}
+
+/* pin the resting text color back after any focus (see PAGE LINKS FOCUS
+   COLOR FIX above for why plain :focus needs this) */
+.top-navbar .nav-standout-pill.nav-standout-pill-gold:focus {
+  color: var(--color-gold-interactive);
+}
+
+.nav-standout-pill-gold:hover,
+.top-navbar .nav-standout-pill.nav-standout-pill-gold:focus-visible,
+.top-navbar .nav-standout-pill.nav-standout-pill-gold.show {
+  background-color: var(--color-gold-interactive);
   color: var(--color-white);
 }
 
-.nav-standout-pill-teal:hover,
-.nav-standout-pill-teal.show {
-  background-color: var(--color-teal-interactive-hover);
-  color: var(--color-white);
+.nav-standout-pill-orange {
+  border-color: var(--color-orange-interactive);
+  color: var(--color-orange-interactive);
 }
 
-.nav-standout-pill-crimson {
-  background-color: var(--color-crimson-interactive);
-  color: var(--color-white);
+.top-navbar .nav-standout-pill.nav-standout-pill-orange:focus {
+  color: var(--color-orange-interactive);
 }
 
-.nav-standout-pill-crimson:hover {
-  background-color: var(--color-crimson-interactive-hover);
+.nav-standout-pill-orange:hover,
+.top-navbar .nav-standout-pill.nav-standout-pill-orange:focus-visible {
+  background-color: var(--color-orange-interactive);
   color: var(--color-white);
 }
-
 

@@ -2,42 +2,34 @@
    SHARED: DUES CARD SHELL
    =========================================================================== */
 .dues-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  background-color: var(--color-gold-surface);
+  border: 2px solid var(--color-gold-surface-border);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--color-border);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .dues-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--color-border);
 }
 
 .dues-card .card-title {
-  font-family: "Bitter", serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 700;
   color: var(--color-dark-text);
 }
 
 .dues-card .card-subtitle {
-  font-family: "Inter", sans-serif;
+  font-family: "Noto Serif", serif;
   color: var(--color-card-subtitle);
-}
-
-.dues-card-teal {
-  background-color: var(--color-teal-surface);
-  border: 1px solid var(--color-teal-surface-border);
-}
-
-.dues-card-crimson {
-  background-color: var(--color-crimson-surface);
-  border: 1px solid var(--color-crimson-surface-border);
 }
 
 .dues-inner-card {
   background-color: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 8px;
 }
 
@@ -55,6 +47,6 @@
 }
 
 .dues-review-row:focus-visible {
-  outline: 2px solid var(--color-teal-interactive);
+  outline: 2px solid var(--color-gold-interactive);
   outline-offset: 2px;
 }

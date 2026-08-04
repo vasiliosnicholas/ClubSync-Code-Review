@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 export default function SemesterCard({ active, onStart }) {
   return (
-    <Card className="h-100 dues-card dues-card-teal d-flex flex-column justify-content-between">
+    <Card className="h-100 dues-card d-flex flex-column justify-content-between">
       <Card.Body className="d-flex flex-column">
         <Card.Title>Semester Control</Card.Title>
         <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">

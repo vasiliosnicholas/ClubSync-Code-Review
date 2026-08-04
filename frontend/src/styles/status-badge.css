@@ -2,7 +2,7 @@
    SHARED: STATUS / TIER BADGE
    =========================================================================== */
 .status-badge {
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -13,7 +13,7 @@
   display: inline-block;
   line-height: 1;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
+  box-shadow: none;
 }
 
 .status-badge.pending,
@@ -23,14 +23,14 @@
 }
 
 .status-badge.approved {
-  background-color: var(--color-teal);
+  background-color: var(--color-gold);
   color: var(--color-dark-text);
 }
 
 /* needs attention: denied / not submitted */
 .status-badge.denied,
 .status-badge.not_submitted {
-  background-color: var(--color-crimson-interactive);
+  background-color: var(--color-orange-interactive);
   color: var(--color-white);
 }
 
