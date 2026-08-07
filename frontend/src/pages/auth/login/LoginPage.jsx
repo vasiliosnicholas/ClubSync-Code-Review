@@ -44,6 +44,9 @@ export default function LoginPage() {
           setUser(data.user);
           navigate(ROLE_HOME[data.user.role] ?? "/");
         }}
+        redirectQuestion="Don't have account? Create one"
+        redirectLink="/register"
+        redirectText="here"
       />
     </>
   );

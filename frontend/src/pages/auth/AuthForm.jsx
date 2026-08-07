@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
@@ -12,6 +13,10 @@ export default function AuthForm({
   errorFallback,
   onSuccess,
   children,
+  redirectQuestion,
+  redirectLink,
+  redirectText,
+  isAdmin,
 }) {
   const [error, setError] = useState("");
 
@@ -20,6 +25,9 @@ export default function AuthForm({
     setError("");
 
     const payload = Object.fromEntries(new FormData(e.target));
+    if (isAdmin) {
+      payload.role = "admin";
+    }
 
     try {
       const res = await fetch(endpoint, {
@@ -46,9 +54,9 @@ export default function AuthForm({
   return (
     <>
       <h1 className="moto">{heading}</h1>
-      <Form onSubmit={handleSubmit} className="spacing-after-moto">
+      <Form onSubmit={handleSubmit} className="spacing-after-moto auth-form">
         {fields.map((field) => (
-          <Form.Group className="mb-3" key={field.name}>
+          <Form.Group className="mb-5" key={field.name} controlId={field.name}>
             <Form.Label>{field.label}</Form.Label>
             {field.type === "select" ? (
               <Form.Select name={field.name} defaultValue={field.defaultValue}>
@@ -70,7 +78,7 @@ export default function AuthForm({
 
         {error && <div className="text-attention mb-3">{error}</div>}
 
-        <div>
+        <div className="auth-form-submit">
           <Button
             className="me-2 btn-action-primary"
             variant={null}
@@ -78,6 +86,7 @@ export default function AuthForm({
           >
             {submitLabel}
           </Button>
+          <span className="w-50 d-inline-block">{redirectQuestion} <Link to={redirectLink}>{redirectText}</Link></span>
         </div>
 
         {children}
@@ -94,4 +103,8 @@ AuthForm.propTypes = {
   errorFallback: PropTypes.string,
   onSuccess: PropTypes.func,
   children: PropTypes.node,
+  redirectQuestion: PropTypes.string,
+  redirectLink: PropTypes.string,
+  redirectText: PropTypes.string,
+  isAdmin: PropTypes.bool,
 };

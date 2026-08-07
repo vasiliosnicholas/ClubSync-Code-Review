@@ -11,7 +11,9 @@ import ProtectedRoute from "./pages/auth/ProtectedRoute.jsx";
 import BasePage from "./pages/basepage/BasePage.jsx";
 import HomePage from "./pages/homepage/HomePage.jsx";
 import LoginPage from "./pages/auth/login/LoginPage.jsx";
-import RegisterPage from "./pages/auth/register/RegisterPage.jsx";
+import RegisterLandingPage from "./pages/auth/register/RegisterLandingPage.jsx";
+import RegisterMemberPage from "./pages/auth/register/RegisterMemberPage.jsx";
+import RegisterAdminPage from "./pages/auth/register/RegisterAdminPage.jsx";
 import MemberDashboard from "./pages/member/member-dashboard/MemberDashboard.jsx";
 import TreasurerDashboard from "./pages/treasurer/treasurer-dashboard/TreasurerDashboard.jsx";
 import AdminDashboard from "./pages/admin/admindashboard/AdminDashboard.jsx";
@@ -30,7 +32,9 @@ createRoot(document.getElementById("root")).render(
       <BasePage>
         <Routes>
           {/* User is not signed in yet (Guest Pages) */}
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/register" element={<RegisterLandingPage />} />
+          <Route path="/register/member" element={<RegisterMemberPage />} />
+          <Route path="/register/admin" element={<RegisterAdminPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
 

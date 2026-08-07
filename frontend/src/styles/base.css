@@ -22,6 +22,17 @@
   margin-top: 40px;
 }
 
+.auth-form {
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth-form-submit {
+  text-align: center;
+}
+
 .lead-text {
   font-family: "Noto Serif", serif;
   font-weight: 400;

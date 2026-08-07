@@ -1,21 +1,19 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import AuthForm from "../AuthForm.jsx";
 
-export default function RegisterPage() {
+export default function RegisterMemberPage() {
   const navigate = useNavigate();
 
   return (
     <>
-      <title>Register · ClubSync</title>
+      <title>Register as a Member · ClubSync</title>
       <meta
         name="description"
-        content="basic register page where a user will fill out account information and also the type of role they want. 
-        Either you are a member joining a club or an admin creating one. Other roles for existing clubs must 
-        be granted by an established admin"
+        content="register page for a new member account. After registering, use a club's join code from the member dashboard to join it."
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <AuthForm
-        heading="Register"
+        heading="Register as a Member"
         endpoint="/api/auth/register"
         submitLabel="Register"
         errorFallback="Registration failed"
@@ -44,29 +42,12 @@ export default function RegisterPage() {
             type: "password",
             placeholder: "Password",
           },
-          {
-            name: "role",
-            label: "I am registering as",
-            type: "select",
-            defaultValue: "member",
-            options: [
-              { value: "member", label: "Member" },
-              { value: "admin", label: "Admin (create a club)" },
-            ],
-          },
-          {
-            name: "clubName",
-            label: "Club name (admins only)",
-            type: "text",
-            placeholder: "Name your club",
-          },
         ]}
         onSuccess={() => navigate("/login")}
-      >
-        <div>
-          Do you have an account? <Link to="/login">Login Here</Link>
-        </div>
-      </AuthForm>
+        redirectQuestion="Already have an account?"
+        redirectLink="/login"
+        redirectText="Log in here"
+      />
     </>
   );
 }
