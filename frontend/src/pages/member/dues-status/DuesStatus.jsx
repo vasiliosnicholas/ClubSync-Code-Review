@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useUser } from "../../../context/UserContext.jsx";
 import WarningIcon from "../../../components/icons/WarningIcon.jsx";
+import DuesClarity from "./DuesClarity.jsx";
 
 // only these two states allow a (re)submission. anyone already pending/approved
 // shouldn't be able to submit again.
@@ -146,15 +147,21 @@ export default function DuesStatus() {
           )}
         </div>
       ) : (
-        <Form onSubmit={handleSubmit} className="mt-3 spacing-after-moto">
-          <Form.Group className="mb-3">
+        <>
+        <h2 className="text-center mt-5">Why Submit Dues?</h2>
+        <DuesClarity />
+        <Form
+          onSubmit={handleSubmit}
+          className="mt-3 spacing-after-moto auth-form"
+        >
+          <Form.Group className="mb-5" controlId="dues-tier">
             <Form.Label>Membership tier</Form.Label>
             <Form.Select value={tier} onChange={(e) => setTier(e.target.value)}>
               <option value="gold">Gold</option>
               <option value="silver">Silver</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" controlId="dues-payment-reference">
             <Form.Label>Payment reference</Form.Label>
             <Form.Control
               type="text"
@@ -167,10 +174,13 @@ export default function DuesStatus() {
             </Form.Text>
           </Form.Group>
           {error && <div className="text-attention mb-3">{error}</div>}
-          <Button variant={null} className="btn-action-primary" type="submit">
-            Submit Dues
-          </Button>
+          <div className="auth-form-submit">
+            <Button variant={null} className="btn-action-primary" type="submit">
+              Submit Dues
+            </Button>
+          </div>
         </Form>
+        </>
       )}
     </div>
   );
