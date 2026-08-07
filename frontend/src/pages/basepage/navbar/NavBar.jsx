@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
@@ -34,6 +35,7 @@ export default function NavBar() {
   const { user, setUser } = useUser();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
 
   const segment = pathname.split("/")[1];
   const view = ROLE_VIEWS.includes(segment) ? segment : "guest";
@@ -55,11 +57,19 @@ export default function NavBar() {
     }
 
     setUser(null);
+    setExpanded(false);
     navigate("/");
   };
 
   return (
-    <Navbar expand="lg" variant="dark" className="top-navbar" role="navigation">
+    <Navbar
+      expand="lg"
+      variant="dark"
+      className="top-navbar"
+      role="navigation"
+      expanded={expanded}
+      onToggle={setExpanded}
+    >
       <Container fluid className="top-navbar-container">
         <Navbar.Toggle aria-controls="top-navbar-nav" />
 
@@ -80,6 +90,7 @@ export default function NavBar() {
                   to={page.to}
                   key={page.to}
                   end={page.to === "/"}
+                  onClick={() => setExpanded(false)}
                 >
                   {page.label}
                 </Nav.Link>
@@ -111,7 +122,12 @@ export default function NavBar() {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       {availableViews.map((tab) => (
-                        <Dropdown.Item as={NavLink} to={tab.to} key={tab.role}>
+                        <Dropdown.Item
+                          as={NavLink}
+                          to={tab.to}
+                          key={tab.role}
+                          onClick={() => setExpanded(false)}
+                        >
                           {tab.label}
                         </Dropdown.Item>
                       ))}
@@ -128,10 +144,10 @@ export default function NavBar() {
               </>
             ) : (
               <Nav className="top-navbar-guest-pill">
-                <Nav.Link as={NavLink} to="/login">
+                <Nav.Link as={NavLink} to="/login" onClick={() => setExpanded(false)}>
                   Login
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/register">
+                <Nav.Link as={NavLink} to="/register" onClick={() => setExpanded(false)}>
                   Register
                 </Nav.Link>
               </Nav>
