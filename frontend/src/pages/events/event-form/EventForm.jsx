@@ -56,7 +56,7 @@ export default function EventForm({ onCreated }) {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="event-type">
           <Form.Label>Type</Form.Label>
           <Form.Select value={type} onChange={(e) => setType(e.target.value)}>
             <option value="practice">Practice</option>
@@ -84,7 +84,7 @@ export default function EventForm({ onCreated }) {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="event-required-tier">
           <Form.Label>Required tier</Form.Label>
           <Form.Select
             value={requiredTier}

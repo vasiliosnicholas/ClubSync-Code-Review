@@ -51,6 +51,7 @@ export default function MembersPage() {
       render: (m) => (
         <Form.Select
           size="sm"
+          aria-label={`Role for ${m.firstName} ${m.lastName}`}
           value={m.role}
           disabled={String(m._id) === String(user?.id)}
           onChange={(e) => changeRole(m._id, e.target.value)}
