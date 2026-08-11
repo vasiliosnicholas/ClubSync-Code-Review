@@ -29,6 +29,17 @@ export default function AuthForm({
       payload.role = "admin";
     }
 
+    // client-side only: confirm the two password fields match, then drop the
+    // confirm value so it never reaches the server. Login has no confirm field,
+    // so the guard skips this entirely there.
+    if (payload.confirmPassword !== undefined) {
+      if (payload.password !== payload.confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+      delete payload.confirmPassword;
+    }
+
     try {
       const res = await fetch(endpoint, {
         method: "POST",
@@ -57,9 +68,18 @@ export default function AuthForm({
       <Form onSubmit={handleSubmit} className="spacing-after-moto auth-form">
         {fields.map((field) => (
           <Form.Group className="mb-5" key={field.name} controlId={field.name}>
-            <Form.Label>{field.label}</Form.Label>
+            <Form.Label>
+              {field.label}{" "}
+              <span className="text-attention" aria-hidden="true">
+                *
+              </span>
+            </Form.Label>
             {field.type === "select" ? (
-              <Form.Select name={field.name} defaultValue={field.defaultValue}>
+              <Form.Select
+                name={field.name}
+                defaultValue={field.defaultValue}
+                required
+              >
                 {field.options.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -71,10 +91,18 @@ export default function AuthForm({
                 type={field.type}
                 placeholder={field.placeholder}
                 name={field.name}
+                required
               />
             )}
           </Form.Group>
         ))}
+
+        <p className="mb-3">
+          <span className="text-attention" aria-hidden="true">
+            *
+          </span>{" "}
+          indicates a required field
+        </p>
 
         {error && <div className="text-attention mb-3">{error}</div>}
 

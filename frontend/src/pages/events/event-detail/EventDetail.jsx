@@ -134,6 +134,9 @@ export default function EventDetail() {
           {attendees.map((a) => (
             <p key={a.id}>
               {a.firstName} {a.lastName} - {a.email}
+              {(a.duesTier == "gold" || a.duesTier == "silver") && (
+                <span className={`status-badge ${a.duesTier} ms-2`}>{a.duesTier}</span>
+              )}
             </p>
           ))}
         </div>

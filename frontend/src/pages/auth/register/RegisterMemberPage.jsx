@@ -42,6 +42,12 @@ export default function RegisterMemberPage() {
             type: "password",
             placeholder: "Password",
           },
+          {
+            name: "confirmPassword",
+            label: "Confirm password",
+            type: "password",
+            placeholder: "Re-enter password",
+          },
         ]}
         onSuccess={() => navigate("/login")}
         redirectQuestion="Already have an account?"

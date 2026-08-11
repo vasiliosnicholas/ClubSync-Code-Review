@@ -44,6 +44,12 @@ export default function RegisterAdminPage() {
             placeholder: "Password",
           },
           {
+            name: "confirmPassword",
+            label: "Confirm password",
+            type: "password",
+            placeholder: "Re-enter password",
+          },
+          {
             name: "clubName",
             label: "Club name",
             type: "text",
