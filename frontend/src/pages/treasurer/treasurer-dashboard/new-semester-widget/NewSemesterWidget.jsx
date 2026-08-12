@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useUser } from "../../../../context/UserContext.jsx";
 import SemesterCard from "./SemesterCard.jsx";
+import SemesterAckModal from "./SemesterAckModal.jsx";
 import NewSemesterModal from "./NewSemesterModal.jsx";
 
 export default function NewSemesterWidget({ onSemesterStarted }) {
   const { user, setUser } = useUser();
 
   const [active, setActive] = useState(null);
+  const [showAck, setShowAck] = useState(false);
+  const [ackText, setAckText] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [name, setName] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -30,7 +33,17 @@ export default function NewSemesterWidget({ onSemesterStarted }) {
     loadClub();
   }, [user?.groupId]);
 
-  const openConfirm = () => {
+  const openAck = () => {
+    setAckText("");
+    setShowAck(true);
+  };
+
+  const closeAck = () => {
+    setShowAck(false);
+  };
+
+  const continueFromAck = () => {
+    setShowAck(false);
     setName("");
     setError("");
     setShowConfirm(true);
@@ -86,7 +99,14 @@ export default function NewSemesterWidget({ onSemesterStarted }) {
 
   return (
     <Col xs={12} md={12} lg={12} className="role-card dues-stat-widget">
-      <SemesterCard active={active} onStart={openConfirm} />
+      <SemesterCard active={active} onStart={openAck} />
+      <SemesterAckModal
+        show={showAck}
+        ackText={ackText}
+        setAckText={setAckText}
+        onHide={closeAck}
+        onContinue={continueFromAck}
+      />
       <NewSemesterModal
         show={showConfirm}
         name={name}

@@ -164,7 +164,8 @@ textarea:focus-visible,
 }
 
 .btn-action-danger:hover:not(:disabled) {
-  background-color: var(--color-orange-interactive-hover);
+  background-color: var(--color-white);
+  color: var(--color-orange-interactive-hover);
   border-color: var(--color-orange-interactive-hover);
 }
 

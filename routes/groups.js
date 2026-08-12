@@ -67,6 +67,25 @@ groupsRouter.post("/join", isAuthenticated, async (req, res) => {
   }
 });
 
+// Lets a member leave the club they're currently in.
+groupsRouter.post("/leave", isAuthenticated, async (req, res) => {
+  try {
+    if (!req.user.groupId) {
+      return res.status(400).json({ message: "You are not in a club" });
+    }
+
+    const updated = await usersCollection.leaveClub(req.user._id);
+    if (!updated) {
+      return res.status(400).json({ message: "Could not leave the group" });
+    }
+
+    res.json({ groupId: null });
+  } catch (error) {
+    console.error("Error leaving group", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 groupsRouter.get("/:id", isAuthenticated, async (req, res) => {
   try {
     const group = await groupsCollection.findGroupById(req.params.id);

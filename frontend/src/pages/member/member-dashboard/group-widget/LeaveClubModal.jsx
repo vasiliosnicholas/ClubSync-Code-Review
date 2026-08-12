@@ -2,28 +2,45 @@ import { Modal, Button, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
 import WarningIcon from "../../../../components/icons/WarningIcon.jsx";
 
-export default function NewSemesterModal({
+const ACK_PHRASE = "I Understand";
+
+export default function LeaveClubModal({
   show,
-  name,
-  setName,
+  groupName,
+  ackText,
+  setAckText,
   submitting,
   error,
   onHide,
   onConfirm,
 }) {
+  const confirmed = ackText.trim().toLowerCase() === ACK_PHRASE.toLowerCase();
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Start New Semester</Modal.Title>
+        <Modal.Title>Leave Club</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Group controlId="semesterName">
-          <Form.Label>New semester name</Form.Label>
+        <h4>What does this do?</h4>
+        <ul>
+          <li>Removes you from {groupName ?? "this club"}</li>
+          <li>
+            <strong>Resets your dues status</strong>
+          </li>
+          <li>You lose access to this club&apos;s dues and events</li>
+          <li>You&apos;ll need a join code to rejoin</li>
+        </ul>
+        <hr />
+        <Form.Group controlId="leaveClubAck">
+          <Form.Label>
+            Type <strong>{ACK_PHRASE}</strong> to continue
+          </Form.Label>
           <Form.Control
             type="text"
-            placeholder="e.g. Fall 2026"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder={ACK_PHRASE}
+            value={ackText}
+            onChange={(e) => setAckText(e.target.value)}
           />
         </Form.Group>
         {error && <p className="text-attention small mt-2 mb-0">{error}</p>}
@@ -41,20 +58,21 @@ export default function NewSemesterModal({
           variant={null}
           className="btn-action-danger"
           onClick={onConfirm}
-          disabled={submitting}
+          disabled={!confirmed || submitting}
         >
           <WarningIcon />
-          Start Semester
+          Leave Club
         </Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-NewSemesterModal.propTypes = {
+LeaveClubModal.propTypes = {
   show: PropTypes.bool,
-  name: PropTypes.string,
-  setName: PropTypes.func,
+  groupName: PropTypes.string,
+  ackText: PropTypes.string,
+  setAckText: PropTypes.func,
   submitting: PropTypes.bool,
   error: PropTypes.string,
   onHide: PropTypes.func,

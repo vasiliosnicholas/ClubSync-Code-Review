@@ -1,5 +1,7 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import RoleCard from "./RoleCard.jsx";
+import { useUser } from "../../context/UserContext.jsx";
+import { ROLE_ACCESS } from "../basepage/navbar/roleTabs.js";
 import groupJpg from "../../assets/group.jpg";
 import "./homepage.css";
 
@@ -19,6 +21,9 @@ const ROLES = [
 ];
 
 export default function HomePage() {
+  const { user } = useUser();
+  const homeTab = ROLE_ACCESS[user?.role]?.[0];
+
   return (
     <>
       <title>ClubSync</title>
@@ -47,12 +52,11 @@ export default function HomePage() {
           <Col xs={12} md={8} className="intro-col">
             <p className="lead-text">
               ClubSync replaces the Google Form and spreadsheet routine clubs
-              use to track dues and events. No more manually checking who's
-              paid before letting people sign up. Members join a group,
-              submit their dues, and see exactly which events they're
-              eligible for. Treasurers review and approve dues in one place,
-              and admins run events without wondering who's actually cleared
-              to show up.
+              use to track dues and events. No more manually checking who's paid
+              before letting people sign up. Members join a group, submit their
+              dues, and see exactly which events they're eligible for.
+              Treasurers review and approve dues in one place, and admins run
+              events without wondering who's actually cleared to show up.
             </p>
           </Col>
         </Row>
@@ -71,13 +75,23 @@ export default function HomePage() {
 
         <Row className="justify-content-center cta-row">
           <Col xs="auto">
-            <Button
-              variant={null}
-              className="btn-action-primary"
-              href="/login"
-            >
-              Log In
-            </Button>
+            {homeTab ? (
+              <Button
+                variant={null}
+                className="btn-action-primary"
+                href={homeTab.to}
+              >
+                Back to {homeTab.label} View
+              </Button>
+            ) : (
+              <Button
+                variant={null}
+                className="btn-action-primary"
+                href="/login"
+              >
+                Log In
+              </Button>
+            )}
           </Col>
         </Row>
       </Container>

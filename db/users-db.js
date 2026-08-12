@@ -133,6 +133,29 @@ function UsersCollection({ collectionName = "users" } = {}) {
     }
   };
 
+  // inverse of joinClub: detaches a member from their group and resets their
+  // dues state, since dues are tracked per-club/semester.
+  me.leaveClub = async (userId) => {
+    try {
+      if (!ObjectId.isValid(userId)) return null;
+      const updated = await users.findOneAndUpdate(
+        { _id: new ObjectId(userId) },
+        {
+          $set: {
+            groupId: null,
+            duesStatus: DUES_STATUS.NOT_SUBMITTED,
+            duesTier: "null",
+          },
+        },
+        { returnDocument: "after" }
+      );
+      return updated;
+    } catch (error) {
+      console.error("Error trying to leave the group", error);
+      throw error;
+    }
+  };
+
   // read operation that will get all the memebers within a group that have paid dues, selected a tier,
   // and have had their dues submission for approved.
   me.getDuesStats = async (groupId) => {

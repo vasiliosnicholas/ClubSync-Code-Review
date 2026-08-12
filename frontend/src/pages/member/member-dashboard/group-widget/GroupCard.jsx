@@ -1,9 +1,11 @@
 import Card from "react-bootstrap/Card";
+import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
+import WarningIcon from "../../../../components/icons/WarningIcon.jsx";
 
 // card showing the club/semester the member belongs to and
 // whether that semester is still the active one.
-export default function GroupCard({ group }) {
+export default function GroupCard({ group, onLeave }) {
   return (
     <Card className="h-100 dues-card d-flex flex-column justify-content-between">
       <Card.Body className="d-flex flex-column">
@@ -30,6 +32,14 @@ export default function GroupCard({ group }) {
           </Card.Body>
         </Card>
       </Card.Body>
+      <Button
+        variant={null}
+        className="btn-action-danger m-3 mt-0"
+        onClick={onLeave}
+      >
+        <WarningIcon />
+        Leave Club
+      </Button>
     </Card>
   );
 }
@@ -40,4 +50,5 @@ GroupCard.propTypes = {
     joinCode: PropTypes.string,
     active: PropTypes.bool,
   }),
+  onLeave: PropTypes.func,
 };
