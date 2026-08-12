@@ -105,7 +105,10 @@ export default function EventDetail() {
         </p>
         <p>Required tier: {event.requiredTier}</p>
 
-        <RSVPButton eventId={event._id} />
+        <RSVPButton
+          eventId={event._id}
+          initialGoing={!!(user && event.rsvps?.includes(user.id))}
+        />
 
         {user && user.role === "admin" && (
           <div className="mt-3">

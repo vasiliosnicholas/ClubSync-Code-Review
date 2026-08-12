@@ -178,6 +178,32 @@ eventRouter.post("/:id/rsvp", isAuthenticated, async (req, res) => {
   }
 });
 
+// DELETE /api/events/:id/rsvp — remove the current user's RSVP. No eligibility
+// check needed to leave, but you can only touch your own club's event.
+eventRouter.delete("/:id/rsvp", isAuthenticated, async (req, res) => {
+  try {
+    const event = await eventsCollection.findEventById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    if (
+      !req.user.groupId ||
+      String(event.groupId) !== String(req.user.groupId)
+    ) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const updated = await eventsCollection.removeRsvp(
+      req.params.id,
+      req.user._id
+    );
+    res.json(updated);
+  } catch (error) {
+    console.error("Error removing RSVP", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 eventRouter.get("/:id/rsvps", requireRole("admin"), async (req, res) => {
   try {
     const event = await eventsCollection.findEventById(req.params.id);

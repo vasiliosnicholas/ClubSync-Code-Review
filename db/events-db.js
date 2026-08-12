@@ -108,6 +108,21 @@ function EventsCollection({ collectionName = "events" } = {}) {
     }
   };
 
+  // remove a user from an event's rsvps ($pull is the inverse of $addToSet)
+  me.removeRsvp = async (eventId, userId) => {
+    try {
+      if (!ObjectId.isValid(eventId)) return null;
+      await events.updateOne(
+        { _id: new ObjectId(eventId) },
+        { $pull: { rsvps: new ObjectId(userId) } }
+      );
+      return await me.findEventById(eventId);
+    } catch (error) {
+      console.error("Error removing RSVP", error);
+      throw error;
+    }
+  };
+
   return me;
 }
 

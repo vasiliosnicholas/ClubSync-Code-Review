@@ -3,16 +3,19 @@ import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
 import "./rsvp-button.css";
 
-export default function RSVPButton({ eventId, onRsvp }) {
+export default function RSVPButton({ eventId, initialGoing = false, onRsvp }) {
+  // going = is the current user RSVP'd? seeded from the parent, then toggled.
+  const [going, setGoing] = useState(initialGoing);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const handleRsvp = async () => {
+  const handleToggle = async () => {
     setMessage("");
 
     try {
+      // same endpoint, opposite verb: POST to RSVP, DELETE to un-RSVP
       const res = await fetch(`/api/events/${eventId}/rsvp`, {
-        method: "POST",
+        method: going ? "DELETE" : "POST",
         credentials: "include",
       });
 
@@ -20,12 +23,14 @@ export default function RSVPButton({ eventId, onRsvp }) {
 
       if (!res.ok) {
         setIsError(true);
-        setMessage(data.message || "Could not RSVP.");
+        setMessage(data.message || "Could not update your RSVP.");
         return;
       }
 
+      const nowGoing = !going;
+      setGoing(nowGoing);
       setIsError(false);
-      setMessage("You're RSVP'd");
+      setMessage(nowGoing ? "You're RSVP'd" : "RSVP cancelled");
       if (onRsvp) onRsvp(data);
     } catch (error) {
       console.error("RSVP request failed", error);
@@ -36,8 +41,12 @@ export default function RSVPButton({ eventId, onRsvp }) {
 
   return (
     <div className="rsvp-button">
-      <Button variant={null} className="btn-action-primary" onClick={handleRsvp}>
-        RSVP
+      <Button
+        variant={null}
+        className={going ? "btn-action-secondary" : "btn-action-primary"}
+        onClick={handleToggle}
+      >
+        {going ? "Cancel RSVP" : "RSVP"}
       </Button>
 
       {/* show the message only when there is one; color it by isError */}
@@ -53,5 +62,6 @@ export default function RSVPButton({ eventId, onRsvp }) {
 // propTypes (outside, at the bottom)
 RSVPButton.propTypes = {
   eventId: PropTypes.string.isRequired, // required — component can't work without it
-  onRsvp: PropTypes.func, // optional
+  initialGoing: PropTypes.bool, // whether the user is already RSVP'd
+  onRsvp: PropTypes.func, // optional callback after a successful toggle
 };

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import Container from "react-bootstrap/Container";
+import { useUser } from "../../../context/UserContext.jsx";
 import "./event-list.css";
 
 export default function EventList() {
+  const { user } = useUser();
   const [events, setEvents] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -57,21 +59,28 @@ export default function EventList() {
       )}
 
       {/* turn each event object into a card; key must be unique + stable */}
-      {events.map((event) => (
-        <Link
-          key={event._id}
-          to={`/member/events/${event._id}`}
-          className="event-card-link"
-        >
-          <div className="event-card">
-            <h3>{event.name}</h3>
-            <p>
-              {event.type} · {event.location}
-            </p>
-            <p>Required tier: {event.requiredTier}</p>
-          </div>
-        </Link>
-      ))}
+      {events.map((event) => {
+        // is the logged-in member already RSVP'd to this event?
+        const going = user && event.rsvps?.includes(user.id);
+        return (
+          <Link
+            key={event._id}
+            to={`/member/events/${event._id}`}
+            className="event-card-link"
+          >
+            <div className={`event-card${going ? " event-card-going" : ""}`}>
+              <div className="event-card-header">
+                <h3>{event.name}</h3>
+                {going && <span className="event-going-badge">✓ Going</span>}
+              </div>
+              <p>
+                {event.type} · {event.location}
+              </p>
+              <p>Required tier: {event.requiredTier}</p>
+            </div>
+          </Link>
+        );
+      })}
     </Container>
   );
 }

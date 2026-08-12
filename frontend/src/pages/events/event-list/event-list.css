@@ -33,3 +33,29 @@
   margin-bottom: 0.25rem;
   color: var(--color-card-subtitle);
 }
+
+/* title row: keeps the "Going" badge aligned to the right of the event name */
+.event-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* subtle accent for events the member has already RSVP'd to */
+.event-card-going {
+  border-left: 6px solid var(--color-gold-interactive);
+}
+
+/* "✓ Going" badge shown on RSVP'd cards */
+.event-going-badge {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background-color: var(--color-gold-interactive);
+  color: var(--color-white);
+}
