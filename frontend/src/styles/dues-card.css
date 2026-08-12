@@ -6,14 +6,6 @@
   border: 2px solid var(--color-gold-surface-border);
   border-radius: 8px;
   box-shadow: 4px 4px 0 var(--color-border);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.dues-card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 6px 6px 0 var(--color-border);
 }
 
 .dues-card .card-title {
