@@ -207,7 +207,11 @@ eventRouter.delete("/:id/rsvp", isAuthenticated, async (req, res) => {
 eventRouter.get("/:id/rsvps", requireRole("admin"), async (req, res) => {
   try {
     const event = await eventsCollection.findEventById(req.params.id);
-    if (!event) {
+    if (
+      !event ||
+      !req.user.groupId ||
+      String(event.groupId) !== String(req.user.groupId)
+    ) {
       return res.status(404).json({ message: "Event not found" });
     }
 
@@ -221,6 +225,8 @@ eventRouter.get("/:id/rsvps", requireRole("admin"), async (req, res) => {
       lastName: u.lastName,
       email: u.email,
       duesTier: u.duesTier,
+      birthDate: u.birthDate,
+      phoneNumber: u.phoneNumber,
     }));
 
     res.json(attendees);

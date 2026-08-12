@@ -11,9 +11,18 @@ const authRouter = Router();
 // ----------------------------
 authRouter.post("/register", async (req, res) => {
   try {
-    const { email, password, firstName, lastName, role, clubName } = req.body;
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      birthDate,
+      phoneNumber,
+      role,
+      clubName,
+    } = req.body;
 
-    if (!email || !password || !firstName || !lastName) {
+    if (!email || !password || !firstName || !lastName || !birthDate || !phoneNumber) {
       return res
         .status(400)
         .json({ message: "All fields are required to register" });
@@ -32,6 +41,8 @@ authRouter.post("/register", async (req, res) => {
       password,
       firstName,
       lastName,
+      birthDate,
+      phoneNumber,
       role: chosenRole,
     });
     if (!user) {

@@ -31,10 +31,22 @@ export default function RegisterMemberPage() {
             placeholder: "Enter your last name",
           },
           {
+            name: "birthDate",
+            label: "Date of Birth",
+            type: "date",
+            placeholder: "Enter your date of birth",
+          },
+          {
             name: "email",
             label: "Email address",
             type: "email",
             placeholder: "Enter email",
+          },
+          {
+            name: "phoneNumber",
+            label: "Phone number",
+            type: "tel",
+            placeholder: "Enter phone number",
           },
           {
             name: "password",

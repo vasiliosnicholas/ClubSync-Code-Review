@@ -23,6 +23,8 @@ function UsersCollection({ collectionName = "users" } = {}) {
     password,
     firstName,
     lastName,
+    birthDate,
+    phoneNumber,
     role = "member",
   }) => {
     try {
@@ -37,6 +39,8 @@ function UsersCollection({ collectionName = "users" } = {}) {
         passwordHash,
         firstName,
         lastName,
+        birthDate,
+        phoneNumber,
         duesStatus: DUES_STATUS.NOT_SUBMITTED,
         groupId: null,
         duesTier: "null",
@@ -200,6 +204,8 @@ function UsersCollection({ collectionName = "users" } = {}) {
               lastName: 1,
               email: 1,
               duesTier: 1,
+              birthDate: 1,
+              phoneNumber: 1,
             },
           }
         )
@@ -237,7 +243,16 @@ function UsersCollection({ collectionName = "users" } = {}) {
       return await users
         .find(
           { groupId: groupFilter },
-          { projection: { firstName: 1, lastName: 1, email: 1, role: 1 } }
+          {
+            projection: {
+              firstName: 1,
+              lastName: 1,
+              birthDate: 1,
+              email: 1,
+              phoneNumber: 1,
+              role: 1,
+            },
+          }
         )
         .toArray();
     } catch (error) {

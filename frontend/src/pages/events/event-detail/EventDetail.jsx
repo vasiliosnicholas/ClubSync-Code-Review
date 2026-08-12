@@ -1,11 +1,33 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import Container from "react-bootstrap/Container";
-import { Button } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 import { useUser } from "../../../context/UserContext.jsx";
 import RSVPButton from "../rsvp-button/RSVPButton.jsx";
 import WarningIcon from "../../../components/icons/WarningIcon.jsx";
+import WidgetCard from "../../../components/widget/WidgetCard.jsx";
+import PreviewList from "../../../components/widget/PreviewList.jsx";
 import "./event-detail.css";
+
+const ATTENDEE_COLUMNS = [
+  { label: "Name", size: 3, render: (a) => `${a.firstName} ${a.lastName}` },
+  { label: "Email", size: 3, render: (a) => a.email },
+  { label: "Phone Number", size: 3, render: (a) => a.phoneNumber },
+  {
+    label: "DOB",
+    size: 2,
+    render: (a) =>
+      new Date(a.birthDate).toLocaleDateString(undefined, { timeZone: "UTC" }),
+  },
+  {
+    label: "Tier",
+    size: 1,
+    render: (a) =>
+      a.duesTier === "gold" || a.duesTier === "silver" ? (
+        <span className={`status-badge ${a.duesTier}`}>{a.duesTier}</span>
+      ) : null,
+  },
+];
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -131,18 +153,17 @@ export default function EventDetail() {
       </div>
 
       {user && user.role === "admin" && (
-        <div className="attendee-list mt-4">
-          <h3>RSVPs ({attendees.length})</h3>
-          {attendees.length === 0 && <p>No RSVPs yet</p>}
-          {attendees.map((a) => (
-            <p key={a.id}>
-              {a.firstName} {a.lastName} - {a.email}
-              {(a.duesTier == "gold" || a.duesTier == "silver") && (
-                <span className={`status-badge ${a.duesTier} ms-2`}>{a.duesTier}</span>
-              )}
-            </p>
-          ))}
-        </div>
+        <Row className="justify-content-center gy-4 mt-4">
+          <WidgetCard title={`RSVPs (${attendees.length})`} subtitle="Who's attending">
+            <PreviewList
+              columns={ATTENDEE_COLUMNS}
+              items={attendees}
+              total={attendees.length}
+              emptyMessage="No RSVPs yet"
+              rowKey={(a) => a.id}
+            />
+          </WidgetCard>
+        </Row>
       )}
     </Container>
   );

@@ -38,6 +38,15 @@ const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 // a Date offset from now by a random number of days within [-range, +range]
 const dateWithinDays = (range) =>
   new Date(Date.now() + randInt(-range, range) * 24 * 60 * 60 * 1000);
+// college-age birth date ("YYYY-MM-DD", matching the <input type="date"> the register form submits)
+const randomBirthDate = () => {
+  const year = new Date().getFullYear() - randInt(18, 24);
+  const month = String(randInt(1, 12)).padStart(2, "0");
+  const day = String(randInt(1, 28)).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+const randomPhoneNumber = () =>
+  `(${randInt(200, 989)}) ${randInt(200, 999)}-${randInt(1000, 9999)}`;
 
 const FIRST_NAMES = [
   "Alex",
@@ -141,6 +150,8 @@ async function seed() {
     passwordHash,
     firstName: extra.firstName,
     lastName: extra.lastName,
+    birthDate: extra.birthDate ?? randomBirthDate(),
+    phoneNumber: extra.phoneNumber ?? randomPhoneNumber(),
     role,
     groupId,
     duesStatus: extra.duesStatus ?? "not_submitted",

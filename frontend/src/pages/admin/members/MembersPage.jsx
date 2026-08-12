@@ -43,11 +43,13 @@ export default function MembersPage() {
   };
 
   const columns = [
-    { label: "Name", size: 4, render: (m) => `${m.firstName} ${m.lastName}` },
-    { label: "Email", size: 5, render: (m) => m.email },
+    { label: "Name", size: 2, render: (m) => `${m.firstName} ${m.lastName}` },
+    { label: "Email", size: 3, render: (m) => m.email },
+    { label: "Phone Number", size: 3, render: (m) => m.phoneNumber },
+    { label: "DOB", size: 2, render: (m) => m.birthDate },
     {
       label: "Role",
-      size: 3,
+      size: 2,
       render: (m) => (
         <Form.Select
           size="sm"
