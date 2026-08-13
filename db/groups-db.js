@@ -26,6 +26,7 @@ function GroupsCollection({ collectionName = "groups" } = {}) {
         createdBy,
         active: true,
         duesAmounts: null,
+        discountTypes: [],
         createdAt: new Date(),
       };
 
@@ -93,6 +94,22 @@ function GroupsCollection({ collectionName = "groups" } = {}) {
       return await me.findGroupById(id);
     } catch (error) {
       console.error("Error setting dues amounts", error);
+      throw error;
+    }
+  };
+
+  // sets the club's list of named discounts (e.g. Scholarship, Officer waiver).
+  // Each entry is a { name, amount } the treasurer can then assign to members.
+  me.setDiscountTypes = async (id, discountTypes) => {
+    try {
+      if (!ObjectId.isValid(id)) return null;
+      await groups.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { discountTypes } }
+      );
+      return await me.findGroupById(id);
+    } catch (error) {
+      console.error("Error setting discount types", error);
       throw error;
     }
   };

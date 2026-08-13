@@ -39,6 +39,13 @@ const CLUBS = [
   },
 ];
 
+// named discounts every seeded club offers (treasurer-configurable in the app)
+const DISCOUNT_TYPES = [
+  { name: "Scholarship", amount: 0 },
+  { name: "Officer waiver", amount: 0 },
+  { name: "Early bird", amount: 15 },
+];
+
 const users = connect("users");
 const groups = connect("groups");
 const events = connect("events");
@@ -175,6 +182,7 @@ async function seed() {
     duesStatus: extra.duesStatus ?? "not_submitted",
     duesTier: extra.duesTier ?? "null",
     duesAmount: extra.duesAmount ?? null,
+    discount: extra.discount ?? null,
     createdAt: new Date(),
     seed: true,
     ...(extra.officerSince ? { officerSince: extra.officerSince } : {}),
@@ -193,6 +201,7 @@ async function seed() {
       createdBy: adminId,
       active: true,
       duesAmounts: club.duesAmounts,
+      discountTypes: DISCOUNT_TYPES,
       createdAt: new Date(),
       seed: true,
     });
@@ -297,7 +306,13 @@ async function seed() {
       // clubIndex + offset so emails never collide across clubs or with demos
       const email =
         `${firstName}.${lastName}${clubIndex}-${i + 100}@clubsync.test`.toLowerCase();
-      addMember({ email, firstName, lastName, ...rollDues(club.duesAmounts) });
+      const dues = rollDues(club.duesAmounts);
+      const extra = { email, firstName, lastName, ...dues };
+      // ~15% of approved members carry a named discount
+      if (dues.duesStatus === "approved" && Math.random() < 0.15) {
+        extra.discount = pick(DISCOUNT_TYPES);
+      }
+      addMember(extra);
     }
 
     // events for this club, with RSVPs drawn only from eligible members

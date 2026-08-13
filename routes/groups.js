@@ -31,7 +31,11 @@ groupsRouter.post("/semester", requireRole("treasurer"), async (req, res) => {
     }
 
     const groupId = req.user.groupId;
-    await groupsCollection.updateGroup(groupId, { name, duesAmounts: null });
+    await groupsCollection.updateGroup(groupId, {
+      name,
+      duesAmounts: null,
+      discountTypes: [],
+    });
     const joinCode = await groupsCollection.regenerateJoinCode(groupId);
     await usersCollection.resetGroupRoster(groupId);
     await duesSubmissionsCollection.archivePendingForGroup(groupId);
@@ -70,6 +74,46 @@ groupsRouter.put("/dues-amounts", requireRole("treasurer"), async (req, res) => 
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+groupsRouter.put(
+  "/discount-types",
+  requireRole("treasurer"),
+  async (req, res) => {
+    try {
+      if (!req.user.groupId) {
+        return res.status(400).json({ message: "Create a club first" });
+      }
+
+      const { discountTypes } = req.body;
+      if (!Array.isArray(discountTypes)) {
+        return res
+          .status(400)
+          .json({ message: "discountTypes must be an array" });
+      }
+
+      // keep only clean {name, amount} entries — don't trust the client's shape
+      const clean = discountTypes
+        .filter(
+          (d) =>
+            d &&
+            typeof d.name === "string" &&
+            d.name.trim() !== "" &&
+            Number.isFinite(Number(d.amount)) &&
+            Number(d.amount) >= 0
+        )
+        .map((d) => ({ name: d.name.trim(), amount: Number(d.amount) }));
+
+      const updated = await groupsCollection.setDiscountTypes(
+        req.user.groupId,
+        clean
+      );
+      res.json(updated);
+    } catch (error) {
+      console.error("Error setting discount types", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
 
 // Lets a member join a club by entering its current join code.
 groupsRouter.post("/join", isAuthenticated, async (req, res) => {

@@ -45,6 +45,7 @@ function UsersCollection({ collectionName = "users" } = {}) {
         groupId: null,
         duesTier: "null",
         duesAmount: null,
+        discount: null,
         role,
         createdAt: new Date(),
       };
@@ -192,7 +193,13 @@ function UsersCollection({ collectionName = "users" } = {}) {
             $group: {
               _id: "$duesTier",
               count: { $sum: 1 },
-              amount: { $sum: { $ifNull: ["$duesAmount", 0] } },
+              // effective dues: a discounted member contributes their discount
+              // amount (even $0), everyone else pays their tier price.
+              amount: {
+                $sum: {
+                  $ifNull: ["$discount.amount", { $ifNull: ["$duesAmount", 0] }],
+                },
+              },
             },
           },
         ])
@@ -202,12 +209,21 @@ function UsersCollection({ collectionName = "users" } = {}) {
       const silver = rows.find((r) => r._id === "silver")?.count ?? 0;
       const goldAmount = rows.find((r) => r._id === "gold")?.amount ?? 0;
       const silverAmount = rows.find((r) => r._id === "silver")?.amount ?? 0;
+
+      // how many approved members are on a discount (for the treasurer overview)
+      const discountedCount = await users.countDocuments({
+        groupId: groupFilter,
+        duesStatus: "approved",
+        discount: { $ne: null },
+      });
+
       return {
         gold,
         silver,
         total: gold + silver,
         memberCount,
         totalAmount: goldAmount + silverAmount,
+        discountedCount,
       };
     } catch (error) {
       console.error("Error fetching dues stats", error);
@@ -301,12 +317,31 @@ function UsersCollection({ collectionName = "users" } = {}) {
               phoneNumber: 1,
               role: 1,
               officerSince: 1,
+              duesStatus: 1,
+              duesTier: 1,
+              duesAmount: 1,
+              discount: 1,
             },
           }
         )
         .toArray();
     } catch (error) {
       console.error("Error finding users by group", error);
+      throw error;
+    }
+  };
+
+  // assigns a named discount ({name, amount}) to a member, or null to clear it.
+  me.setDiscount = async (userId, discount) => {
+    try {
+      if (!ObjectId.isValid(userId)) return null;
+      await users.updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: { discount } }
+      );
+      return await me.findUserById(userId);
+    } catch (error) {
+      console.error("Error setting member discount", error);
       throw error;
     }
   };
