@@ -1,5 +1,9 @@
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Alert } from "react-bootstrap";
+import { Link } from "react-router";
 import { useUser } from "../../../context/UserContext.jsx";
+
+// states where the member still owes dues and should be reminded to pay.
+const UNPAID = ["not_submitted", "denied"];
 import DuesWidget from "./member-dues-widget/DuesWidget.jsx";
 import JoinGroupWidget from "./join-group-widget/JoinGroupWidget.jsx";
 import GroupWidget from "./group-widget/GroupWidget.jsx";
@@ -21,6 +25,23 @@ export default function MemberDashboard() {
           Below is your overview into your clubs necessities; updates on dues
           status and upcoming events.
         </p>
+
+        {user?.groupId && UNPAID.includes(user?.duesStatus) && (
+          <Alert
+            variant={null}
+            className="alert-action-attention spacing-after-moto d-flex flex-wrap justify-content-between align-items-center gap-2"
+          >
+            <span className="mb-0">
+              <strong>Reminder:</strong> your dues aren&apos;t paid yet.{" "}
+              {user.duesStatus === "denied"
+                ? "Your last submission was denied — please resubmit."
+                : "Submit them to unlock RSVPs for tier-gated events."}
+            </span>
+            <Link to="/member/dues-status" className="btn btn-action-primary">
+              Pay dues
+            </Link>
+          </Alert>
+        )}
 
         <Row className="justify-content-center gy-4">
           {user?.groupId ? (

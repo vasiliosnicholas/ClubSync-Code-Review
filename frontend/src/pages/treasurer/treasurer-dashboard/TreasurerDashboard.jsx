@@ -7,6 +7,7 @@ import DuesAmountsModal from "./dues-amounts-widget/DuesAmountsModal.jsx";
 import DuesAmountsCard from "./dues-amounts-widget/DuesAmountsCard.jsx";
 import DiscountsWidget from "./discounts-widget/DiscountsWidget.jsx";
 import DiscountTypesWidget from "./discount-types-widget/DiscountTypesWidget.jsx";
+import DuesExportCard from "./dues-export-widget/DuesExportCard.jsx";
 import { useState, useEffect } from "react";
 
 export default function TreasurerDashboard() {
@@ -184,6 +185,7 @@ export default function TreasurerDashboard() {
             amounts={group?.duesAmounts}
             onEdit={openEditAmounts}
           />
+          <DuesExportCard />
           <h2 className="sub-header-after-moto">Dues Verification</h2>
           <hr />
           <DuesVerificationWidget previewLimit={5} refreshSignal={refreshKey} />
