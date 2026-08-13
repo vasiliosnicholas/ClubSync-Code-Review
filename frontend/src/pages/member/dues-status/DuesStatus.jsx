@@ -11,11 +11,27 @@ import DuesClarity from "./DuesClarity.jsx";
 // shouldn't be able to submit again.
 const SUBMITTABLE = ["not_submitted", "denied"];
 
+// a payment reference must match the pattern for its method (mirrors the
+// server's validation) so members can't submit junk like "asdf".
+const PAYMENT_PATTERNS = {
+  venmo: {
+    regex: /^\d{6,25}$/,
+    placeholder: "Venmo transaction / confirmation number",
+    hint: "Enter the 6–25 digit number from your Venmo receipt.",
+  },
+  check: {
+    regex: /^\d{1,6}$/,
+    placeholder: "Check number",
+    hint: "Enter your 1–6 digit check number.",
+  },
+};
+
 export default function DuesStatus() {
   const { user, setUser } = useUser();
   const navigate = useNavigate();
 
   const [tier, setTier] = useState("gold");
+  const [paymentMethod, setPaymentMethod] = useState("venmo");
   const [paymentReference, setPaymentReference] = useState("");
   const [error, setError] = useState("");
   const [latest, setLatest] = useState(null);
@@ -85,12 +101,23 @@ export default function DuesStatus() {
     e.preventDefault();
     setError("");
 
+    // instant client-side check; the server re-validates the same pattern.
+    const rule = PAYMENT_PATTERNS[paymentMethod];
+    if (!rule.regex.test(paymentReference.trim())) {
+      setError(rule.hint);
+      return;
+    }
+
     try {
       const res = await fetch("/api/dues/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ tier, paymentReference }),
+        body: JSON.stringify({
+          tier,
+          paymentMethod,
+          paymentReference: paymentReference.trim(),
+        }),
       });
 
       if (!res.ok) {
@@ -189,16 +216,27 @@ export default function DuesStatus() {
               </option>
             </Form.Select>
           </Form.Group>
+          <Form.Group className="mb-3" controlId="dues-payment-method">
+            <Form.Label>Payment method</Form.Label>
+            <Form.Select
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            >
+              <option value="venmo">Venmo</option>
+              <option value="check">Check</option>
+            </Form.Select>
+          </Form.Group>
           <Form.Group className="mb-3" controlId="dues-payment-reference">
             <Form.Label>Payment reference</Form.Label>
             <Form.Control
               type="text"
-              placeholder="e.g. Venmo confirmation #, check number"
+              placeholder={PAYMENT_PATTERNS[paymentMethod].placeholder}
               value={paymentReference}
               onChange={(e) => setPaymentReference(e.target.value)}
             />
             <Form.Text className="text-secondary-muted">
-              Helps your treasurer match your payment when verifying.
+              {PAYMENT_PATTERNS[paymentMethod].hint} Helps your treasurer match
+              your payment when verifying.
             </Form.Text>
           </Form.Group>
           {error && <div className="text-attention mb-3">{error}</div>}

@@ -25,6 +25,7 @@ function DuesSubmissionsCollection({
     tier,
     amount,
     paymentReference = null,
+    paymentMethod = null,
   }) => {
     try {
       if (!ObjectId.isValid(userId)) return null;
@@ -36,6 +37,7 @@ function DuesSubmissionsCollection({
         // later price change doesn't retroactively change this submission.
         amount,
         paymentReference,
+        paymentMethod,
         status: SUBMISSION_STATUS.PENDING,
         reviewNote: null,
         reviewedBy: null,

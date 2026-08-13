@@ -257,7 +257,8 @@ async function seed() {
           groupId,
           tier: doc.duesTier,
           amount: doc.duesAmount,
-          paymentReference: `VENMO-${randInt(10000, 99999)}`,
+          paymentMethod: "venmo",
+          paymentReference: `${randInt(1000000000, 9999999999)}`,
           status: doc.duesStatus,
           reviewNote:
             doc.duesStatus === "denied"

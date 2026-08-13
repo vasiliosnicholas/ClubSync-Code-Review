@@ -11,12 +11,33 @@ const duesRouter = Router();
 // ----------------------------
 duesRouter.post("/submit", isAuthenticated, async (req, res) => {
   try {
-    const { tier, paymentReference } = req.body ?? {};
+    const { tier, paymentReference, paymentMethod } = req.body ?? {};
 
     if (!["gold", "silver"].includes(tier)) {
       return res
         .status(400)
         .json({ message: "A gold or silver tier is required" });
+    }
+
+    // a payment reference must match the pattern for its method, so junk
+    // ("asdf", empty) can't be submitted. This is the real gate — the client
+    // validates too, but never trust it.
+    const PAYMENT_PATTERNS = {
+      venmo: {
+        regex: /^\d{6,25}$/,
+        hint: "a 6–25 digit Venmo transaction/confirmation number",
+      },
+      check: { regex: /^\d{1,6}$/, hint: "a 1–6 digit check number" },
+    };
+    const rule = PAYMENT_PATTERNS[paymentMethod];
+    if (!rule) {
+      return res
+        .status(400)
+        .json({ message: "Choose a payment method (Venmo or Check)" });
+    }
+    const reference = String(paymentReference ?? "").trim();
+    if (!rule.regex.test(reference)) {
+      return res.status(400).json({ message: `Enter ${rule.hint}.` });
     }
 
     if (!req.user.groupId) {
@@ -47,7 +68,8 @@ duesRouter.post("/submit", isAuthenticated, async (req, res) => {
       groupId: updated.groupId,
       tier: updated.duesTier,
       amount,
-      paymentReference: paymentReference ?? null,
+      paymentReference: reference,
+      paymentMethod,
     });
 
     res.json({
@@ -163,6 +185,7 @@ duesRouter.get(
           tier: s.tier,
           amount: s.amount,
           paymentReference: s.paymentReference,
+          paymentMethod: s.paymentMethod,
           submittedAt: s.submittedAt,
         };
       });
