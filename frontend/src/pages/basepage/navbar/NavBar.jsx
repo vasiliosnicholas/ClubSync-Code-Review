@@ -9,6 +9,7 @@ import { useUser } from "../../../context/UserContext.jsx";
 import { ROLE_ACCESS } from "./roleTabs.js";
 import GlassesIcon from "../../../components/icons/GlassesIcon.jsx";
 import LogoutIcon from "../../../components/icons/LogoutIcon.jsx";
+import PersonIcon from "../../../components/icons/PersonIcon.jsx";
 import "./navbar.css";
 
 const ROLE_VIEWS = ["member", "treasurer", "admin"];
@@ -135,13 +136,29 @@ export default function NavBar() {
                     </Dropdown.Menu>
                   </Dropdown>
                 )}
-                <Nav.Link
-                  onClick={handleLogout}
-                  className="nav-logout-link nav-standout-pill nav-standout-pill-orange"
-                >
-                  <LogoutIcon />
-                  Logout
-                </Nav.Link>
+                <Dropdown align="end">
+                  <Dropdown.Toggle
+                    as={BSNavLink}
+                    id="user-menu-dropdown"
+                    aria-haspopup="true"
+                    className="nav-standout-pill nav-standout-pill-orange"
+                  >
+                    <PersonIcon />
+                    {`${user.firstName}`}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.ItemText className="nav-user-role-item">
+                      {`Role: ${user.role.charAt(0).toUpperCase()}${user.role.slice(1)}`}
+                    </Dropdown.ItemText>
+                    <Dropdown.Item
+                      onClick={handleLogout}
+                      className="nav-logout-item"
+                    >
+                      <LogoutIcon />
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </>
             ) : (
               <Nav className="top-navbar-guest-pill">
