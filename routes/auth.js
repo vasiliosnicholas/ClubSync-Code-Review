@@ -58,9 +58,29 @@ authRouter.post("/register", async (req, res) => {
       await usersCollection.joinClub(user.id, group.id);
     }
 
-    res.status(201).json({
-      message: "User created successfully",
-      user: user,
+    // log the new user in immediately (no separate login step). Re-fetch so the
+    // session user is complete — for an admin this now includes their groupId.
+    const fullUser = await usersCollection.findUserById(user.id);
+    req.login(fullUser, (err) => {
+      if (err) {
+        console.error("Auto-login after registration failed", err);
+        // account was created — let them log in manually as a fallback.
+        return res.status(201).json({ message: "User created", user });
+      }
+      res.status(201).json({
+        message: "User created successfully",
+        user: {
+          id: fullUser._id,
+          email: fullUser.email,
+          firstName: fullUser.firstName,
+          lastName: fullUser.lastName,
+          role: fullUser.role,
+          groupId: fullUser.groupId,
+          duesStatus: fullUser.duesStatus,
+          duesTier: fullUser.duesTier,
+          duesAmount: fullUser.duesAmount,
+        },
+      });
     });
   } catch (error) {
     console.error("Error registering user", error);

@@ -1,8 +1,16 @@
 import { useNavigate } from "react-router";
+import { useUser } from "../../../context/UserContext.jsx";
 import AuthForm from "../AuthForm.jsx";
+
+const ROLE_HOME = {
+  member: "/member/member-dashboard",
+  treasurer: "/treasurer/treasurer-dashboard",
+  admin: "/admin/admin-dashboard",
+};
 
 export default function RegisterAdminPage() {
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   return (
     <>
@@ -68,7 +76,10 @@ export default function RegisterAdminPage() {
             placeholder: "Name your club",
           },
         ]}
-        onSuccess={() => navigate("/login")}
+        onSuccess={(data) => {
+          setUser(data.user);
+          navigate(ROLE_HOME[data.user.role] ?? "/");
+        }}
         redirectQuestion="Already have an account?"
         redirectLink="/login"
         redirectText="Log in here"
