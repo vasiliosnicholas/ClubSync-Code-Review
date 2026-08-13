@@ -1,4 +1,4 @@
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Button, Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { useState, useEffect } from "react";
 import { useUser } from "../../../context/UserContext.jsx";
@@ -10,6 +10,8 @@ const ROLES = ["member", "treasurer", "admin"];
 export default function MembersPage() {
   const { user } = useUser();
   const [members, setMembers] = useState([]);
+  // a role change awaiting confirmation: { id, name, currentRole, newRole }
+  const [pending, setPending] = useState(null);
 
   useEffect(() => {
     if (!user?.groupId) return;
@@ -42,6 +44,22 @@ export default function MembersPage() {
     }
   };
 
+  // picking a new role stages it for confirmation instead of committing it.
+  const requestRoleChange = (member, newRole) => {
+    if (newRole === member.role) return;
+    setPending({
+      id: member._id,
+      name: `${member.firstName} ${member.lastName}`,
+      currentRole: member.role,
+      newRole,
+    });
+  };
+
+  const confirmChange = () => {
+    if (pending) changeRole(pending.id, pending.newRole);
+    setPending(null);
+  };
+
   const columns = [
     { label: "Name", size: 2, render: (m) => `${m.firstName} ${m.lastName}` },
     { label: "Email", size: 3, render: (m) => m.email },
@@ -56,7 +74,7 @@ export default function MembersPage() {
           aria-label={`Role for ${m.firstName} ${m.lastName}`}
           value={m.role}
           disabled={String(m._id) === String(user?.id)}
-          onChange={(e) => changeRole(m._id, e.target.value)}
+          onChange={(e) => requestRoleChange(m, e.target.value)}
         >
           {ROLES.map((role) => (
             <option key={role} value={role}>
@@ -95,6 +113,37 @@ export default function MembersPage() {
           />
         </WidgetCard>
       </Row>
+
+      <Modal show={!!pending} onHide={() => setPending(null)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Change role?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {pending && (
+            <p className="mb-0">
+              Change <strong>{pending.name}</strong>&apos;s role from{" "}
+              <strong>{pending.currentRole}</strong> to{" "}
+              <strong>{pending.newRole}</strong>?
+            </p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant={null}
+            className="btn-action-secondary"
+            onClick={() => setPending(null)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant={null}
+            className="btn-action-primary"
+            onClick={confirmChange}
+          >
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }

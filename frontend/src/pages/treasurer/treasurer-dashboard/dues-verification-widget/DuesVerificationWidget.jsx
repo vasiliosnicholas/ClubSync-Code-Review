@@ -5,10 +5,14 @@ import PreviewList from "../../../../components/widget/PreviewList.jsx";
 import DuesReviewModal from "./DuesReviewModal.jsx";
 import PropTypes from "prop-types";
 
-// column config for the pending-dues list (see PreviewList).
+const formatDate = (value) =>
+  value ? new Date(value).toLocaleDateString() : "—";
+
+// column config for the pending-dues list (see PreviewList). sizes sum to 12.
 const COLUMNS = [
   { label: "Name", size: 2, render: (m) => `${m.firstName} ${m.lastName}` },
-  { label: "Email", size: 5, render: (m) => m.email },
+  { label: "Email", size: 4, render: (m) => m.email },
+  { label: "Submitted", size: 2, render: (m) => formatDate(m.submittedAt) },
   {
     label: "Dues Tier",
     size: 2,
@@ -16,7 +20,7 @@ const COLUMNS = [
   },
   {
     label: "Amount",
-    size: 3,
+    size: 2,
     align: "end",
     render: (m) => (m.amount != null ? `$${m.amount}` : "—"),
   },
@@ -33,6 +37,8 @@ export default function DuesVerificationWidget({
   const [denyReason, setDenyReason] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  // brief confirmation shown after a review lands (e.g. "Approved — Jo's dues").
+  const [feedback, setFeedback] = useState(null);
   // bumped after a successful review so the effect below refetches the queue.
   const [refreshKey, setRefreshKey] = useState(0);
   const { user } = useUser();
@@ -66,6 +72,7 @@ export default function DuesVerificationWidget({
     setDecision(null);
     setDenyReason("");
     setError("");
+    setFeedback(null); // clear any previous confirmation when starting a new review
   };
 
   const closeReview = () => {
@@ -95,6 +102,10 @@ export default function DuesVerificationWidget({
         setError(data.message ?? "Failed to submit review.");
         return;
       }
+      setFeedback({
+        decision: finalDecision,
+        name: `${selected.firstName} ${selected.lastName}`,
+      });
       setSelected(null);
       setRefreshKey((key) => key + 1);
     } catch (err) {
@@ -115,7 +126,8 @@ export default function DuesVerificationWidget({
           isPreview && (
             <>
               <span>
-                Only displays up to 5 members with the oldest dues submissions
+                Only displays up to 5 members with the most recent dues
+                submissions
               </span>
               <span>
                 To view all dues submissions navigate to the dues tab on the nav
@@ -125,6 +137,18 @@ export default function DuesVerificationWidget({
           )
         }
       >
+        {feedback && (
+          <p
+            className={`small mb-2 ${
+              feedback.decision === "approved"
+                ? "text-positive"
+                : "text-attention"
+            }`}
+          >
+            {feedback.decision === "approved" ? "✓ Approved" : "✕ Denied"} —{" "}
+            {feedback.name}&apos;s dues
+          </p>
+        )}
         <PreviewList
           columns={COLUMNS}
           items={pending}

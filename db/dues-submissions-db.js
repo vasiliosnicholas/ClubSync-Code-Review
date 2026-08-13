@@ -67,7 +67,7 @@ function DuesSubmissionsCollection({
 
       const total = await submissions.countDocuments(query);
 
-      let cursor = submissions.find(query).sort({ submittedAt: 1 });
+      let cursor = submissions.find(query).sort({ submittedAt: -1 });
       if (limit > 0) cursor = cursor.limit(limit);
       const items = await cursor.toArray();
 
