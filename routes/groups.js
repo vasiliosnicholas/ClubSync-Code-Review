@@ -17,8 +17,9 @@ groupsRouter.get("/", requireRole("treasurer"), async (req, res) => {
 });
 
 // Starts a fresh semester for the treasurer's own club: renames it, regenerates
-// its join code, clears the roster (members detached, staff stay), and archives
-// the term's pending dues.
+// its join code, clears the roster (members detached, staff stay), archives
+// the term's pending dues, and clears the dues amounts so the treasurer must
+// set new prices before anything else works this term.
 groupsRouter.post("/semester", requireRole("treasurer"), async (req, res) => {
   try {
     const { name } = req.body;
@@ -30,7 +31,7 @@ groupsRouter.post("/semester", requireRole("treasurer"), async (req, res) => {
     }
 
     const groupId = req.user.groupId;
-    await groupsCollection.updateGroup(groupId, { name });
+    await groupsCollection.updateGroup(groupId, { name, duesAmounts: null });
     const joinCode = await groupsCollection.regenerateJoinCode(groupId);
     await usersCollection.resetGroupRoster(groupId);
     await duesSubmissionsCollection.archivePendingForGroup(groupId);
@@ -38,6 +39,34 @@ groupsRouter.post("/semester", requireRole("treasurer"), async (req, res) => {
     res.json({ name, joinCode });
   } catch (error) {
     console.error("Error starting new semester", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Sets the gold/silver dues prices for the treasurer's own club. This is the
+// gate the frontend checks before rendering the rest of the treasurer
+// dashboard, and can be called again later to change the price mid-semester.
+groupsRouter.put("/dues-amounts", requireRole("treasurer"), async (req, res) => {
+  try {
+    if (!req.user.groupId) {
+      return res.status(400).json({ message: "Create a club first" });
+    }
+
+    const gold = Number(req.body?.gold);
+    const silver = Number(req.body?.silver);
+    if (!Number.isFinite(gold) || gold < 0 || !Number.isFinite(silver) || silver < 0) {
+      return res.status(400).json({
+        message: "Gold and silver prices must both be zero or a positive number",
+      });
+    }
+
+    const updated = await groupsCollection.setDuesAmounts(req.user.groupId, {
+      gold,
+      silver,
+    });
+    res.json(updated);
+  } catch (error) {
+    console.error("Error setting dues amounts", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });

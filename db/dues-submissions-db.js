@@ -23,6 +23,7 @@ function DuesSubmissionsCollection({
     userId,
     groupId,
     tier,
+    amount,
     paymentReference = null,
   }) => {
     try {
@@ -31,6 +32,9 @@ function DuesSubmissionsCollection({
         userId: new ObjectId(userId),
         groupId: ObjectId.isValid(groupId) ? new ObjectId(groupId) : groupId,
         tier,
+        // snapshotted from the club's dues amounts at submission time, so a
+        // later price change doesn't retroactively change this submission.
+        amount,
         paymentReference,
         status: SUBMISSION_STATUS.PENDING,
         reviewNote: null,

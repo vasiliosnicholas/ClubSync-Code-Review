@@ -18,15 +18,19 @@ export default function MemberDashboard() {
       <Container className="px-5">
         <h1 className="moto">{user.firstName}'s Member Dashboard</h1>
         <p className="lead-text spacing-after-moto">
-          Below is your overview into your clubs necessities; updates on
-          dues status and upcoming events.
+          Below is your overview into your clubs necessities; updates on dues
+          status and upcoming events.
         </p>
 
         <Row className="justify-content-center gy-4">
           {user?.groupId ? (
             <>
+              <h2 className="sub-header-after-moto">Club Control</h2>
+              <hr />
               <DuesWidget user={user} />
               <GroupWidget />
+              <h2 className="sub-header-after-moto">Club Events</h2>
+              <hr />
               <EligibleEventsWidget previewLimit={5} />
             </>
           ) : (

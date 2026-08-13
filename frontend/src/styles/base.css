@@ -22,6 +22,13 @@
   margin-top: 40px;
 }
 
+.sub-header-after-moto {
+  text-align: center;
+  margin-top: 50px;
+  font-weight: 600;
+  font-size: 2.1rem;
+}
+
 .auth-form {
   text-align: left;
   max-width: 600px;

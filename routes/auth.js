@@ -97,6 +97,7 @@ authRouter.post("/login", (req, res, next) => {
           groupId: user.groupId,
           duesStatus: user.duesStatus,
           duesTier: user.duesTier,
+          duesAmount: user.duesAmount,
         },
       });
     });
@@ -116,6 +117,7 @@ authRouter.get("/user", isAuthenticated, (req, res) => {
     groupId: req.user.groupId,
     duesStatus: req.user.duesStatus,
     duesTier: req.user.duesTier,
+    duesAmount: req.user.duesAmount,
   };
   res.json({ user: noPasswordUser });
 });

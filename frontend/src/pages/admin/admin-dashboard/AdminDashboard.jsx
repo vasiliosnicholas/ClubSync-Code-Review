@@ -57,6 +57,8 @@ export default function AdminDashboard() {
           counts.
         </p>
 
+        <h2 className="sub-header-after-moto">Member Stats</h2>
+        <hr />
         <Row className="justify-content-center gy-4">
           <StatWidget
             title="Total Members"
@@ -75,10 +77,14 @@ export default function AdminDashboard() {
           />
         </Row>
 
+        <h2 className="sub-header-after-moto">Upcoming Events Control</h2>
+        <hr />
         <Row className="justify-content-center gy-4 mt-1">
           <UpcomingEventsWidget />
         </Row>
 
+        <h2 className="sub-header-after-moto">E-Board View</h2>
+        <hr />
         <Row className="justify-content-center gy-4 mt-1">
           <EboardWidget />
         </Row>

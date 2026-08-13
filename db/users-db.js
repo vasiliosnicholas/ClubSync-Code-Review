@@ -44,6 +44,7 @@ function UsersCollection({ collectionName = "users" } = {}) {
         duesStatus: DUES_STATUS.NOT_SUBMITTED,
         groupId: null,
         duesTier: "null",
+        duesAmount: null,
         role,
         createdAt: new Date(),
       };
@@ -58,7 +59,9 @@ function UsersCollection({ collectionName = "users" } = {}) {
 
   // atomically sets user duesState to pending for the chosen tier.
   // acts as a guard: returns null if the user is already pending/approved.
-  me.submitDues = async (userId, duesTier) => {
+  // duesAmount is the tier's price snapshotted at submission time, mirrored
+  // here so getDuesStats can sum it without joining the submissions collection.
+  me.submitDues = async (userId, duesTier, duesAmount) => {
     try {
       if (!ObjectId.isValid(userId)) return null;
       const updated = await users.findOneAndUpdate(
@@ -70,6 +73,7 @@ function UsersCollection({ collectionName = "users" } = {}) {
           $set: {
             duesStatus: DUES_STATUS.PENDING,
             duesTier: duesTier,
+            duesAmount: duesAmount,
           },
         },
         { returnDocument: "after" }
@@ -97,13 +101,20 @@ function UsersCollection({ collectionName = "users" } = {}) {
             groupId: null,
             duesStatus: DUES_STATUS.NOT_SUBMITTED,
             duesTier: "null",
+            duesAmount: null,
           },
         }
       );
 
       const staff = await users.updateMany(
         { groupId: groupFilter, role: { $in: ["treasurer", "admin"] } },
-        { $set: { duesStatus: DUES_STATUS.NOT_SUBMITTED, duesTier: "null" } }
+        {
+          $set: {
+            duesStatus: DUES_STATUS.NOT_SUBMITTED,
+            duesTier: "null",
+            duesAmount: null,
+          },
+        }
       );
 
       return {
@@ -145,6 +156,7 @@ function UsersCollection({ collectionName = "users" } = {}) {
             groupId: null,
             duesStatus: DUES_STATUS.NOT_SUBMITTED,
             duesTier: "null",
+            duesAmount: null,
           },
         },
         { returnDocument: "after" }
@@ -176,13 +188,27 @@ function UsersCollection({ collectionName = "users" } = {}) {
               duesStatus: "approved",
             },
           },
-          { $group: { _id: "$duesTier", count: { $sum: 1 } } },
+          {
+            $group: {
+              _id: "$duesTier",
+              count: { $sum: 1 },
+              amount: { $sum: { $ifNull: ["$duesAmount", 0] } },
+            },
+          },
         ])
         .toArray();
 
       const gold = rows.find((r) => r._id === "gold")?.count ?? 0;
       const silver = rows.find((r) => r._id === "silver")?.count ?? 0;
-      return { gold, silver, total: gold + silver, memberCount };
+      const goldAmount = rows.find((r) => r._id === "gold")?.amount ?? 0;
+      const silverAmount = rows.find((r) => r._id === "silver")?.amount ?? 0;
+      return {
+        gold,
+        silver,
+        total: gold + silver,
+        memberCount,
+        totalAmount: goldAmount + silverAmount,
+      };
     } catch (error) {
       console.error("Error fetching dues stats", error);
       throw error;

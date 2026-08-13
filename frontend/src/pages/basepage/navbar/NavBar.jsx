@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
@@ -35,6 +35,7 @@ const NAV_PAGES = {
 
 export default function NavBar() {
   const { user, setUser } = useUser();
+  const [groupName, setGroupName] = useState("Unknown");
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -62,6 +63,23 @@ export default function NavBar() {
     setExpanded(false);
     navigate("/");
   };
+
+  useEffect(() => {
+    if (!user?.groupId) return;
+    const getGroupName = async () => {
+      try {
+        const res = await fetch(`/api/groups/${user.groupId}`, {
+          credentials: "include",
+        });
+        if (!res.ok) return;
+        const group = await res.json();
+        setGroupName(group.name);
+      } catch (error) {
+        console.error("Failed return group name", error);
+      }
+    };
+    getGroupName();
+  }, [user?.groupId]);
 
   return (
     <Navbar
@@ -148,7 +166,8 @@ export default function NavBar() {
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.ItemText className="nav-user-role-item">
-                      {`Role: ${user.role.charAt(0).toUpperCase()}${user.role.slice(1)}`}
+                      <div><strong>Club</strong>{`: ${groupName}`}</div>
+                      <div><strong>Role</strong>{`: ${user.role.charAt(0).toUpperCase()}${user.role.slice(1)}`}</div>
                     </Dropdown.ItemText>
                     <Dropdown.Item
                       onClick={handleLogout}
@@ -162,10 +181,18 @@ export default function NavBar() {
               </>
             ) : (
               <Nav className="top-navbar-guest-pill">
-                <Nav.Link as={NavLink} to="/login" onClick={() => setExpanded(false)}>
+                <Nav.Link
+                  as={NavLink}
+                  to="/login"
+                  onClick={() => setExpanded(false)}
+                >
                   Login
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/register" onClick={() => setExpanded(false)}>
+                <Nav.Link
+                  as={NavLink}
+                  to="/register"
+                  onClick={() => setExpanded(false)}
+                >
                   Register
                 </Nav.Link>
               </Nav>

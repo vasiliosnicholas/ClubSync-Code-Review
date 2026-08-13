@@ -8,12 +8,17 @@ import PropTypes from "prop-types";
 // column config for the pending-dues list (see PreviewList).
 const COLUMNS = [
   { label: "Name", size: 2, render: (m) => `${m.firstName} ${m.lastName}` },
-  { label: "Email", size: 7, render: (m) => m.email },
+  { label: "Email", size: 5, render: (m) => m.email },
   {
     label: "Dues Tier",
+    size: 2,
+    render: (m) => <span className={`status-badge ${m.tier}`}>{m.tier}</span>,
+  },
+  {
+    label: "Amount",
     size: 3,
     align: "end",
-    render: (m) => <span className={`status-badge ${m.tier}`}>{m.tier}</span>,
+    render: (m) => (m.amount != null ? `$${m.amount}` : "—"),
   },
 ];
 

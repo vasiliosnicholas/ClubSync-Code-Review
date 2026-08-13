@@ -20,6 +20,7 @@ export default function DuesStatus() {
   const [error, setError] = useState("");
   const [latest, setLatest] = useState(null);
   const [withdrawing, setWithdrawing] = useState(false);
+  const [duesAmounts, setDuesAmounts] = useState(null);
 
   const canSubmit = SUBMITTABLE.includes(user?.duesStatus || "not_submitted");
 
@@ -36,6 +37,23 @@ export default function DuesStatus() {
     };
     loadLatest();
   }, []);
+
+  useEffect(() => {
+    if (!user?.groupId) return;
+    const loadClub = async () => {
+      try {
+        const res = await fetch(`/api/groups/${user.groupId}`, {
+          credentials: "include",
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        setDuesAmounts(data.duesAmounts ?? null);
+      } catch (err) {
+        console.error("Failed to load your club's dues prices", err);
+      }
+    };
+    loadClub();
+  }, [user?.groupId]);
 
   // withdraws a still pending submission so the member can start over. Resets
   // context back to not_submitted, which shows the submission form again
@@ -83,7 +101,12 @@ export default function DuesStatus() {
 
       const data = await res.json();
 
-      setUser({ ...user, duesStatus: data.duesStatus, duesTier: tier });
+      setUser({
+        ...user,
+        duesStatus: data.duesStatus,
+        duesTier: tier,
+        duesAmount: data.amount,
+      });
       navigate("/member/member-dashboard");
     } catch (err) {
       console.error("Submit dues request failed", err);
@@ -157,8 +180,13 @@ export default function DuesStatus() {
           <Form.Group className="mb-5" controlId="dues-tier">
             <Form.Label>Membership tier</Form.Label>
             <Form.Select value={tier} onChange={(e) => setTier(e.target.value)}>
-              <option value="gold">Gold</option>
-              <option value="silver">Silver</option>
+              <option value="gold">
+                Gold{duesAmounts?.gold != null ? ` — $${duesAmounts.gold}` : ""}
+              </option>
+              <option value="silver">
+                Silver
+                {duesAmounts?.silver != null ? ` — $${duesAmounts.silver}` : ""}
+              </option>
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="dues-payment-reference">

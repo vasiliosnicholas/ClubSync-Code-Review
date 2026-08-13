@@ -25,6 +25,7 @@ function GroupsCollection({ collectionName = "groups" } = {}) {
         joinCode: generatedJoinClubId,
         createdBy,
         active: true,
+        duesAmounts: null,
         createdAt: new Date(),
       };
 
@@ -79,6 +80,23 @@ function GroupsCollection({ collectionName = "groups" } = {}) {
       throw error;
     }
   };
+  // sets the gold/silver dues prices for a club. Must be called by the
+  // treasurer before members can submit dues or anything else renders on
+  // their dashboard; gets reset back to null each time a new semester starts.
+  me.setDuesAmounts = async (id, { gold, silver }) => {
+    try {
+      if (!ObjectId.isValid(id)) return null;
+      await groups.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { duesAmounts: { gold, silver } } }
+      );
+      return await me.findGroupById(id);
+    } catch (error) {
+      console.error("Error setting dues amounts", error);
+      throw error;
+    }
+  };
+
   me.updateGroup = async (id, updates) => {
     try {
       if (!ObjectId.isValid(id)) return null;

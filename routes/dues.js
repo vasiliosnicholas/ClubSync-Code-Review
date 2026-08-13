@@ -1,6 +1,7 @@
 import { Router } from "express";
 import usersCollection from "../db/users-db.js";
 import duesSubmissionsCollection from "../db/dues-submissions-db.js";
+import groupsCollection from "../db/groups-db.js";
 import { isAuthenticated, requireRole } from "../middleware/auth.js";
 
 const duesRouter = Router();
@@ -24,7 +25,19 @@ duesRouter.post("/submit", isAuthenticated, async (req, res) => {
         .json({ message: "Join a club before submitting dues" });
     }
 
-    const updated = await usersCollection.submitDues(req.user._id, tier);
+    const group = await groupsCollection.findGroupById(req.user.groupId);
+    const amount = group?.duesAmounts?.[tier];
+    if (amount === undefined || amount === null) {
+      return res.status(400).json({
+        message: "Your treasurer hasn't set dues prices for this club yet",
+      });
+    }
+
+    const updated = await usersCollection.submitDues(
+      req.user._id,
+      tier,
+      amount
+    );
     if (!updated) {
       return res.status(409).json({ message: "Dues already submitted" });
     }
@@ -33,10 +46,15 @@ duesRouter.post("/submit", isAuthenticated, async (req, res) => {
       userId: req.user._id,
       groupId: updated.groupId,
       tier: updated.duesTier,
+      amount,
       paymentReference: paymentReference ?? null,
     });
 
-    res.json({ duesStatus: updated.duesStatus, submissionId: submission?.id });
+    res.json({
+      duesStatus: updated.duesStatus,
+      submissionId: submission?.id,
+      amount,
+    });
   } catch (error) {
     console.error("Error submitting dues", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -61,6 +79,7 @@ duesRouter.get("/mine", isAuthenticated, async (req, res) => {
         submissionId: submission._id,
         status: submission.status,
         tier: submission.tier,
+        amount: submission.amount,
         reviewNote: submission.reviewNote,
         submittedAt: submission.submittedAt,
         reviewedAt: submission.reviewedAt,
@@ -142,6 +161,7 @@ duesRouter.get(
           lastName: member?.lastName ?? null,
           email: member?.email ?? null,
           tier: s.tier,
+          amount: s.amount,
           paymentReference: s.paymentReference,
           submittedAt: s.submittedAt,
         };

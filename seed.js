@@ -22,9 +22,21 @@ const EVENTS_PER_CLUB = 14;
 
 // fixed club identities so demo join codes stay stable across reseeds
 const CLUBS = [
-  { name: "Chess Club - Fall 2026", joinCode: "482913" },
-  { name: "Robotics Club - Fall 2026", joinCode: "550183" },
-  { name: "Hiking Club - Fall 2026", joinCode: "738421" },
+  {
+    name: "Chess Club - Fall 2026",
+    joinCode: "482913",
+    duesAmounts: { gold: 60, silver: 35 },
+  },
+  {
+    name: "Robotics Club - Fall 2026",
+    joinCode: "550183",
+    duesAmounts: { gold: 75, silver: 45 },
+  },
+  {
+    name: "Hiking Club - Fall 2026",
+    joinCode: "738421",
+    duesAmounts: { gold: 50, silver: 30 },
+  },
 ];
 
 const users = connect("users");
@@ -118,16 +130,19 @@ const LOCATIONS = [
 const TYPES = ["practice", "social", "meeting"];
 const TIER_RANK = { none: 0, silver: 1, gold: 2 };
 
-// rolls a realistic dues state: 45% approved, 20% pending, 10% denied, 25% none
-const rollDues = () => {
+// rolls a realistic dues state: 45% approved, 20% pending, 10% denied, 25% none.
+// duesAmount mirrors the club's current price for the rolled tier, same as a
+// real submission snapshots the price it was submitted under.
+const rollDues = (duesAmounts) => {
   const roll = Math.random();
-  if (roll < 0.45)
-    return { duesStatus: "approved", duesTier: pick(["silver", "gold"]) };
-  if (roll < 0.65)
-    return { duesStatus: "pending", duesTier: pick(["silver", "gold"]) };
-  if (roll < 0.75)
-    return { duesStatus: "denied", duesTier: pick(["silver", "gold"]) };
-  return { duesStatus: "not_submitted", duesTier: "null" };
+  const tiered = (duesStatus) => {
+    const duesTier = pick(["silver", "gold"]);
+    return { duesStatus, duesTier, duesAmount: duesAmounts[duesTier] };
+  };
+  if (roll < 0.45) return tiered("approved");
+  if (roll < 0.65) return tiered("pending");
+  if (roll < 0.75) return tiered("denied");
+  return { duesStatus: "not_submitted", duesTier: "null", duesAmount: null };
 };
 
 async function seed() {
@@ -159,6 +174,7 @@ async function seed() {
     groupId,
     duesStatus: extra.duesStatus ?? "not_submitted",
     duesTier: extra.duesTier ?? "null",
+    duesAmount: extra.duesAmount ?? null,
     createdAt: new Date(),
     seed: true,
     ...(extra.officerSince ? { officerSince: extra.officerSince } : {}),
@@ -176,6 +192,7 @@ async function seed() {
       joinCode: club.joinCode,
       createdBy: adminId,
       active: true,
+      duesAmounts: club.duesAmounts,
       createdAt: new Date(),
       seed: true,
     });
@@ -230,6 +247,7 @@ async function seed() {
           userId: memberId,
           groupId,
           tier: doc.duesTier,
+          amount: doc.duesAmount,
           paymentReference: `VENMO-${randInt(10000, 99999)}`,
           status: doc.duesStatus,
           reviewNote:
@@ -253,6 +271,7 @@ async function seed() {
         lastName: "Nguyen",
         duesStatus: "approved",
         duesTier: "gold",
+        duesAmount: club.duesAmounts.gold,
       });
       addMember({
         email: "parker.lee0@clubsync.test",
@@ -260,6 +279,7 @@ async function seed() {
         lastName: "Lee",
         duesStatus: "approved",
         duesTier: "silver",
+        duesAmount: club.duesAmounts.silver,
       });
       addMember({
         email: "casey.brown1@clubsync.test",
@@ -267,6 +287,7 @@ async function seed() {
         lastName: "Brown",
         duesStatus: "not_submitted",
         duesTier: "null",
+        duesAmount: null,
       });
     }
 
@@ -276,7 +297,7 @@ async function seed() {
       // clubIndex + offset so emails never collide across clubs or with demos
       const email =
         `${firstName}.${lastName}${clubIndex}-${i + 100}@clubsync.test`.toLowerCase();
-      addMember({ email, firstName, lastName, ...rollDues() });
+      addMember({ email, firstName, lastName, ...rollDues(club.duesAmounts) });
     }
 
     // events for this club, with RSVPs drawn only from eligible members

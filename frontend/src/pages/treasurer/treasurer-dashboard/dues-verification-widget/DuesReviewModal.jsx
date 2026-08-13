@@ -45,6 +45,9 @@ export default function DuesReviewModal({
                 {submission.tier}
               </span>
             </DetailRow>
+            <DetailRow label="Amount Due">
+              {submission.amount != null ? `$${submission.amount}` : "—"}
+            </DetailRow>
             <DetailRow label="Payment Reference" className="mb-3">
               {submission.paymentReference || "—"}
             </DetailRow>
@@ -126,6 +129,7 @@ DuesReviewModal.propTypes = {
     email: PropTypes.string,
     submittedAt: PropTypes.string,
     tier: PropTypes.string,
+    amount: PropTypes.number,
     paymentReference: PropTypes.string,
   }),
   show: PropTypes.bool,

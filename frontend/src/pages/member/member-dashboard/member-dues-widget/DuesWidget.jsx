@@ -56,7 +56,10 @@ export default function DuesWidget({ user }) {
           </Card.Subtitle>
 
           <Card.Text className="d-flex align-items-center">
-            <span>Tier: {TIER_LABELS[user?.duesTier] || "None"}</span>
+            <span>
+              Tier: {TIER_LABELS[user?.duesTier] || "None"}
+              {user?.duesAmount != null && ` ($${user.duesAmount})`}
+            </span>
           </Card.Text>
 
           <Card className="dues-inner-card mt-auto">
@@ -85,5 +88,6 @@ DuesWidget.propTypes = {
   user: PropTypes.shape({
     duesStatus: PropTypes.string,
     duesTier: PropTypes.string,
+    duesAmount: PropTypes.number,
   }),
 };

@@ -8,6 +8,7 @@ export default function StatWidget({
   label,
   count = 0,
   total = 0,
+  prefix = "",
   context,
   widgetSize = 4,
 }) {
@@ -24,6 +25,7 @@ export default function StatWidget({
             <Card.Body className="p-3">
               <div className="inner-card-header text-uppercase">{label}</div>
               <div className="inner-card-subheader dues-stat-ratio my-1">
+                {prefix}
                 {count}
                 {total > 0 && <span className="text-secondary-muted fs-4">/{total}</span>}
               </div>
@@ -45,6 +47,7 @@ StatWidget.propTypes = {
   label: PropTypes.string,
   count: PropTypes.number,
   total: PropTypes.number,
+  prefix: PropTypes.string,
   context: PropTypes.string,
   widgetSize: PropTypes.number,
 };
