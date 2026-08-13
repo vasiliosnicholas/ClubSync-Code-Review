@@ -96,6 +96,62 @@ eventRouter.get("/mine", isAuthenticated, async (req, res) => {
   }
 });
 
+// GET /api/events/upcoming — the soonest 5 events with their RSVP counts, for
+// the admin dashboard. 
+eventRouter.get("/upcoming", requireRole("admin"), async (req, res) => {
+  try {
+    if (!req.user.groupId) {
+      return res.json([]);
+    }
+
+    const events = await eventsCollection.getUpcomingEventsByGroup(
+      req.user.groupId,
+      5
+    );
+    res.json(
+      events.map((event) => ({
+        id: event._id,
+        name: event.name,
+        date: event.date,
+        location: event.location,
+        rsvpCount: event.rsvps.length,
+      }))
+    );
+  } catch (error) {
+    console.error("Error fetching upcoming events", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// GET /api/events/participation — % of members who RSVP'd to at least one of
+// the last 5 past events. 
+eventRouter.get("/participation", requireRole("admin"), async (req, res) => {
+  try {
+    if (!req.user.groupId) {
+      return res.json({ participatingCount: 0, memberCount: 0, eventsConsidered: 0 });
+    }
+
+    const recentEvents = await eventsCollection.getRecentPastEventsByGroup(
+      req.user.groupId,
+      5
+    );
+    const participantIds = new Set();
+    recentEvents.forEach((event) => {
+      event.rsvps.forEach((id) => participantIds.add(String(id)));
+    });
+    const memberCount = await usersCollection.getUserCountByGroup(req.user.groupId);
+
+    res.json({
+      participatingCount: participantIds.size,
+      memberCount,
+      eventsConsidered: recentEvents.length,
+    });
+  } catch (error) {
+    console.error("Error computing member participation", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 eventRouter.get("/:id", isAuthenticated, async (req, res) => {
   try {
     const event = await eventsCollection.findEventById(req.params.id);

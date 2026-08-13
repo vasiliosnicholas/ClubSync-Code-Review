@@ -61,8 +61,8 @@ export default function EventEditForm() {
         setError(data.message || "Could not save changes");
         return;
       }
-      // saved — go back to this event's detail page
-      navigate(`/member/events/${id}`);
+      // saved — go back to this event's admin detail page
+      navigate(`/admin/events/${id}`);
     } catch (err) {
       console.error("Update event failed", err);
       setError("Something went wrong");

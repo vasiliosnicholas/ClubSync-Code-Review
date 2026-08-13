@@ -1,6 +1,6 @@
 import { Container, Row } from "react-bootstrap";
 import { useUser } from "../../../context/UserContext.jsx";
-import DuesStatWidget from "./dues-stat-widget/DuesStatWidget.jsx";
+import StatWidget from "../../../components/widget/StatWidget.jsx";
 import DuesVerificationWidget from "./dues-verification-widget/DuesVerificationWidget.jsx";
 import NewSemesterWidget from "./new-semester-widget/NewSemesterWidget.jsx";
 import { useState, useEffect } from "react";
@@ -51,7 +51,7 @@ export default function TreasurerDashboard() {
       </p>
 
       <Row className="justify-content-center gy-4">
-        <DuesStatWidget
+        <StatWidget
           title="Total Dues Verified"
           subtitle="Approved Members"
           label="Approved Ratio"
@@ -59,14 +59,14 @@ export default function TreasurerDashboard() {
           total={stats.memberCount}
           context="Includes all active Silver and Gold tier submissions."
         />
-        <DuesStatWidget
+        <StatWidget
           title="Gold Tier"
           subtitle="Approved Members"
           label="Gold"
           count={stats.gold}
           context="Includes all members approved with Gold tier dues."
         />
-        <DuesStatWidget
+        <StatWidget
           title="Silver Tier"
           subtitle="Approved Members"
           label="Silver"

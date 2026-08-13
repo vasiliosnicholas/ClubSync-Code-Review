@@ -62,6 +62,34 @@ function EventsCollection({ collectionName = "events" } = {}) {
     }
   };
 
+  // soonest events that haven't happened yet, for the upcoming-events widget.
+  me.getUpcomingEventsByGroup = async (groupId, limit = 5) => {
+    try {
+      return await events
+        .find({ groupId, date: { $gte: new Date() } })
+        .sort({ date: 1 })
+        .limit(limit)
+        .toArray();
+    } catch (error) {
+      console.error("Error finding upcoming events", error);
+      throw error;
+    }
+  };
+
+  // most recent events that have already happened, for participation stats.
+  me.getRecentPastEventsByGroup = async (groupId, limit = 5) => {
+    try {
+      return await events
+        .find({ groupId, date: { $lte: new Date() } })
+        .sort({ date: -1 })
+        .limit(limit)
+        .toArray();
+    } catch (error) {
+      console.error("Error finding recent past events", error);
+      throw error;
+    }
+  };
+
   me.findEventById = async (id) => {
     try {
       if (!ObjectId.isValid(id)) return null;

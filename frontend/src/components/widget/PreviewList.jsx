@@ -26,7 +26,7 @@ export default function PreviewList({
               {columns.map((col) => (
                 <Col
                   key={col.label}
-                  xs={col.size}
+                  xs={{ span: col.size, offset: col.offset }}
                   className={col.align === "end" ? "text-end" : undefined}
                 >
                   {col.label}
@@ -59,7 +59,7 @@ export default function PreviewList({
                 {columns.map((col) => (
                   <Col
                     key={col.label}
-                    xs={col.size}
+                    xs={{ span: col.size, offset: col.offset }}
                     className={
                       col.align === "end"
                         ? "text-end"

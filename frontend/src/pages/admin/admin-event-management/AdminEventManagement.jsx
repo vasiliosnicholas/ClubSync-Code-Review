@@ -3,14 +3,14 @@ import Container from "react-bootstrap/Container";
 import EventForm from "../../events/event-form/EventForm.jsx";
 import EventList from "../../events/event-list/EventList.jsx";
 
-export default function AdminDashboard() {
+export default function AdminEventManagement() {
   const [refreshKey, setRefreshKey] = useState(0);
   return (
     <Container className="px-5">
       <title>Event Management · ClubSync</title>
       <meta
         name="description"
-        content="Landing page for the admin where they can view events they and other admins have created and also create new events"
+        content="Page for the admin where they can view events they and other admins have created and also create new events"
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">Event Management</h1>
@@ -22,7 +22,7 @@ export default function AdminDashboard() {
       <EventForm onCreated={() => setRefreshKey((k) => k + 1)} />
 
       <div className="mt-4">
-        <EventList key={refreshKey} />
+        <EventList key={refreshKey} basePath="/admin/events" />
       </div>
     </Container>
   );

@@ -1,41 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import Container from "react-bootstrap/Container";
-import { Button, Row } from "react-bootstrap";
 import { useUser } from "../../../context/UserContext.jsx";
 import RSVPButton from "../rsvp-button/RSVPButton.jsx";
-import WarningIcon from "../../../components/icons/WarningIcon.jsx";
-import WidgetCard from "../../../components/widget/WidgetCard.jsx";
-import PreviewList from "../../../components/widget/PreviewList.jsx";
 import "./event-detail.css";
 
-const ATTENDEE_COLUMNS = [
-  { label: "Name", size: 3, render: (a) => `${a.firstName} ${a.lastName}` },
-  { label: "Email", size: 3, render: (a) => a.email },
-  { label: "Phone Number", size: 3, render: (a) => a.phoneNumber },
-  {
-    label: "DOB",
-    size: 2,
-    render: (a) =>
-      new Date(a.birthDate).toLocaleDateString(undefined, { timeZone: "UTC" }),
-  },
-  {
-    label: "Tier",
-    size: 1,
-    render: (a) =>
-      a.duesTier === "gold" || a.duesTier === "silver" ? (
-        <span className={`status-badge ${a.duesTier}`}>{a.duesTier}</span>
-      ) : null,
-  },
-];
-
+// this page is intentionally the same for every role: event info, how many
+// people are attending, and the RSVP action. Admin-only concerns (the full
+// attendee list, edit, cancel) live on the separate admin event detail page.
 export default function EventDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { user } = useUser();
 
   const [event, setEvent] = useState(null);
-  const [attendees, setAttendees] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -50,14 +27,6 @@ export default function EventDetail() {
           return;
         }
         setEvent(await res.json());
-
-        // If the user is an admin then load who is attending as well
-        if (user && user.role === "admin") {
-          const rsvpRes = await fetch(`/api/events/${id}/rsvps`, {
-            credentials: "include",
-          });
-          if (rsvpRes.ok) setAttendees(await rsvpRes.json());
-        }
       } catch (err) {
         console.error("failer to load event", err);
         setError("Something went wrong");
@@ -66,25 +35,7 @@ export default function EventDetail() {
       }
     };
     loadEvent();
-  }, [id, user]); // re-run if the URL id or the user changes
-
-  const handleCancel = async () => {
-    if (!window.confirm("Cancel this event? This cannot be undone.")) return;
-    try {
-      const res = await fetch(`/api/events/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (!res.ok) {
-        setError("Could not cancel the event");
-        return;
-      }
-      navigate("/member/events"); // event is gone → go back to the list
-    } catch (err) {
-      console.error("Cancel event failed", err);
-      setError("Something went wrong");
-    }
-  };
+  }, [id]);
 
   if (loading) {
     return (
@@ -109,9 +60,8 @@ export default function EventDetail() {
       <title>{`${event.name} · ClubSync`}</title>
       <meta
         name="description"
-        content="Landing page for an event created by an admin of the club. This page lists all the details regarding an event, 
-        and allows members to RSVP if they have the correct tier of dues. If the user is an admin, 
-        they can cancel or edit the event and view all the particpents going."
+        content="Landing page for an event created by an admin of the club. This page lists all the details regarding an event
+        and lets members RSVP if they have the correct tier of dues, and see how many people are attending."
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <div className="event-detail-card">
@@ -126,45 +76,13 @@ export default function EventDetail() {
           })}
         </p>
         <p>Required tier: {event.requiredTier}</p>
+        <p>{event.rsvps?.length ?? 0} people attending</p>
 
         <RSVPButton
           eventId={event._id}
           initialGoing={!!(user && event.rsvps?.includes(user.id))}
         />
-
-        {user && user.role === "admin" && (
-          <div className="mt-3">
-            <Link
-              to={`/admin/events/${event._id}/edit`}
-              className="btn btn-action-secondary me-2"
-            >
-              Edit
-            </Link>
-            <Button
-              variant={null}
-              className="btn-action-danger"
-              onClick={handleCancel}
-            >
-              <WarningIcon />
-              Cancel Event
-            </Button>
-          </div>
-        )}
       </div>
-
-      {user && user.role === "admin" && (
-        <Row className="justify-content-center gy-4 mt-4">
-          <WidgetCard title={`RSVPs (${attendees.length})`} subtitle="Who's attending">
-            <PreviewList
-              columns={ATTENDEE_COLUMNS}
-              items={attendees}
-              total={attendees.length}
-              emptyMessage="No RSVPs yet"
-              rowKey={(a) => a.id}
-            />
-          </WidgetCard>
-        </Row>
-      )}
     </Container>
   );
 }

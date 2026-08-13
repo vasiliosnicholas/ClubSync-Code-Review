@@ -47,6 +47,9 @@ const randomBirthDate = () => {
 };
 const randomPhoneNumber = () =>
   `(${randInt(200, 989)}) ${randInt(200, 999)}-${randInt(1000, 9999)}`;
+// somewhere between 6 months and a year ago, matching setRole's officerSince field
+const randomOfficerSince = () =>
+  new Date(Date.now() - randInt(182, 365) * 24 * 60 * 60 * 1000);
 
 const FIRST_NAMES = [
   "Alex",
@@ -158,6 +161,7 @@ async function seed() {
     duesTier: extra.duesTier ?? "null",
     createdAt: new Date(),
     seed: true,
+    ...(extra.officerSince ? { officerSince: extra.officerSince } : {}),
   });
 
   CLUBS.forEach((club, clubIndex) => {
@@ -184,6 +188,7 @@ async function seed() {
           : `admin${clubIndex}@clubsync.test`,
         firstName: "Ada",
         lastName: `Admin${clubIndex}`,
+        officerSince: randomOfficerSince(),
       })
     );
     userDocs.push(
@@ -193,8 +198,22 @@ async function seed() {
           : `treasurer${clubIndex}@clubsync.test`,
         firstName: "Tara",
         lastName: `Treasurer${clubIndex}`,
+        officerSince: randomOfficerSince(),
       })
     );
+
+    // fill out the e-board to 6 total officers (2 more admins + 2 more
+    // treasurers), each promoted 6 months to a year ago.
+    ["admin", "admin", "treasurer", "treasurer"].forEach((role, i) => {
+      userDocs.push(
+        baseUser(new ObjectId(), role, groupId, {
+          email: `${role}${clubIndex}-${i + 2}@clubsync.test`,
+          firstName: pick(FIRST_NAMES),
+          lastName: pick(LAST_NAMES),
+          officerSince: randomOfficerSince(),
+        })
+      );
+    });
 
     // members of this club, tracked locally for building event RSVP pools
     const clubMembers = [];

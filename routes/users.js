@@ -21,6 +21,22 @@ usersRouter.get("/", requireRole("treasurer"), async (req, res) => {
 });
 
 // ----------------------------
+// GET THE TOTAL COUNT OF MEMBERS IN MY CLUB
+// ----------------------------
+usersRouter.get("/count", requireRole("admin"), async (req, res) => {
+  try {
+    if (!req.user.groupId) {
+      return res.json({count: 0});
+    }
+    const membersCount = await usersCollection.getUserCountByGroup(req.user.groupId);
+    res.json({membersCount});
+  } catch (error) {
+    console.error("Error fetching total member count", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// ----------------------------
 // UPDATE A MEMBER'S ROLE
 // ----------------------------
 usersRouter.patch("/:id/role", requireRole("admin"), async (req, res) => {

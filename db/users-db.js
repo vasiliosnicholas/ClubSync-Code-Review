@@ -274,6 +274,7 @@ function UsersCollection({ collectionName = "users" } = {}) {
               email: 1,
               phoneNumber: 1,
               role: 1,
+              officerSince: 1,
             },
           }
         )
@@ -284,13 +285,43 @@ function UsersCollection({ collectionName = "users" } = {}) {
     }
   };
 
+  me.getUserCountByGroup = async (groupId) => {
+    try {
+      const groupFilter = ObjectId.isValid(groupId)
+        ? new ObjectId(groupId)
+        : groupId;
+      return await users.countDocuments({ groupId: groupFilter });
+    } catch (error) {
+      console.error("Error counting users by group", error);
+      throw error;
+    }
+  };
+
   // sets a user's role (an admin appointing a treasurer/admin, or demoting).
+  // officerSince tracks when a member first became treasurer/admin — it's
+  // stamped on promotion out of "member", left untouched when moving between
+  // officer roles (still an officer, continuously), and cleared on demotion
+  // back to "member" so a later re-promotion starts the clock over.
   me.setRole = async (userId, role) => {
     try {
       if (!ObjectId.isValid(userId)) return null;
+
+      const current = await me.findUserById(userId);
+      if (!current) return null;
+
+      const wasOfficer = current.role !== "member";
+      const isOfficer = role !== "member";
+
+      const update = { $set: { role } };
+      if (isOfficer && !wasOfficer) {
+        update.$set.officerSince = new Date();
+      } else if (!isOfficer) {
+        update.$unset = { officerSince: "" };
+      }
+
       const updated = await users.findOneAndUpdate(
         { _id: new ObjectId(userId) },
-        { $set: { role } },
+        update,
         { returnDocument: "after" }
       );
       return updated;

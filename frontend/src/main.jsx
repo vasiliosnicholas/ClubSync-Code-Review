@@ -16,15 +16,17 @@ import RegisterMemberPage from "./pages/auth/register/RegisterMemberPage.jsx";
 import RegisterAdminPage from "./pages/auth/register/RegisterAdminPage.jsx";
 import MemberDashboard from "./pages/member/member-dashboard/MemberDashboard.jsx";
 import TreasurerDashboard from "./pages/treasurer/treasurer-dashboard/TreasurerDashboard.jsx";
-import AdminDashboard from "./pages/admin/admindashboard/AdminDashboard.jsx";
+import AdminEventManagement from "./pages/admin/admin-event-management/AdminEventManagement.jsx";
 import EventList from "./pages/events/event-list/EventList.jsx";
 import DuesStatus from "./pages/member/dues-status/DuesStatus.jsx";
 import EventForm from "./pages/events/event-form/EventForm.jsx";
 import EventDetail from "./pages/events/event-detail/EventDetail.jsx";
 import ReviewDues from "./pages/treasurer/dues-verification/ReviewDues.jsx";
 import EventEditForm from "./pages/events/event-edit/EventEditForm.jsx";
+import AdminEventDetail from "./pages/admin/admin-event-management/admin-event-detail/AdminEventDetail.jsx";
 import MyRsvps from "./pages/events/my-rsvps/MyRsvps.jsx";
-import MembersPage from "./pages/admin/members/MembersPage.jsx";
+import MembersPage from "./pages/admin/member-management/MembersPage.jsx";
+import AdminDashboard from "./pages/admin/admin-dashboard/AdminDashboard.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -70,6 +72,10 @@ createRoot(document.getElementById("root")).render(
           {/* Admin Role Pages */}
           <Route element={<ProtectedRoute allow={["admin"]} />}>
             <Route path="/admin/admin-dashboard" element={<AdminDashboard />} />
+            <Route
+              path="/admin/event-management"
+              element={<AdminEventManagement />}
+            />
             <Route path="/admin/members" element={<MembersPage />} />
             <Route
               path="/admin/event-form"
@@ -80,6 +86,7 @@ createRoot(document.getElementById("root")).render(
                 </>
               }
             />
+            <Route path="/admin/events/:id" element={<AdminEventDetail />} />
             <Route path="/admin/events/:id/edit" element={<EventEditForm />} />
           </Route>
         </Routes>

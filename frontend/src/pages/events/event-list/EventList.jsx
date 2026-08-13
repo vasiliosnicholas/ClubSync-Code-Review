@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import Container from "react-bootstrap/Container";
+import PropTypes from "prop-types";
 import { useUser } from "../../../context/UserContext.jsx";
 import "./event-list.css";
 
-export default function EventList() {
+// basePath lets each caller decide where a click leads. the member browse
+// page always links to the RSVP-focused detail view, while admin event
+// management links to the admin-only detail view (RSVPs, edit, cancel).
+export default function EventList({ basePath = "/member/events" }) {
   const { user } = useUser();
   const [events, setEvents] = useState([]);
   const [error, setError] = useState("");
@@ -65,7 +69,7 @@ export default function EventList() {
         return (
           <Link
             key={event._id}
-            to={`/member/events/${event._id}`}
+            to={`${basePath}/${event._id}`}
             className="event-card-link"
           >
             <div className={`event-card${going ? " event-card-going" : ""}`}>
@@ -84,3 +88,7 @@ export default function EventList() {
     </Container>
   );
 }
+
+EventList.propTypes = {
+  basePath: PropTypes.string,
+};

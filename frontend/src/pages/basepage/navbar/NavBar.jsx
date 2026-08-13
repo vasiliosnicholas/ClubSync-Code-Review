@@ -27,6 +27,7 @@ const NAV_PAGES = {
   ],
   admin: [
     { to: "/admin/admin-dashboard", label: "Dashboard" },
+    { to: "/admin/event-management", label: "Event Management" },
     { to: "/admin/members", label: "Club Members" },
   ],
 };

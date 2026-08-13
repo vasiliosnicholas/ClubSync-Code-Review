@@ -2,16 +2,17 @@ import { Col } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import PropTypes from "prop-types";
 
-export default function DuesStatWidget({
+export default function StatWidget({
   title,
   subtitle,
   label,
   count = 0,
   total = 0,
   context,
+  widgetSize = 4,
 }) {
   return (
-    <Col xs={12} md={5} lg={4} className="role-card dues-stat-widget">
+    <Col xs={12} md={5} lg={widgetSize} className="role-card dues-stat-widget">
       <Card className="h-100 dues-card d-flex flex-column justify-content-between">
         <Card.Body className="d-flex flex-column">
           <Card.Title>{title}</Card.Title>
@@ -38,11 +39,12 @@ export default function DuesStatWidget({
   );
 }
 
-DuesStatWidget.propTypes = {
+StatWidget.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
   label: PropTypes.string,
   count: PropTypes.number,
   total: PropTypes.number,
   context: PropTypes.string,
+  widgetSize: PropTypes.number,
 };
