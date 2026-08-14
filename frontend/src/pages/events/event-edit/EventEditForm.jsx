@@ -97,7 +97,7 @@ export default function EventEditForm() {
         <h2>Edit Event</h2>
 
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" controlId="event-edit-name">
             <Form.Label>Event name</Form.Label>
             <Form.Control
               type="text"
@@ -115,7 +115,7 @@ export default function EventEditForm() {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" controlId="event-edit-date">
             <Form.Label>Date</Form.Label>
             <Form.Control
               type="date"
@@ -124,7 +124,7 @@ export default function EventEditForm() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" controlId="event-edit-location">
             <Form.Label>Location</Form.Label>
             <Form.Control
               type="text"

@@ -7,8 +7,13 @@ export default function ToastAlert({ show, onClose, message, variant = "success"
   const isLight = variant === "light";
 
   return (
+    // role/aria-live make this a persistent live region so screen readers
+    // announce toasts as they appear (polite = wait for a pause in speech).
     <ToastContainer
       className="p-3"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
       style={{
         position: "fixed",
         top: "15%",

@@ -52,7 +52,7 @@ export default function EventForm({ onCreated }) {
       <h2>Create an Event</h2>
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="event-name">
           <Form.Label>Event name</Form.Label>
           <Form.Control
             type="text"
@@ -71,7 +71,7 @@ export default function EventForm({ onCreated }) {
           </Form.Select>
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="event-date">
           <Form.Label>Date</Form.Label>
           <Form.Control
             type="date"
@@ -80,7 +80,7 @@ export default function EventForm({ onCreated }) {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="event-location">
           <Form.Label>Location</Form.Label>
           <Form.Control
             type="text"
