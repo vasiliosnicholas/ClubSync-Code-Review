@@ -11,10 +11,14 @@ export default function StatWidget({
   prefix = "",
   context,
   widgetSize = 4,
+  accent,
 }) {
   return (
     <Col xs={12} md={5} lg={widgetSize} className="role-card dues-stat-widget">
-      <Card className="h-100 dues-card d-flex flex-column justify-content-between">
+      <Card
+        className="h-100 dues-card d-flex flex-column justify-content-between"
+        style={accent ? { borderTopColor: accent, borderTopWidth: "5px" } : undefined}
+      >
         <Card.Body className="d-flex flex-column">
           <Card.Title>{title}</Card.Title>
           <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
@@ -50,4 +54,5 @@ StatWidget.propTypes = {
   prefix: PropTypes.string,
   context: PropTypes.string,
   widgetSize: PropTypes.number,
+  accent: PropTypes.string,
 };

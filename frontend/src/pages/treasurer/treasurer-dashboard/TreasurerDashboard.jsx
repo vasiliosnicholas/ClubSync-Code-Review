@@ -161,6 +161,7 @@ export default function TreasurerDashboard() {
             count={stats.total}
             total={stats.memberCount}
             context="Includes all active Silver and Gold tier submissions."
+            widgetSize={12}
           />
           <StatWidget
             title="Gold Tier"
@@ -168,6 +169,8 @@ export default function TreasurerDashboard() {
             label="Gold"
             count={stats.gold}
             context="Includes all members approved with Gold tier dues."
+            widgetSize={6}
+            accent="var(--color-gold)"
           />
           <StatWidget
             title="Silver Tier"
@@ -175,6 +178,8 @@ export default function TreasurerDashboard() {
             label="Silver"
             count={stats.silver}
             context="Includes all members approved with Silver tier dues."
+            widgetSize={6}
+            accent="#9aa0a6"
           />
           <h2 className="sub-header-after-moto">Dues Pricing</h2>
           <hr />
