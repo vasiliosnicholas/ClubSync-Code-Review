@@ -86,8 +86,14 @@ createRoot(document.getElementById("root")).render(
                 </>
               }
             />
-            <Route path="/admin/events/:id" element={<AdminEventDetail />} />
-            <Route path="/admin/events/:id/edit" element={<EventEditForm />} />
+            <Route
+              path="/admin/event-management/:id"
+              element={<AdminEventDetail />}
+            />
+            <Route
+              path="/admin/event-management/:id/edit"
+              element={<EventEditForm />}
+            />
           </Route>
         </Routes>
       </BasePage>

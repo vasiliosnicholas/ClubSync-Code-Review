@@ -22,7 +22,7 @@ export default function AdminEventManagement() {
       <EventForm onCreated={() => setRefreshKey((k) => k + 1)} />
 
       <div className="mt-4">
-        <EventList key={refreshKey} basePath="/admin/events" />
+        <EventList key={refreshKey} basePath="/admin/event-management" />
       </div>
     </Container>
   );

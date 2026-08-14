@@ -53,7 +53,7 @@ export default function UpcomingEventsWidget() {
         items={events}
         total={events.length}
         emptyMessage="No upcoming events are scheduled."
-        onSelect={(e) => navigate(`/admin/events/${e.id}`)}
+        onSelect={(e) => navigate(`/admin/event-management/${e.id}`)}
         rowKey={(e) => e.id}
       />
     </WidgetCard>

@@ -131,7 +131,7 @@ export default function AdminEventDetail() {
 
         <div className="mt-3">
           <Link
-            to={`/admin/events/${event._id}/edit`}
+            to={`/admin/event-management/${event._id}/edit`}
             className="btn btn-action-secondary me-2"
           >
             Edit

@@ -62,7 +62,7 @@ export default function EventEditForm() {
         return;
       }
       // saved — go back to this event's admin detail page
-      navigate(`/admin/events/${id}`);
+      navigate(`/admin/event-management/${id}`);
     } catch (err) {
       console.error("Update event failed", err);
       setError("Something went wrong");
