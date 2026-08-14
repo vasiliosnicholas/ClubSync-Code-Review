@@ -2,12 +2,14 @@ import { Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useUser } from "../../../../context/UserContext.jsx";
+import { useToast } from "../../../../context/ToastContext.jsx";
 import SemesterCard from "./SemesterCard.jsx";
 import SemesterAckModal from "./SemesterAckModal.jsx";
 import NewSemesterModal from "./NewSemesterModal.jsx";
 
 export default function NewSemesterWidget({ onSemesterStarted }) {
   const { user, setUser } = useUser();
+  const { showToast } = useToast();
 
   const [active, setActive] = useState(null);
   const [showAck, setShowAck] = useState(false);
@@ -73,7 +75,9 @@ export default function NewSemesterWidget({ onSemesterStarted }) {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message ?? "Could not start a new semester.");
+        const message = data.message ?? "Could not start a new semester.";
+        setError(message);
+        showToast(message, "danger");
         return;
       }
       const data = await res.json(); // { name, joinCode }
@@ -84,11 +88,13 @@ export default function NewSemesterWidget({ onSemesterStarted }) {
       }));
       setUser({ ...user, duesStatus: "not_submitted", duesTier: "null" });
       setShowConfirm(false);
+      showToast("New semester started successfully!");
       // tell the dashboard to refetch its stats + pending list (same club id,
       // so their own effects wouldn't otherwise re-run).
       if (onSemesterStarted) onSemesterStarted();
     } catch (err) {
       console.error("Failed to start new semester", err);
+      showToast("Failed to start new semester", "danger");
       setError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);

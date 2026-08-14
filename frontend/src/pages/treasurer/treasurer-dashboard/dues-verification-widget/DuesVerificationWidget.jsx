@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUser } from "../../../../context/UserContext.jsx";
+import { useToast } from "../../../../context/ToastContext.jsx";
 import WidgetCard from "../../../../components/widget/WidgetCard.jsx";
 import PreviewList from "../../../../components/widget/PreviewList.jsx";
 import DuesReviewModal from "./DuesReviewModal.jsx";
@@ -42,6 +43,7 @@ export default function DuesVerificationWidget({
   // bumped after a successful review so the effect below refetches the queue.
   const [refreshKey, setRefreshKey] = useState(0);
   const { user } = useUser();
+  const { showToast } = useToast();
 
   // previewLimit > 0  = read-only dashboard preview (oldest N submissions).
   // previewLimit <= 0 = full review mode: every pending row is clickable and
@@ -99,17 +101,24 @@ export default function DuesVerificationWidget({
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message ?? "Failed to submit review.");
+        const message = data.message ?? "Failed to submit review.";
+        setError(message);
+        showToast(message, "danger");
         return;
       }
-      setFeedback({
-        decision: finalDecision,
-        name: `${selected.firstName} ${selected.lastName}`,
-      });
+      const memberName = `${selected.firstName} ${selected.lastName}`;
+      setFeedback({ decision: finalDecision, name: memberName });
       setSelected(null);
       setRefreshKey((key) => key + 1);
+      showToast(
+        finalDecision === "approved"
+          ? `Approved ${memberName}'s dues submission!`
+          : `Denied ${memberName}'s dues submission`,
+        finalDecision === "approved" ? "success" : "danger"
+      );
     } catch (err) {
       console.error("Failed to submit dues review", err);
+      showToast("Failed to submit review", "danger");
       setError("Failed to submit review.");
     } finally {
       setSubmitting(false);

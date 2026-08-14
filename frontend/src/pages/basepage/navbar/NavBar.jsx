@@ -11,6 +11,7 @@ import GlassesIcon from "../../../components/icons/GlassesIcon.jsx";
 import LogoutIcon from "../../../components/icons/LogoutIcon.jsx";
 import PersonIcon from "../../../components/icons/PersonIcon.jsx";
 import "./navbar.css";
+import { useToast } from "../../../context/ToastContext.jsx";
 
 const ROLE_VIEWS = ["member", "treasurer", "admin"];
 
@@ -39,6 +40,7 @@ export default function NavBar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
+  const { showToast } = useToast();
 
   const segment = pathname.split("/")[1];
   const view = ROLE_VIEWS.includes(segment) ? segment : "guest";
@@ -166,11 +168,20 @@ export default function NavBar() {
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.ItemText className="nav-user-role-item">
-                      <div><strong>Club</strong>{`: ${groupName}`}</div>
-                      <div><strong>Role</strong>{`: ${user.role.charAt(0).toUpperCase()}${user.role.slice(1)}`}</div>
+                      <div>
+                        <strong>Club</strong>
+                        {`: ${groupName}`}
+                      </div>
+                      <div>
+                        <strong>Role</strong>
+                        {`: ${user.role.charAt(0).toUpperCase()}${user.role.slice(1)}`}
+                      </div>
                     </Dropdown.ItemText>
                     <Dropdown.Item
-                      onClick={handleLogout}
+                      onClick={() => {
+                        handleLogout();
+                        showToast(`Successfully logged out ${user.firstName}!`);
+                      }}
                       className="nav-logout-item"
                     >
                       <LogoutIcon />

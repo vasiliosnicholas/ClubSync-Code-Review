@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { useUser } from "../../../context/UserContext.jsx";
+import { useToast } from "../../../context/ToastContext.jsx";
 import AuthForm from "../AuthForm.jsx";
 
 const ROLE_HOME = {
@@ -11,6 +12,7 @@ const ROLE_HOME = {
 export default function LoginPage() {
   const navigate = useNavigate();
   const { setUser } = useUser();
+  const { showToast } = useToast();
 
   return (
     <>
@@ -42,6 +44,7 @@ export default function LoginPage() {
         ]}
         onSuccess={(data) => {
           setUser(data.user);
+          showToast(`Logged in successfully! Welcome ${data.user.firstName}`);
           navigate(ROLE_HOME[data.user.role] ?? "/");
         }}
         redirectQuestion="Don't have account? Create one"

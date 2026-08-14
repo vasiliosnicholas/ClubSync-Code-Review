@@ -1,12 +1,14 @@
 import { Col } from "react-bootstrap";
 import { useState } from "react";
 import { useUser } from "../../../../context/UserContext.jsx";
+import { useToast } from "../../../../context/ToastContext.jsx";
 import JoinGroupCard from "./JoinGroupCard.jsx";
 
 // Member dashboard widget for joining the club by entering the active semester's
 // join code.
 export default function JoinGroupWidget() {
   const { user, setUser } = useUser();
+  const { showToast } = useToast();
 
   const [joinCode, setJoinCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -30,13 +32,17 @@ export default function JoinGroupWidget() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message ?? "Could not join the club.");
+        const message = data.message ?? "Could not join the club.";
+        setError(message);
+        showToast(message, "danger");
         return;
       }
       const data = await res.json();
       setUser({ ...user, groupId: data.groupId });
+      showToast("Joined club successfully!");
     } catch (err) {
       console.error("Failed to join club", err);
+      showToast("Failed to join club", "danger");
       setError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);

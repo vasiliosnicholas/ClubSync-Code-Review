@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import { useUser } from "../../../../context/UserContext.jsx";
 import GroupCard from "./GroupCard.jsx";
 import LeaveClubModal from "./LeaveClubModal.jsx";
+import { useToast } from "../../../../context/ToastContext.jsx";
 
 // Member dashboard widget that shows the club/semester the member currently
 // belongs to.
 export default function GroupWidget() {
   const { user, setUser } = useUser();
+  const { showToast } = useToast();
   const [group, setGroup] = useState(null);
   const [showLeave, setShowLeave] = useState(false);
   const [ackText, setAckText] = useState("");
@@ -52,14 +54,17 @@ export default function GroupWidget() {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.message ?? "Could not leave the club.");
+        showToast(data.message, "danger");
         return;
       }
       setUser({ ...user, groupId: null });
       setGroup(null);
       setShowLeave(false);
+      showToast(`Successfully left ${group?.name}`);
     } catch (err) {
       console.error("Failed to leave club", err);
       setError("Something went wrong. Please try again.");
+      showToast("Failed to leave club", "danger");
     } finally {
       setSubmitting(false);
     }

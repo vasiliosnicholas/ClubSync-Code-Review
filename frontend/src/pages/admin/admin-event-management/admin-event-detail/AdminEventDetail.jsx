@@ -6,6 +6,7 @@ import WarningIcon from "../../../../components/icons/WarningIcon.jsx";
 import WidgetCard from "../../../../components/widget/WidgetCard.jsx";
 import PreviewList from "../../../../components/widget/PreviewList.jsx";
 import CancelEventModal from "./CancelEventModal.jsx";
+import { useToast } from "../../../../context/ToastContext.jsx";
 import "../../../events/event-detail/event-detail.css";
 
 const ATTENDEE_COLUMNS = [
@@ -33,6 +34,7 @@ const ATTENDEE_COLUMNS = [
 export default function AdminEventDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [event, setEvent] = useState(null);
   const [attendees, setAttendees] = useState([]);
@@ -77,12 +79,17 @@ export default function AdminEventDetail() {
         credentials: "include",
       });
       if (!res.ok) {
-        setCancelError("Could not cancel the event");
+        const data = await res.json().catch(() => ({}));
+        const message = data.message ?? "Could not cancel the event";
+        setCancelError(message);
+        showToast(message, "danger");
         return;
       }
+      showToast("Event cancelled successfully!");
       navigate("/admin/event-management");
     } catch (err) {
       console.error("Cancel event failed", err);
+      showToast("Failed to cancel event", "danger");
       setCancelError("Something went wrong");
     } finally {
       setCancelling(false);

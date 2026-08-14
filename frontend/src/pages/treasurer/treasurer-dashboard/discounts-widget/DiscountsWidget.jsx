@@ -4,6 +4,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import WidgetCard from "../../../../components/widget/WidgetCard.jsx";
 import PreviewList from "../../../../components/widget/PreviewList.jsx";
 import { useUser } from "../../../../context/UserContext.jsx";
+import { useToast } from "../../../../context/ToastContext.jsx";
 
 // columns for the discount list (sizes add up to 12 across the row)
 const DISCOUNT_COLUMNS = [
@@ -21,6 +22,7 @@ const DISCOUNT_COLUMNS = [
 // discount to a member or clear one (click a row to edit it).
 export default function DiscountsWidget({ refreshSignal, onChange }) {
   const { user } = useUser();
+  const { showToast } = useToast();
   const [members, setMembers] = useState([]);
   const [discountTypes, setDiscountTypes] = useState([]);
   const [error, setError] = useState("");
@@ -99,14 +101,18 @@ export default function DiscountsWidget({ refreshSignal, onChange }) {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setModalError(data.message ?? "Could not save.");
+        const message = data.message ?? "Could not save.";
+        setModalError(message);
+        showToast(message, "danger");
         return;
       }
       setReloadKey((k) => k + 1); // refresh the member list
       if (onChange) onChange(); // let the dashboard refresh the dues total
+      showToast("Successfully saved discount!");
       setShowModal(false);
     } catch (err) {
       console.error("Failed to save discount", err);
+      showToast("Failed to save discount", "danger");
       setModalError("Something went wrong. Please try again.");
     } finally {
       setSaving(false);

@@ -8,8 +8,10 @@ import DuesAmountsCard from "./dues-amounts-widget/DuesAmountsCard.jsx";
 import DiscountsWidget from "./discounts-widget/DiscountsWidget.jsx";
 import DiscountTypesWidget from "./discount-types-widget/DiscountTypesWidget.jsx";
 import { useState, useEffect } from "react";
+import { useToast } from "../../../context/ToastContext.jsx";
 
 export default function TreasurerDashboard() {
+  const { showToast } = useToast();
   const [stats, setStats] = useState({
     gold: 0,
     silver: 0,
@@ -103,13 +105,17 @@ export default function TreasurerDashboard() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setAmountsError(data.message ?? "Could not save dues prices.");
+        const message = data.message ?? "Could not save dues prices.";
+        setAmountsError(message);
+        showToast(message, "danger");
         return;
       }
       setGroup(await res.json());
+      showToast("Dues prices updated successfully!");
       setEditingAmounts(false);
     } catch (err) {
       console.error("Failed to save dues prices", err);
+      showToast("Failed to save dues prices", "danger");
       setAmountsError("Something went wrong. Please try again.");
     } finally {
       setSavingAmounts(false);

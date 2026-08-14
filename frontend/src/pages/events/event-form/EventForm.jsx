@@ -2,9 +2,11 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useToast } from "../../../context/ToastContext.jsx";
 import "./event-form.css";
 
 export default function EventForm({ onCreated }) {
+  const { showToast } = useToast();
   const [name, setName] = useState("");
   const [type, setType] = useState("social"); // sensible defaults
   const [date, setDate] = useState("");
@@ -27,16 +29,20 @@ export default function EventForm({ onCreated }) {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message || "Could not creat an event");
+        const message = data.message || "Could not creat an event";
+        setError(message);
+        showToast(message, "danger");
         return;
       }
 
       const data = await res.json();
       setCreatedEvent(data);
       setName("");
+      showToast(`Event "${data.name}" created successfully!`);
       if (onCreated) onCreated(data);
     } catch (error) {
       console.error("Create events request failed", error);
+      showToast("Failed to create event", "danger");
       setError("Sorry something went long please try again in a bit");
     }
   };

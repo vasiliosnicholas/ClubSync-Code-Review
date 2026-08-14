@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Card, Button, Col, Modal, Form } from "react-bootstrap";
 import { useUser } from "../../../../context/UserContext.jsx";
+import { useToast } from "../../../../context/ToastContext.jsx";
 
 // Lets a treasurer define the club's named discounts ({name, amount}). These are
 // the options that can later be assigned to individual members (see #6b).
 export default function DiscountTypesWidget({ refreshSignal, onChange }) {
   const { user } = useUser();
+  const { showToast } = useToast();
   const [types, setTypes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [draft, setDraft] = useState([]); // editable copy while the modal is open
@@ -56,15 +58,19 @@ export default function DiscountTypesWidget({ refreshSignal, onChange }) {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message ?? "Could not save discounts.");
+        const message = data.message ?? "Could not save discounts.";
+        setError(message);
+        showToast(message, "danger");
         return;
       }
       const group = await res.json();
       setTypes(group.discountTypes || []);
       if (onChange) onChange(); // let sibling widgets pick up the new types
+      showToast("Discount types updated successfully!");
       setShowModal(false);
     } catch (err) {
       console.error("Failed to save discount types", err);
+      showToast("Failed to save discount types", "danger");
       setError("Something went wrong. Please try again.");
     } finally {
       setSaving(false);

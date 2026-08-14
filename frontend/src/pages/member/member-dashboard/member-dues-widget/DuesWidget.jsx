@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import InnerDuesCard from "./InnerDuesCard";
 import "./dues-widget.css";
 import PropTypes from "prop-types";
+import WarningIcon from "../../../../components/icons/WarningIcon.jsx";
 
 const TIER_LABELS = {
   silver: "Silver",
@@ -79,6 +80,18 @@ export default function DuesWidget({ user }) {
             </Button>
           )}
         </Card.Body>
+
+        {statusKey === "pending" && (
+          <Button
+            as={Link}
+            to="/member/dues-status"
+            variant={null}
+            className="btn-action-danger m-3 mt-0"
+          >
+            <WarningIcon />
+            Withdraw Submission
+          </Button>
+        )}
       </Card>
     </Col>
   );

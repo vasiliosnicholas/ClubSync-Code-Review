@@ -2,8 +2,10 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
 import "./rsvp-button.css";
+import { useToast } from "../../../context/ToastContext";
 
 export default function RSVPButton({ eventId, initialGoing = false, onRsvp }) {
+  const { showToast } = useToast();
   // going = is the current user RSVP'd? seeded from the parent, then toggled.
   const [going, setGoing] = useState(initialGoing);
   const [message, setMessage] = useState("");
@@ -22,19 +24,23 @@ export default function RSVPButton({ eventId, initialGoing = false, onRsvp }) {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
+        const errorMessage = data.message || "Could not update your RSVP.";
         setIsError(true);
-        setMessage(data.message || "Could not update your RSVP.");
+        setMessage(errorMessage);
+        showToast(errorMessage, "danger");
         return;
       }
 
       const nowGoing = !going;
       setGoing(nowGoing);
       setIsError(false);
+      showToast(nowGoing ? "Successfully RSVP'd" : "RSVP cancelled successfully");
       setMessage(nowGoing ? "You're RSVP'd" : "RSVP cancelled");
       if (onRsvp) onRsvp(data);
     } catch (error) {
       console.error("RSVP request failed", error);
       setIsError(true);
+      showToast("Failed to handle RSVP request", "danger");
       setMessage("Something went wrong. Please try again.");
     }
   };

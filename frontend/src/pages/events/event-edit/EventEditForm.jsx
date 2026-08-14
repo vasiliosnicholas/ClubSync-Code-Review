@@ -3,11 +3,13 @@ import { useParams, useNavigate } from "react-router";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useToast } from "../../../context/ToastContext.jsx";
 import "./event-edit.css";
 
 export default function EventEditForm() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   // same fields as EventForm — but we PRE-FILL them from the existing event
   const [name, setName] = useState("");
@@ -58,13 +60,17 @@ export default function EventEditForm() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message || "Could not save changes");
+        const message = data.message || "Could not save changes";
+        setError(message);
+        showToast(message, "danger");
         return;
       }
       // saved — go back to this event's admin detail page
+      showToast("Event updated successfully!");
       navigate(`/admin/event-management/${id}`);
     } catch (err) {
       console.error("Update event failed", err);
+      showToast("Failed to update event", "danger");
       setError("Something went wrong");
     }
   };

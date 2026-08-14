@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import { useUser } from "../../../context/UserContext.jsx";
 import WarningIcon from "../../../components/icons/WarningIcon.jsx";
 import DuesClarity from "./DuesClarity.jsx";
+import { useToast } from "../../../context/ToastContext.jsx";
 
 // only these two states allow a (re)submission. anyone already pending/approved
 // shouldn't be able to submit again.
@@ -28,6 +29,7 @@ const PAYMENT_PATTERNS = {
 
 export default function DuesStatus() {
   const { user, setUser } = useUser();
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const [tier, setTier] = useState("gold");
@@ -85,12 +87,15 @@ export default function DuesStatus() {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.message || "Could not withdraw your submission.");
+        showToast(data.message, "danger");
         return;
       }
       setLatest(null);
+      showToast(`Due request withdrawn sucessfully!`);
       setUser({ ...user, duesStatus: "not_submitted" });
     } catch (err) {
       console.error("Withdraw dues request failed", err);
+      showToast("Failed to withdraw dues", "danger");
       setError("Something went wrong. Please try again.");
     } finally {
       setWithdrawing(false);
@@ -123,6 +128,7 @@ export default function DuesStatus() {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.message || "Could not submit your dues.");
+        showToast(data.message, "danger");
         return;
       }
 
@@ -134,9 +140,13 @@ export default function DuesStatus() {
         duesTier: tier,
         duesAmount: data.amount,
       });
+      showToast(
+        `${tier[0].toUpperCase() + tier.slice(1).toLowerCase()} tier dues submitted sucessfully!`
+      );
       navigate("/member/member-dashboard");
     } catch (err) {
       console.error("Submit dues request failed", err);
+      showToast("Failed to submit dues", "danger");
       setError("Something went wrong. Please try again.");
     }
   };
@@ -198,54 +208,64 @@ export default function DuesStatus() {
         </div>
       ) : (
         <>
-        <h2 className="text-center mt-5">Why Submit Dues?</h2>
-        <DuesClarity />
-        <Form
-          onSubmit={handleSubmit}
-          className="mt-3 spacing-after-moto auth-form"
-        >
-          <Form.Group className="mb-5" controlId="dues-tier">
-            <Form.Label>Membership tier</Form.Label>
-            <Form.Select value={tier} onChange={(e) => setTier(e.target.value)}>
-              <option value="gold">
-                Gold{duesAmounts?.gold != null ? ` — $${duesAmounts.gold}` : ""}
-              </option>
-              <option value="silver">
-                Silver
-                {duesAmounts?.silver != null ? ` — $${duesAmounts.silver}` : ""}
-              </option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="dues-payment-method">
-            <Form.Label>Payment method</Form.Label>
-            <Form.Select
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            >
-              <option value="venmo">Venmo</option>
-              <option value="check">Check</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="dues-payment-reference">
-            <Form.Label>Payment reference</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder={PAYMENT_PATTERNS[paymentMethod].placeholder}
-              value={paymentReference}
-              onChange={(e) => setPaymentReference(e.target.value)}
-            />
-            <Form.Text className="text-secondary-muted">
-              {PAYMENT_PATTERNS[paymentMethod].hint} Helps your treasurer match
-              your payment when verifying.
-            </Form.Text>
-          </Form.Group>
-          {error && <div className="text-attention mb-3">{error}</div>}
-          <div className="auth-form-submit">
-            <Button variant={null} className="btn-action-primary" type="submit">
-              Submit Dues
-            </Button>
-          </div>
-        </Form>
+          <h2 className="text-center mt-5">Why Submit Dues?</h2>
+          <DuesClarity />
+          <Form
+            onSubmit={handleSubmit}
+            className="mt-3 spacing-after-moto auth-form"
+          >
+            <Form.Group className="mb-5" controlId="dues-tier">
+              <Form.Label>Membership tier</Form.Label>
+              <Form.Select
+                value={tier}
+                onChange={(e) => setTier(e.target.value)}
+              >
+                <option value="gold">
+                  Gold
+                  {duesAmounts?.gold != null ? ` — $${duesAmounts.gold}` : ""}
+                </option>
+                <option value="silver">
+                  Silver
+                  {duesAmounts?.silver != null
+                    ? ` — $${duesAmounts.silver}`
+                    : ""}
+                </option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="dues-payment-method">
+              <Form.Label>Payment method</Form.Label>
+              <Form.Select
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              >
+                <option value="venmo">Venmo</option>
+                <option value="check">Check</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="dues-payment-reference">
+              <Form.Label>Payment reference</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={PAYMENT_PATTERNS[paymentMethod].placeholder}
+                value={paymentReference}
+                onChange={(e) => setPaymentReference(e.target.value)}
+              />
+              <Form.Text className="text-secondary-muted">
+                {PAYMENT_PATTERNS[paymentMethod].hint} Helps your treasurer
+                match your payment when verifying.
+              </Form.Text>
+            </Form.Group>
+            {error && <div className="text-attention mb-3">{error}</div>}
+            <div className="auth-form-submit">
+              <Button
+                variant={null}
+                className="btn-action-primary"
+                type="submit"
+              >
+                Submit Dues
+              </Button>
+            </div>
+          </Form>
         </>
       )}
     </div>
