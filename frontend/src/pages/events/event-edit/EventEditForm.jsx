@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useToast } from "../../../context/ToastContext.jsx";
+import TierInfo from "../../../components/widget/TierInfo.jsx";
 import "./event-edit.css";
 
 export default function EventEditForm() {
@@ -135,6 +136,8 @@ export default function EventEditForm() {
 
           <Form.Group className="mb-3" controlId="event-edit-required-tier">
             <Form.Label>Required tier</Form.Label>
+            <TierInfo text="Only members with approved dues at this tier or higher can RSVP. “None” means open to all." />
+
             <Form.Select
               value={requiredTier}
               onChange={(e) => setRequiredTier(e.target.value)}

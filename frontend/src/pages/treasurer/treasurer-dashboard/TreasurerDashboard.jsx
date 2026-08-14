@@ -171,6 +171,7 @@ export default function TreasurerDashboard() {
             context="Includes all members approved with Gold tier dues."
             widgetSize={6}
             accent="var(--color-gold)"
+            info="Gold is the higher tier — these members can attend any event, including Gold-only ones."
           />
           <StatWidget
             title="Silver Tier"
@@ -180,6 +181,7 @@ export default function TreasurerDashboard() {
             context="Includes all members approved with Silver tier dues."
             widgetSize={6}
             accent="#9aa0a6"
+            info="Silver members can attend Silver-tier and open events, but not Gold-only ones."
           />
           <h2 className="sub-header-after-moto">Dues Pricing</h2>
           <hr />

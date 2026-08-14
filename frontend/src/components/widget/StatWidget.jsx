@@ -1,6 +1,7 @@
 import { Col } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import PropTypes from "prop-types";
+import TierInfo from "./TierInfo.jsx";
 
 export default function StatWidget({
   title,
@@ -12,6 +13,7 @@ export default function StatWidget({
   context,
   widgetSize = 4,
   accent,
+  info,
 }) {
   return (
     <Col xs={12} md={5} lg={widgetSize} className="role-card dues-stat-widget">
@@ -20,7 +22,10 @@ export default function StatWidget({
         style={accent ? { borderTopColor: accent, borderTopWidth: "5px" } : undefined}
       >
         <Card.Body className="d-flex flex-column">
-          <Card.Title>{title}</Card.Title>
+          <Card.Title>
+            {title}
+            {info && <TierInfo text={info} />}
+          </Card.Title>
           <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
             {subtitle}
           </Card.Subtitle>
@@ -55,4 +60,5 @@ StatWidget.propTypes = {
   context: PropTypes.string,
   widgetSize: PropTypes.number,
   accent: PropTypes.string,
+  info: PropTypes.string,
 };

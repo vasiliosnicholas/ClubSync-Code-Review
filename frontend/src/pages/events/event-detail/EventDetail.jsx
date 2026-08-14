@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import Container from "react-bootstrap/Container";
 import { useUser } from "../../../context/UserContext.jsx";
 import RSVPButton from "../rsvp-button/RSVPButton.jsx";
+import TierInfo from "../../../components/widget/TierInfo.jsx";
 import "./event-detail.css";
 
 // this page is intentionally the same for every role: event info, how many
@@ -75,7 +76,10 @@ export default function EventDetail() {
             timeZone: "UTC",
           })}
         </p>
-        <p>Required tier: {event.requiredTier}</p>
+        <p>
+          Required tier: {event.requiredTier}
+          <TierInfo text="You need approved dues at this tier or higher to RSVP. Gold outranks Silver, and “None” events are open to everyone." />
+        </p>
         <p>{event.rsvps?.length ?? 0} people attending</p>
 
         <RSVPButton

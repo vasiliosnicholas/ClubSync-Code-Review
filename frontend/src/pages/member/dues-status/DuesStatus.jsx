@@ -4,6 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useUser } from "../../../context/UserContext.jsx";
+import TierInfo from "../../../components/widget/TierInfo.jsx";
 import WarningIcon from "../../../components/icons/WarningIcon.jsx";
 import DuesClarity from "./DuesClarity.jsx";
 import { useToast } from "../../../context/ToastContext.jsx";
@@ -216,6 +217,7 @@ export default function DuesStatus() {
           >
             <Form.Group className="mb-5" controlId="dues-tier">
               <Form.Label>Membership tier</Form.Label>
+              <TierInfo text="Higher tiers cost more but unlock more events. Gold dues let you attend any event; Silver covers Silver-tier and open events." />
               <Form.Select
                 value={tier}
                 onChange={(e) => setTier(e.target.value)}
