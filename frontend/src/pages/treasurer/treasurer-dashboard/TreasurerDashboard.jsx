@@ -7,7 +7,6 @@ import DuesAmountsModal from "./dues-amounts-widget/DuesAmountsModal.jsx";
 import DuesAmountsCard from "./dues-amounts-widget/DuesAmountsCard.jsx";
 import DiscountsWidget from "./discounts-widget/DiscountsWidget.jsx";
 import DiscountTypesWidget from "./discount-types-widget/DiscountTypesWidget.jsx";
-import DuesExportCard from "./dues-export-widget/DuesExportCard.jsx";
 import { useState, useEffect } from "react";
 
 export default function TreasurerDashboard() {
@@ -126,9 +125,7 @@ export default function TreasurerDashboard() {
         Shows a breakdown of total dues paid, how many gold tier members, silver tier members, top 5 oldest dues submissions and also the functionality for starting a new semester. "
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
-      <h1 className="moto">
-        {user.firstName}'s Treasurer Dashboard
-      </h1>
+      <h1 className="moto">{user.firstName}'s Treasurer Dashboard</h1>
       <p className="lead-text spacing-after-moto">
         Below is your one stop shop for dues statistics, dues approvals, and
         group creation
@@ -173,6 +170,12 @@ export default function TreasurerDashboard() {
             count={stats.silver}
             context="Includes all members approved with Silver tier dues."
           />
+          <h2 className="sub-header-after-moto">Dues Pricing</h2>
+          <hr />
+          <DuesAmountsCard
+            amounts={group?.duesAmounts}
+            onEdit={openEditAmounts}
+          />
           <StatWidget
             title="Dues Collected"
             subtitle="Club-Wide Total"
@@ -181,20 +184,13 @@ export default function TreasurerDashboard() {
             count={stats.totalAmount}
             context="Sum of approved Gold and Silver dues this semester."
           />
-          <DuesAmountsCard
-            amounts={group?.duesAmounts}
-            onEdit={openEditAmounts}
-          />
-          <DuesExportCard />
-          <h2 className="sub-header-after-moto">Dues Verification</h2>
-          <hr />
-          <DuesVerificationWidget previewLimit={5} refreshSignal={refreshKey} />
-          <h2 className="sub-header-after-moto">Discounts</h2>
-          <hr />
           <DiscountTypesWidget
             refreshSignal={refreshKey}
             onChange={() => setRefreshKey((key) => key + 1)}
           />
+          <h2 className="sub-header-after-moto">Dues Verification</h2>
+          <hr />
+          <DuesVerificationWidget previewLimit={5} refreshSignal={refreshKey} />
           <DiscountsWidget
             refreshSignal={refreshKey}
             onChange={() => setRefreshKey((key) => key + 1)}

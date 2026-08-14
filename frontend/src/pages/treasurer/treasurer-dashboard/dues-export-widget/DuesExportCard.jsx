@@ -71,7 +71,7 @@ export default function DuesExportCard() {
   };
 
   return (
-    <Col xs={12} md={5} lg={4} className="role-card dues-stat-widget">
+    <Col xs={12} md={12} lg={12} className="role-card dues-stat-widget">
       <Card className="h-100 dues-card d-flex flex-column justify-content-between">
         <Card.Body className="d-flex flex-column">
           <Card.Title>Export</Card.Title>

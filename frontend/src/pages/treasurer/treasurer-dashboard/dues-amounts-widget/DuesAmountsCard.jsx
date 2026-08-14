@@ -8,7 +8,7 @@ export default function DuesAmountsCard({ amounts, onEdit }) {
     <Col xs={12} md={5} lg={4} className="role-card dues-stat-widget">
       <Card className="h-100 dues-card d-flex flex-column justify-content-between">
         <Card.Body className="d-flex flex-column">
-          <Card.Title>Dues Pricing</Card.Title>
+          <Card.Title>Tier Pricing</Card.Title>
           <Card.Subtitle className="mb-2 d-flex align-items-center justify-content-between w-100">
             This Semester
           </Card.Subtitle>

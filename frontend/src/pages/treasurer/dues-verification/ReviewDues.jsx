@@ -1,5 +1,6 @@
 import { Container } from "react-bootstrap";
 import DuesVerificationWidget from "../treasurer-dashboard/dues-verification-widget/DuesVerificationWidget";
+import DuesExportCard from "../treasurer-dashboard/dues-export-widget/DuesExportCard";
 
 export default function ReviewDues() {
   return (
@@ -18,6 +19,7 @@ export default function ReviewDues() {
       </p>
 
       <DuesVerificationWidget />
+      <DuesExportCard />
     </Container>
   );
 }
