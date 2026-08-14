@@ -47,43 +47,63 @@ export default function MyRsvps() {
     );
   }
 
+  // split by date using the UTC date portion (matches how dates are displayed).
+  // upcoming = today or later (soonest first); past = before today (newest first).
+  const today = new Date().toISOString().slice(0, 10);
+  const upcoming = events
+    .filter((e) => (e.date || "").slice(0, 10) >= today)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const past = events
+    .filter((e) => (e.date || "").slice(0, 10) < today)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  const renderCard = (event) => (
+    <Link
+      key={event._id}
+      to={`/member/events/${event._id}`}
+      className="event-card-link"
+    >
+      <div className="event-card">
+        <h3>{event.name}</h3>
+        <p>
+          {event.type} · {event.location}
+        </p>
+        <p>
+          Date:{" "}
+          {new Date(event.date).toLocaleDateString(undefined, {
+            timeZone: "UTC",
+          })}
+        </p>
+      </div>
+    </Link>
+  );
+
   return (
     <Container className="px-5">
       <title>My RSVPs · ClubSync</title>
       <meta
         name="description"
-        content="Member page that will display all the RSVP's for this user. 
+        content="Member page that will display all the RSVP's for this user.
         This means every event that the user has pressed the RSVP button for will show up on this page"
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">My RSVPs</h1>
 
-      {events.length === 0 && (
-        <p className="spacing-after-moto">
-          You haven&apos;t RSVP&apos;d to any events yet.
-        </p>
+      <h2 className="sub-header-after-moto">Upcoming</h2>
+      <hr />
+      {upcoming.length === 0 ? (
+        <p>You have no upcoming events you&apos;ve RSVP&apos;d to.</p>
+      ) : (
+        upcoming.map(renderCard)
       )}
 
-      {events.map((event) => (
-        <Link
-          key={event._id}
-          to={`/member/events/${event._id}`}
-          className="event-card-link"
-        >
-          <div className="event-card">
-            <h3>{event.name}</h3>
-            <p>
-              {event.type} · {event.location}
-            </p>
-            <p>
-              Date:{" "}
-              {new Date(event.date).toLocaleDateString(undefined, {
-                timeZone: "UTC",
-              })}
-            </p>
-          </div>
-        </Link>
-      ))}
+      <h2 className="sub-header-after-moto mt-4">Past</h2>
+      <hr />
+      {past.length === 0 ? (
+        <p>You have no past events you&apos;ve RSVP&apos;d to.</p>
+      ) : (
+        past.map(renderCard)
+      )}
     </Container>
   );
 }
