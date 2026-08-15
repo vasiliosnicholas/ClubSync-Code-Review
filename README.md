@@ -32,6 +32,7 @@ Three roles:
 
 Access is hierarchical: `member < treasurer < admin`. To get started, an admin registers and names their club; everyone else registers as a member and joins with the club's join code.
 
+## Project 4 Additons
 Project 3 (`main`) got us a working app, but a lot of what changed for Project 4 came directly out of running usability studies with real people and watching where they got confused, hesitated, or gave up. Most of the design, accessibility, and feature changes below trace back to something we saw in those sessions.
 
 **Usability studies**
