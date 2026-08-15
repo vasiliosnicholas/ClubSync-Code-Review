@@ -26,8 +26,8 @@ Clubs waste time every semester copying names into spreadsheets and cross-checki
 
 Three roles:
 
-- **Admin** — registers and creates the club (which generates a join code), creates events and sets the dues tier required to attend, views each event's RSVP list, and manages members (including promoting a member to treasurer).
-- **Treasurer** — reviews dues submissions, sees a running total of collected dues by tier, and can start a fresh semester (regenerates the join code and resets the roster). Treasurers are promoted by an admin.
+- **Admin** — registers and creates the club (which generates a join code), creates events and sets the dues tier required to attend, views each event's RSVP list, manages members (including promoting a member to treasurer), and can start a fresh semester (regenerates the join code and resets the roster).
+- **Treasurer** — reviews dues submissions and sees a running total of collected dues by tier. Treasurers are promoted by an admin.
 - **Member** — joins a club with its join code, submits dues with a tier and payment reference, and RSVPs to events they're eligible for (with a clear message when they're not).
 
 Access is hierarchical: `member < treasurer < admin`. To get started, an admin registers and names their club; everyone else registers as a member and joins with the club's join code.
@@ -144,20 +144,31 @@ Everything you see (events, dues, members) is scoped to your club. Users never s
 
 ### The dues flow
 
-1. A **member** submits dues from their dashboard: they pick a tier (**silver** or **gold**) and enter a **payment reference** (e.g. a Venmo confirmation or check number). Their status becomes **pending**.
-2. The submission lands in the **treasurer's** review queue. The treasurer opens **Dues Review**, sees each pending submission with its tier and payment reference, and **approves** or **denies** it. A denial **requires a note** explaining why.
-3. On **approval**, the member's dues status flips to **approved** and their tier is locked in — this is what unlocks tiered events. On **denial**, the member sees the reason and can resubmit.
-4. A member can **withdraw** their own submission while it's still pending (in case they made a mistake) — after that it's the treasurer's to decide.
-5. The treasurer dashboard shows a **running total of collected dues, broken down by tier**, so there's no manual tallying.
+1. The **treasurer** sets the club's **gold and silver tier prices** first — this is what every member sees (and pays) when they pick a tier, and it must be set before the rest of the treasurer dashboard is usable.
+2. A **member** submits dues from their dashboard: they pick a tier (**silver** or **gold**) and enter a **payment reference** (e.g. a Venmo confirmation or check number). Their status becomes **pending**.
+3. The submission lands in the **treasurer's** review queue. The treasurer opens **Dues Review**, sees each pending submission with its tier and payment reference, and **approves** or **denies** it. A denial **requires a note** explaining why.
+4. On **approval**, the member's dues status flips to **approved** and their tier is locked in — this is what unlocks tiered events. On **denial**, the member sees the reason and can resubmit.
+5. A member can **withdraw** their own submission while it's still pending (in case they made a mistake) — after that it's the treasurer's to decide.
+6. The treasurer can define named **discount types** (e.g. "Scholarship", with a reduced or waived amount) and **assign one to any member**, so their dues are reduced without a one-off manual adjustment.
+7. The treasurer dashboard shows **dues stats** — how many members hold each tier (gold/silver/total) and the total money collected across **approved** dues — so there's no manual tallying.
 
 ### The events flow
 
 1. An **admin** creates an event (name, type, date, location) and sets the **required dues tier**: `none`, `silver`, or `gold`.
-2. The event shows up for that club's members on their dashboard and the Events page.
+2. The event shows up for that club's members on their dashboard and the Events page, showing how many people are already attending.
 3. A **member** RSVPs from the event. Eligibility is checked automatically:
    - **`none`** events are open to everyone.
    - **tiered** events require **approved** dues **at or above** the required tier. If the member isn't eligible, they get a clear message telling them what's needed (e.g. "This event requires the gold tier") instead of a silent failure.
-4. The **admin** can view each event's **RSVP list** to plan logistics, and can **edit** or **cancel** (delete) an event.
+   - A member can **cancel their RSVP** at any time if they can no longer attend.
+4. The **admin** can view each event's **RSVP list** — each attendee's name, email, phone number, and DOB — to plan logistics, and can **edit** or **cancel** (delete) the event entirely.
+
+### The admin dashboard
+
+- **Member stats:** total members in the club, and how many of them actually RSVP'd to at least one of the last several events (a quick read on engagement, not just headcount).
+- **Upcoming events control:** the admin's view into events they manage.
+- **E-board roster:** every member above the base `member` role (treasurer, admin), with how long they've held an officer role.
+- **New Semester widget:** where an admin starts a new semester for their club (see below).
+- The full club roster and role management live on the separate **Club Members** page (see below).
 
 ### Appointing treasurers and admins
 
@@ -167,7 +178,7 @@ Everything you see (events, dues, members) is scoped to your club. Users never s
 
 ### Starting a new semester
 
-- A **treasurer** can start a new semester for their club. This keeps the **same club** but issues a **fresh join code** and **clears the roster**: members are removed and must re-join with the new code, while the admin/treasurer stay on to run the term. Pending dues from the old term are archived. It's a clean slate for the new semester, not a brand-new club.
+- An **admin** can start a new semester for their club from the **New Semester** widget on their dashboard. This keeps the **same club** but issues a **fresh join code** and **clears the roster**: members are removed and must re-join with the new code, while the admin/treasurer stay on to run the term. Pending dues from the old term are archived. It's a clean slate for the new semester, not a brand-new club.
 
 ## Available Scripts
 

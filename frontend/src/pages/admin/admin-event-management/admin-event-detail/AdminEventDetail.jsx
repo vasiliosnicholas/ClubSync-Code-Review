@@ -148,8 +148,9 @@ export default function AdminEventDetail() {
       <title>{`${event.name} · ClubSync`}</title>
       <meta
         name="description"
-        content="Admin-only event management page. Shows who has RSVP'd to an event and
-        lets an admin edit the event's details or cancel it entirely."
+        content="Admin-only event management page. Shows who has RSVP'd to an event, with
+        each attendee's name, email, phone number, and DOB, and lets an admin edit the
+        event's details or cancel it entirely."
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <div className="event-detail-card">

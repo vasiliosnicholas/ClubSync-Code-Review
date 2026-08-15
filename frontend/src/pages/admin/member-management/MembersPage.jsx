@@ -109,8 +109,8 @@ export default function MembersPage() {
       <title>Club Members · ClubSync</title>
       <meta
         name="description"
-        content="Admin only page where admins can view the total amount of members within the club. 
-        They can view the role of each member, email, and name. They can also change the role of members here. 
+        content="Admin only page where admins can view the total amount of members within the club.
+        They can view each member's name, email, phone number, DOB, and role. They can also change the role of members here.
         This is how people become treasurers in a club via admin promotion"
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />

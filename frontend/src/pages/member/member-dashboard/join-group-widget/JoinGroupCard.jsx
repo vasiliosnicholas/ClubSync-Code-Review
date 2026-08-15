@@ -24,7 +24,7 @@ export default function JoinGroupCard({
         <Card className="dues-inner-card mt-auto">
           <Card.Body className="p-3">
             <div className="inner-card-context small text-secondary-muted mb-3">
-              Enter the join code your treasurer shared to join this semester's
+              Enter the join code your admin shared to join this semester's
               roster.
             </div>
             <Form onSubmit={onSubmit}>

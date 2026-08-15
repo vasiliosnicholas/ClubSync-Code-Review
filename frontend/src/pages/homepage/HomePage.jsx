@@ -8,15 +8,15 @@ import "./homepage.css";
 const ROLES = [
   {
     title: "For members",
-    text: "Join with a code, submit your dues, and RSVP to events you qualify for. No spreadsheets, no chasing down forms.",
+    text: "Join with a code, pay dues to unlock tiered events, and RSVP (or cancel) while seeing exactly who else is going.",
   },
   {
     title: "For treasurers",
-    text: "Review dues submissions, approve or deny with a note, and see who's paid at a glance instead of a running spreadsheet.",
+    text: "Set dues prices, approve or deny submissions with a note, track collections by tier, and manage member discounts.",
   },
   {
     title: "For admins",
-    text: "Create events, set who's eligible to attend, and see who's coming before anyone shows up.",
+    text: "Create, edit, and cancel events, see who's coming with their contact info, track member engagement, manage the roster, and start a new semester.",
   },
 ];
 

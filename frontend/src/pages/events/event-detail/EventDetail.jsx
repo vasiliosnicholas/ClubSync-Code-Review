@@ -62,7 +62,7 @@ export default function EventDetail() {
       <meta
         name="description"
         content="Landing page for an event created by an admin of the club. This page lists all the details regarding an event
-        and lets members RSVP if they have the correct tier of dues, and see how many people are attending."
+        and lets members RSVP (or cancel their RSVP) if they have the correct tier of dues, and see how many people are attending."
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <div className="event-detail-card">

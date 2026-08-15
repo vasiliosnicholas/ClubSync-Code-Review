@@ -2,7 +2,6 @@ import { Container, Row } from "react-bootstrap";
 import { useUser } from "../../../context/UserContext.jsx";
 import StatWidget from "../../../components/widget/StatWidget.jsx";
 import DuesVerificationWidget from "./dues-verification-widget/DuesVerificationWidget.jsx";
-import NewSemesterWidget from "./new-semester-widget/NewSemesterWidget.jsx";
 import DuesAmountsModal from "./dues-amounts-widget/DuesAmountsModal.jsx";
 import DuesAmountsCard from "./dues-amounts-widget/DuesAmountsCard.jsx";
 import DiscountsWidget from "./discounts-widget/DiscountsWidget.jsx";
@@ -63,8 +62,9 @@ export default function TreasurerDashboard() {
   }, [user?.groupId, refreshKey]);
 
   // dues prices must be set before anything else on the dashboard is usable;
-  // they're cleared at the start of every new semester (see NewSemesterWidget).
-  // While the club is still loading, hide the row rather than flashing it.
+  // they're cleared at the start of every new semester (see the admin
+  // dashboard's NewSemesterWidget). While the club is still loading, hide the
+  // row rather than flashing it.
   const groupLoaded = !!group;
   const pricesUnset = !!user?.groupId && groupLoaded && !group.duesAmounts;
   const showRow = !user?.groupId || (groupLoaded && !pricesUnset);
@@ -127,8 +127,9 @@ export default function TreasurerDashboard() {
       <title>Treasurer Dashboard · ClubSync</title>
       <meta
         name="description"
-        content="Treasurer dashboard page that displays basic club dues info. 
-        Shows a breakdown of total dues paid, how many gold tier members, silver tier members, top 5 oldest dues submissions and also the functionality for starting a new semester. "
+        content="Treasurer dashboard page that displays basic club dues info.
+        Shows a breakdown of total dues paid, how many gold tier members, silver tier members, and top 5 oldest dues submissions.
+        Also lets the treasurer set gold/silver dues prices and define and assign member discounts."
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <h1 className="moto">{user.firstName}'s Treasurer Dashboard</h1>
@@ -207,11 +208,6 @@ export default function TreasurerDashboard() {
           <DiscountsWidget
             refreshSignal={refreshKey}
             onChange={() => setRefreshKey((key) => key + 1)}
-          />
-          <h2 className="sub-header-after-moto">New Semester </h2>
-          <hr />
-          <NewSemesterWidget
-            onSemesterStarted={() => setRefreshKey((key) => key + 1)}
           />
         </Row>
       )}
