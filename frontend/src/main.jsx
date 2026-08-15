@@ -19,7 +19,6 @@ import TreasurerDashboard from "./pages/treasurer/treasurer-dashboard/TreasurerD
 import AdminEventManagement from "./pages/admin/admin-event-management/AdminEventManagement.jsx";
 import EventList from "./pages/events/event-list/EventList.jsx";
 import DuesStatus from "./pages/member/dues-status/DuesStatus.jsx";
-import EventForm from "./pages/events/event-form/EventForm.jsx";
 import EventDetail from "./pages/events/event-detail/EventDetail.jsx";
 import ReviewDues from "./pages/treasurer/dues-verification/ReviewDues.jsx";
 import EventEditForm from "./pages/events/event-edit/EventEditForm.jsx";
@@ -77,15 +76,6 @@ createRoot(document.getElementById("root")).render(
               element={<AdminEventManagement />}
             />
             <Route path="/admin/members" element={<MembersPage />} />
-            <Route
-              path="/admin/event-form"
-              element={
-                <>
-                  <title>Create Event · ClubSync</title>
-                  <EventForm />
-                </>
-              }
-            />
             <Route
               path="/admin/event-management/:id"
               element={<AdminEventDetail />}

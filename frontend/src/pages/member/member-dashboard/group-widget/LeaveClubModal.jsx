@@ -19,7 +19,7 @@ export default function LeaveClubModal({
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Leave Club</Modal.Title>
+        <Modal.Title as="h3">Leave Club</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <h4>What does this do?</h4>

@@ -16,7 +16,7 @@ export default function SemesterAckModal({
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Start New Semester</Modal.Title>
+        <Modal.Title as="h3">Start New Semester</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <h4>What does this do?</h4>

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 export default function RoleCard({ title, text, img, imgWebp, imgAlt }) {
   return (
     <Col xs={12} md={4} className="role-card">
-      <h3 className="role-title">{title}</h3>
+      <h2 className="role-title">{title}</h2>
       {img && (
         <picture>
           {imgWebp && <source srcSet={imgWebp} type="image/webp" />}

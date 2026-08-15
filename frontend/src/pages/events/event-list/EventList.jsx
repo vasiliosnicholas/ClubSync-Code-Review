@@ -89,7 +89,7 @@ export default function EventList({ basePath = "/member/events" }) {
           >
             <div className={`event-card${going ? " event-card-going" : ""}`}>
               <div className="event-card-header">
-                <h3>{event.name}</h3>
+                <h2>{event.name}</h2>
                 {going && <span className="event-going-badge">✓ Going</span>}
               </div>
               <p>

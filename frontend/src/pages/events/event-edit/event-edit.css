@@ -1,3 +1,8 @@
+/* h1 for semantic order, sized to match the old h2 so it looks unchanged */
+.event-edit-heading {
+  font-size: 1.5rem;
+}
+
 /* Edit form shell — matches the create form's white card look. */
 .event-edit {
   max-width: 560px;

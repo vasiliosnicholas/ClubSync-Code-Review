@@ -95,7 +95,7 @@ export default function EventEditForm() {
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <div className="event-edit">
-        <h2>Edit Event</h2>
+        <h1 className="event-edit-heading">Edit Event</h1>
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="event-edit-name">
