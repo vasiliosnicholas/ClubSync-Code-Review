@@ -39,7 +39,8 @@ Project 3 (`main`) got us a working app, but a lot of what changed for Project 4
 
 - Sean's usability study report: [link](https://docs.google.com/document/d/14QWqpaafc23y3qHX0gxzOKDKQ_sV9zUU-bsDYvxnGMY/edit?tab=t.0)
 - Sean's usability study video: [YouTube Video Link](https://www.youtube.com/watch?v=_Fm5cCOcNQs)
-- Julian's usability study report: _[placeholder — add link]_
+- Julian's usability study report: [link](https://docs.google.com/document/d/1eM8QDv7PyQJ2V3Qnj-9JyhUvtDHogfD3GECZ-qQVQWE/edit?usp=sharing)
+- Julian's usability study video: [Youtube Video Link](https://youtu.be/u6oVdpHXQCs)
 
 **Visual identity (color + typography)**
 
@@ -81,27 +82,36 @@ Project 3 (`main`) got us a working app, but a lot of what changed for Project 4
 
 ## Screenshots
 
-**Home**
+### Getting Started
 
-![ClubSync home page](docs/screenshots/HomePageView.png)
+Register (pick Member or Admin) and sign in.
 
-**Admin — Event Management** (create events, view/manage RSVPs)
+![Registration page](docs/screenshots/main-view-register.png)
+![Sign-in page](docs/screenshots/main-view-signin.png)
 
-![Admin event management dashboard](docs/screenshots/MainAdminView.png)
+### Member
 
-**Admin / Treasurer view**
+The member's dashboard, dues submission and status, the events list, and their RSVPs (upcoming and past).
 
-![Treasurer dashboard](docs/screenshots/AdminTreasurerView1.png)
+![Member dashboard](docs/screenshots/member-view-dashboard.png)
+![Member dues submission and status](docs/screenshots/member-view-dues.png)
+![Events available to a member](docs/screenshots/member-view-events.png)
+![Events a member has RSVP'd to](docs/screenshots/member-view-RSVPs.png)
 
-**Member — My RSVPs**
+### Treasurer
 
-![Events a member has RSVP'd to](docs/screenshots/MyRSVPsView.png)
+Dues stats and pricing, plus the dues review/verification queue.
 
-**Dues — overview, submission, and status**
+![Treasurer dashboard](docs/screenshots/treasurer-view-dashboard.png)
+![Treasurer dues review](docs/screenshots/treasurer-view-dues.png)
 
-![Dues overview from member side](docs/screenshots/DuesView.png)
-![Dues view admin side](docs/screenshots/DuesSubmission.png)
-![Member dues status admin](docs/screenshots/DuesStatus.png)
+### Admin
+
+The admin dashboard, club-member/role management, and event management with RSVP lists.
+
+![Admin dashboard](docs/screenshots/admin-view-dashboard.png)
+![Admin club members and role management](docs/screenshots/admin-view-club-members.png)
+![Admin event management](docs/screenshots/admin-view-event-management.png)
 
 ## Tech Stack
 
