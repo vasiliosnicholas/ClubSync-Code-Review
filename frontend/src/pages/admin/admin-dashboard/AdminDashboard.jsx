@@ -2,6 +2,7 @@ import { Container, Row } from "react-bootstrap";
 import StatWidget from "../../../components/widget/StatWidget";
 import EboardWidget from "./eboard-widget/EboardWidget.jsx";
 import UpcomingEventsWidget from "./upcoming-events-widget/UpcomingEventsWidget.jsx";
+import NewSemesterWidget from "./new-semester-widget/NewSemesterWidget.jsx";
 import { useUser } from "../../../context/UserContext";
 import { useEffect, useState } from "react";
 
@@ -13,6 +14,9 @@ export default function AdminDashboard() {
     eventsConsidered: 0,
   });
   const { user } = useUser();
+  // bumped after a semester reset so member/participation stats refetch (the
+  // group id is unchanged, so their own effects wouldn't fire otherwise).
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     if (!user.groupId) return;
@@ -39,14 +43,14 @@ export default function AdminDashboard() {
     };
     loadMemberCount();
     loadParticipation();
-  }, [user?.groupId]);
+  }, [user?.groupId, refreshKey]);
 
   return (
     <>
       <title>Admin Dashboard · ClubSync</title>
       <meta
         name="description"
-        content="This is a admin dashboard page that displays overview club info useful to an admin like total members in club, e-board list and an upcoming-events widget with RSVP counts for the closest 5 events"
+        content="This is a admin dashboard page that displays overview club info useful to an admin like total members in club, member event-participation rate, e-board list, an upcoming-events widget with RSVP counts for the closest 5 events, and the functionality for starting a new semester"
       />
       <meta name="author" content="Sean Behan, Julian Leonhardt" />
       <Container className="px-5">
@@ -81,6 +85,14 @@ export default function AdminDashboard() {
         <hr />
         <Row className="justify-content-center gy-4 mt-1">
           <UpcomingEventsWidget />
+        </Row>
+
+        <h2 className="sub-header-after-moto">New Semester</h2>
+        <hr />
+        <Row className="justify-content-center gy-4 mt-1">
+          <NewSemesterWidget
+            onSemesterStarted={() => setRefreshKey((key) => key + 1)}
+          />
         </Row>
 
         <h2 className="sub-header-after-moto">E-Board View</h2>

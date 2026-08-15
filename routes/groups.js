@@ -16,11 +16,11 @@ groupsRouter.get("/", requireRole("treasurer"), async (req, res) => {
   }
 });
 
-// Starts a fresh semester for the treasurer's own club: renames it, regenerates
+// Starts a fresh semester for the admin's own club: renames it, regenerates
 // its join code, clears the roster (members detached, staff stay), archives
 // the term's pending dues, and clears the dues amounts so the treasurer must
 // set new prices before anything else works this term.
-groupsRouter.post("/semester", requireRole("treasurer"), async (req, res) => {
+groupsRouter.post("/semester", requireRole("admin"), async (req, res) => {
   try {
     const { name } = req.body;
     if (!name) {
