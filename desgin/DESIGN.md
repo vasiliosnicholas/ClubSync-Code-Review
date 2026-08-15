@@ -5,6 +5,57 @@
 
 ---
 
+## Updates for Project 4
+
+Project 3 (`main`) got us a working app, but a lot of what changed for Project 4 came directly out of running usability studies with real people and watching where they got confused, hesitated, or gave up. Most of the design, accessibility, and feature changes below trace back to something we saw in those sessions.
+
+**Usability studies**
+
+- Sean's usability study report: [link](https://docs.google.com/document/d/14QWqpaafc23y3qHX0gxzOKDKQ_sV9zUU-bsDYvxnGMY/edit?tab=t.0)
+- Sean's Project 4 demo video: [link](https://www.youtube.com/watch?v=_Fm5cCOcNQs)
+- Julian's usability study report: _[placeholder — add link]_
+
+**Visual identity (color + typography)**
+
+- Project 3 leaned on Bootstrap's defaults. We picked a real palette — warm cream background, burnt-orange and gold accents — defined as CSS variables in `index.css`, each with its contrast ratio noted right next to it so we can't accidentally regress accessibility later.
+- Approve/cancel colors are consistent everywhere: approving dues or confirming a role change is always gold, anything destructive (deny, cancel an event, cancel an RSVP, leave a club) is always orange. Every button in the app disables Bootstrap's built-in color (`variant={null}`) and gets colored only through our own classes, so a stray Bootstrap red/green can never sneak in and break the palette.
+- Swapped the default system font for Roboto Condensed (headings) and Noto Serif (body), pulled in via Google Fonts — makes the app look like our app instead of a generic Bootstrap template.
+- Redid the nav bar to be role-aware with mobile auto-close, and gave the gold/silver dues tiers their own visual treatment plus a tooltip explaining what each tier means — this one came straight out of participants not understanding what "gold" vs "silver" meant.
+
+**Accessibility**
+
+- Dedicated pass on semantic HTML.
+- Visible keyboard focus outline on every interactive element (links, buttons, inputs, dropdowns) — came out of testing the app keyboard-only during study prep.
+- Confirmation dialogs before anything destructive/hard to undo: role changes, cancelling an event, leaving a club, starting a new semester — participants in the usability study triggered a couple of these by accident with no way to back out.
+
+**Performance & SEO**
+
+- Long lists (roster, events, RSVPs) are now paginated instead of dumping everything on one page.
+- Ran Lighthouse, fixed what it flagged, and added per-page metadata for crawlability.
+
+**Features added based on usability feedback**
+
+- Named discounts (e.g. "Scholarship") that a treasurer can define and assign to a member, folded into the dues total automatically.
+- Editable gold/silver dues pricing for treasurers instead of hardcoded amounts.
+- CSV export of dues, plus an unpaid-dues reminder banner for members.
+- Auto-login right after registration instead of bouncing back to the login page.
+- Toast notifications on action buttons, so it's clear when something actually happened.
+- "Leave club" flow for members, and a clearer warning/acknowledgment step before starting a new semester (moved under the admin role).
+- Members can see events they RSVP'd to in the past, not just upcoming ones.
+- Phone number and date of birth added to user profiles, surfaced on the admin's RSVP list for logistics.
+- Separate, dedicated event pages for admins vs. members, instead of one shared page.
+- Registration split into two dedicated flows: a landing page lets you pick Member or Admin, each with its own tailored form (the admin flow also collects a club name), instead of one generic register form for everyone.
+- Brand new Admin Dashboard page, with its own widgets: member/engagement stats, an upcoming-events control widget, an E-Board roster widget, and the New Semester widget with its own warning/acknowledgment step.
+- Brand new Club Members page for admins to manage the roster and promote members, plus a dedicated admin event-detail view for RSVPs and cancelling an event.
+- New treasurer dashboard widgets that didn't exist before: editable gold/silver dues pricing, named discount types with per-member assignment, and dues CSV export.
+- Nav bar rebuilt to be role-aware — it only shows the pages relevant to your current role instead of every page at once — auto-closes on mobile after you tap a link, and now shows your name on the logout button so it's clear who's signed in.
+- Small hoverable info icons next to the dues tier selectors, explaining what gold/silver actually unlock, since participants kept guessing instead of knowing.
+- Read-only summary widgets no longer show a hover/pointer state, so they don't look clickable when they're just for reference.
+- Payment method dropdown (Venmo vs. check) on the dues submission form, each with its own placeholder/hint for what reference number to enter.
+- Tighter registration validation: a confirm-password field, enforced required fields, and real email format checking before submit, instead of finding out after the fact.
+
+---
+
 ## Project Description
 
 From Sean's experience as the treasurer of a club at Northeastern, a lot of monotonous work comes from the Google Forms + spreadsheet workflow used to track dues and manage event access. Every semester means copying names into a fresh spreadsheet and manually cross-referencing who has paid before letting members into events.
