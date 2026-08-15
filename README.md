@@ -40,7 +40,8 @@ Project 3 (`main`) got us a working app, but a lot of what changed for Project 4
 - Sean's usability study report: [link](https://docs.google.com/document/d/14QWqpaafc23y3qHX0gxzOKDKQ_sV9zUU-bsDYvxnGMY/edit?tab=t.0)
 - Sean's usability study video: [YouTube Video Link](https://www.youtube.com/watch?v=_Fm5cCOcNQs)
 - Julian's usability study report: [link](https://docs.google.com/document/d/1eM8QDv7PyQJ2V3Qnj-9JyhUvtDHogfD3GECZ-qQVQWE/edit?usp=sharing)
-- Julian's usability study video: [Youtube Video Link](https://youtu.be/u6oVdpHXQCs)
+- Julian's usability study video: [Google Drive Link](https://drive.google.com/file/d/1MXWgms6sxDLBU4da8Vb9ySwQ82OZ_2Z7/view?usp=sharing)
+
 
 **Visual identity (color + typography)**
 
