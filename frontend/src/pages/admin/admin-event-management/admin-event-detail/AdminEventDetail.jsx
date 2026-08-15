@@ -5,9 +5,12 @@ import { Button, Row } from "react-bootstrap";
 import WarningIcon from "../../../../components/icons/WarningIcon.jsx";
 import WidgetCard from "../../../../components/widget/WidgetCard.jsx";
 import PreviewList from "../../../../components/widget/PreviewList.jsx";
+import Pager from "../../../../components/widget/Pager.jsx";
 import CancelEventModal from "./CancelEventModal.jsx";
 import { useToast } from "../../../../context/ToastContext.jsx";
 import "../../../events/event-detail/event-detail.css";
+
+const ATTENDEE_PAGE_SIZE = 15;
 
 const ATTENDEE_COLUMNS = [
   { label: "Name", size: 3, render: (a) => `${a.firstName} ${a.lastName}` },
@@ -38,6 +41,8 @@ export default function AdminEventDetail() {
 
   const [event, setEvent] = useState(null);
   const [attendees, setAttendees] = useState([]);
+  const [attendeeTotal, setAttendeeTotal] = useState(0);
+  const [attendeePage, setAttendeePage] = useState(1);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [showCancel, setShowCancel] = useState(false);
@@ -45,30 +50,54 @@ export default function AdminEventDetail() {
   const [cancelError, setCancelError] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
     const loadEvent = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`/api/events/${id}`, {
           credentials: "include",
         });
+        if (cancelled) return;
         if (!res.ok) {
           setError("Could not load this event");
           return;
         }
         setEvent(await res.json());
-
-        const rsvpRes = await fetch(`/api/events/${id}/rsvps`, {
-          credentials: "include",
-        });
-        if (rsvpRes.ok) setAttendees(await rsvpRes.json());
       } catch (err) {
         console.error("Failed to load event", err);
-        setError("Something went wrong");
+        if (!cancelled) setError("Something went wrong");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
     loadEvent();
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadAttendees = async () => {
+      try {
+        const rsvpRes = await fetch(
+          `/api/events/${id}/rsvps?page=${attendeePage}&pageSize=${ATTENDEE_PAGE_SIZE}`,
+          { credentials: "include" }
+        );
+        if (!rsvpRes.ok || cancelled) return;
+        const rsvpData = await rsvpRes.json();
+        if (cancelled) return;
+        setAttendees(rsvpData.attendees);
+        setAttendeeTotal(rsvpData.total);
+      } catch (err) {
+        console.error("Failed to load attendees", err);
+      }
+    };
+    loadAttendees();
+    return () => {
+      cancelled = true;
+    };
+  }, [id, attendeePage]);
 
   const handleCancel = async () => {
     setCancelling(true);
@@ -156,7 +185,7 @@ export default function AdminEventDetail() {
 
       <Row className="justify-content-center gy-4 mt-4">
         <WidgetCard
-          title={`RSVPs (${attendees.length})`}
+          title={`RSVPs (${attendeeTotal})`}
           subtitle="Who's attending"
         >
           <PreviewList
@@ -165,6 +194,12 @@ export default function AdminEventDetail() {
             total={attendees.length}
             emptyMessage="No RSVPs yet"
             rowKey={(a) => a.id}
+          />
+          <Pager
+            page={attendeePage}
+            pageSize={ATTENDEE_PAGE_SIZE}
+            total={attendeeTotal}
+            onPageChange={setAttendeePage}
           />
         </WidgetCard>
       </Row>

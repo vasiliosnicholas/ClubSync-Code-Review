@@ -299,32 +299,42 @@ function UsersCollection({ collectionName = "users" } = {}) {
     }
   };
 
-  // lists the members of a club so an admin can manage their roles.
-  me.findUsersByGroup = async (groupId) => {
+  // lists the members of a club so an admin can manage their roles. Paginated
+  // by default so a large roster doesn't ship (and render) as one giant table
+  me.findUsersByGroup = async (groupId, { page = 1, pageSize = 15 } = {}) => {
     try {
       const groupFilter = ObjectId.isValid(groupId)
         ? new ObjectId(groupId)
         : groupId;
-      return await users
-        .find(
-          { groupId: groupFilter },
-          {
-            projection: {
-              firstName: 1,
-              lastName: 1,
-              birthDate: 1,
-              email: 1,
-              phoneNumber: 1,
-              role: 1,
-              officerSince: 1,
-              duesStatus: 1,
-              duesTier: 1,
-              duesAmount: 1,
-              discount: 1,
-            },
-          }
-        )
-        .toArray();
+      const query = { groupId: groupFilter };
+
+      let cursor = users
+        .find(query, {
+          projection: {
+            firstName: 1,
+            lastName: 1,
+            birthDate: 1,
+            email: 1,
+            phoneNumber: 1,
+            role: 1,
+            officerSince: 1,
+            duesStatus: 1,
+            duesTier: 1,
+            duesAmount: 1,
+            discount: 1,
+          },
+        })
+        .sort({ lastName: 1, firstName: 1, _id: 1 });
+      if (pageSize > 0) {
+        cursor = cursor.skip((page - 1) * pageSize).limit(pageSize);
+      }
+
+      const [total, items] = await Promise.all([
+        users.countDocuments(query),
+        cursor.toArray(),
+      ]);
+
+      return { total, items };
     } catch (error) {
       console.error("Error finding users by group", error);
       throw error;

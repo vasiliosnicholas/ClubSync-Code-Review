@@ -37,10 +37,18 @@ eventRouter.get("/", isAuthenticated, async (req, res) => {
     // events are scoped to the user's own club — someone who hasn't joined a
     // group sees nothing, and never sees another club's events.
     if (!req.user.groupId) {
-      return res.json([]);
+      return res.json({ events: [], total: 0, page: 1, pageSize: 15 });
     }
-    const events = await eventsCollection.getEventsByGroup(req.user.groupId);
-    res.json(events);
+    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+    const pageSize = Math.min(
+      100,
+      Math.max(1, Number.parseInt(req.query.pageSize, 10) || 15)
+    );
+    const { total, items } = await eventsCollection.getEventsByGroup(
+      req.user.groupId,
+      { page, pageSize }
+    );
+    res.json({ events: items, total, page, pageSize });
   } catch (error) {
     console.error("Error fetching events", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -82,14 +90,21 @@ eventRouter.post("/", requireRole("admin"), async (req, res) => {
 // MUST stay above "/:id" or Express treats "mine" as an event id.
 eventRouter.get("/mine", isAuthenticated, async (req, res) => {
   try {
-    if (!req.user.groupId) {
-      return res.json([]);
-    }
-    const events = await eventsCollection.getEventsForUser(
-      req.user._id,
-      req.user.groupId
+    const when = req.query.when === "past" ? "past" : "upcoming";
+    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+    const pageSize = Math.min(
+      100,
+      Math.max(1, Number.parseInt(req.query.pageSize, 10) || 10)
     );
-    res.json(events);
+    if (!req.user.groupId) {
+      return res.json({ events: [], total: 0, page, pageSize });
+    }
+    const { total, items } = await eventsCollection.getEventsForUser(
+      req.user._id,
+      req.user.groupId,
+      { when, page, pageSize }
+    );
+    res.json({ events: items, total, page, pageSize });
   } catch (error) {
     console.error("Error fetching your RSVPs", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -271,8 +286,18 @@ eventRouter.get("/:id/rsvps", requireRole("admin"), async (req, res) => {
       return res.status(404).json({ message: "Event not found" });
     }
 
-    // event.rsvps is an array of user ObjectIds — look them all up in one query.
-    const users = await usersCollection.findUsersByIds(event.rsvps);
+    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+    const pageSize = Math.min(
+      100,
+      Math.max(1, Number.parseInt(req.query.pageSize, 10) || 15)
+    );
+    const total = event.rsvps.length;
+    const pageIds = event.rsvps.slice(
+      (page - 1) * pageSize,
+      (page - 1) * pageSize + pageSize
+    );
+
+    const users = await usersCollection.findUsersByIds(pageIds);
 
     // Build a CLEAN list — never leak passwordHash to the client.
     const attendees = users.filter(Boolean).map((u) => ({
@@ -285,7 +310,7 @@ eventRouter.get("/:id/rsvps", requireRole("admin"), async (req, res) => {
       phoneNumber: u.phoneNumber,
     }));
 
-    res.json(attendees);
+    res.json({ attendees, total, page, pageSize });
   } catch (error) {
     console.error("Error fetching RSVP list", error);
     res.status(500).json({ message: "Internal Server Error" });

@@ -36,6 +36,7 @@ const COLUMNS = [
 export default function EligibleEventsWidget({ previewLimit = 0 }) {
   const { user } = useUser();
   const [events, setEvents] = useState([]);
+  const [total, setTotal] = useState(0);
   const [selected, setSelected] = useState(null);
 
   // a member only holds a tier once their dues are approved at it; otherwise
@@ -45,29 +46,36 @@ export default function EligibleEventsWidget({ previewLimit = 0 }) {
   const isEligible = (event) =>
     memberRank >= (TIER_RANK[event?.requiredTier] ?? 0);
 
+  // previewLimit > 0 caps the dashboard preview; <= 0 shows every event.
+  const isPreview = previewLimit > 0;
+
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const res = await fetch("/api/events", { credentials: "include" });
+        const pageSize = isPreview ? previewLimit : 15;
+        const res = await fetch(
+          `/api/events?page=1&pageSize=${pageSize}`,
+          { credentials: "include" }
+        );
         if (!res.ok) return;
-        setEvents(await res.json());
+        const data = await res.json();
+        setEvents(data.events);
+        setTotal(data.total);
       } catch (err) {
         console.error("Failed to load events", err);
       }
     };
     loadEvents();
-  }, []);
+  }, [isPreview, previewLimit]);
 
-  // previewLimit > 0 caps the dashboard preview; <= 0 shows every event.
-  const isPreview = previewLimit > 0;
-  const visible = isPreview ? events.slice(0, previewLimit) : events;
+  const visible = events;
 
   return (
     <>
       <WidgetCard
         title="Upcoming Events"
         subtitle="Events You Can Explore"
-        badge={`${events.length} Events`}
+        badge={`${total} Events`}
         footer={
           isPreview && (
             <>

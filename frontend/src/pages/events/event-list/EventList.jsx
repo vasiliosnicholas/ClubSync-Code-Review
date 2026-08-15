@@ -3,7 +3,10 @@ import { Link } from "react-router";
 import Container from "react-bootstrap/Container";
 import PropTypes from "prop-types";
 import { useUser } from "../../../context/UserContext.jsx";
+import Pager from "../../../components/widget/Pager.jsx";
 import "./event-list.css";
+
+const PAGE_SIZE = 15;
 
 // basePath lets each caller decide where a click leads. the member browse
 // page always links to the RSVP-focused detail view, while admin event
@@ -11,28 +14,40 @@ import "./event-list.css";
 export default function EventList({ basePath = "/member/events" }) {
   const { user } = useUser();
   const [events, setEvents] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     const loadEvents = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("/api/events", { credentials: "include" });
+        const res = await fetch(
+          `/api/events?page=${page}&pageSize=${PAGE_SIZE}`,
+          { credentials: "include" }
+        );
         if (!res.ok) {
           setError("Could not load events");
           return;
         }
         const data = await res.json();
-        setEvents(data);
+        if (cancelled) return;
+        setEvents(data.events);
+        setTotal(data.total);
       } catch (error) {
         console.error("Failed to load events", error);
         setError("Something went wrong");
       } finally {
-        setLoading(false); //Runs whether we succeeded or failed
+        if (!cancelled) setLoading(false); //Runs whether we succeeded or failed
       }
     };
     loadEvents();
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [page]);
 
   // If it is still loading so some sign
   if (loading) {
@@ -85,6 +100,8 @@ export default function EventList({ basePath = "/member/events" }) {
           </Link>
         );
       })}
+
+      <Pager page={page} pageSize={PAGE_SIZE} total={total} onPageChange={setPage} />
     </Container>
   );
 }

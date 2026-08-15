@@ -11,10 +11,26 @@ const usersRouter = Router();
 usersRouter.get("/", requireRole("treasurer"), async (req, res) => {
   try {
     if (!req.user.groupId) {
-      return res.json([]);
+      return res.json({ members: [], total: 0, page: 1, pageSize: 15 });
     }
-    const members = await usersCollection.findUsersByGroup(req.user.groupId);
-    res.json(members);
+    // pageSize=all is for callers that need the whole
+    // roster like CSV export, the discount assignment dropdown, the e-board
+    // widget rather than just one page of it.
+    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+    const pageSize =
+      req.query.pageSize === "all"
+        ? 0
+        : Math.min(100, Math.max(1, Number.parseInt(req.query.pageSize, 10) || 15));
+    const { total, items } = await usersCollection.findUsersByGroup(
+      req.user.groupId,
+      { page, pageSize }
+    );
+    res.json({
+      members: items,
+      total,
+      page,
+      pageSize: pageSize > 0 ? pageSize : total,
+    });
   } catch (error) {
     console.error("Error fetching club members", error);
     res.status(500).json({ message: "Internal Server Error" });

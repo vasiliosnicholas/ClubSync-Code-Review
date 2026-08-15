@@ -48,9 +48,11 @@ export default function EboardWidget() {
     if (!user?.groupId) return;
     const loadEboard = async () => {
       try {
-        const res = await fetch("/api/users", { credentials: "include" });
+        const res = await fetch("/api/users?pageSize=all", {
+          credentials: "include",
+        });
         if (!res.ok) return;
-        const members = await res.json();
+        const { members } = await res.json();
         setEboard(members.filter((m) => m.role !== "member"));
       } catch (error) {
         console.error("Failed to load e-board", error);

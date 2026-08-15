@@ -39,12 +39,15 @@ export default function DiscountsWidget({ refreshSignal, onChange }) {
   useEffect(() => {
     const loadMembers = async () => {
       try {
-        const res = await fetch("/api/users", { credentials: "include" });
+        const res = await fetch("/api/users?pageSize=all", {
+          credentials: "include",
+        });
         if (!res.ok) {
           setError("Could not load members");
           return;
         }
-        setMembers(await res.json());
+        const { members } = await res.json();
+        setMembers(members);
       } catch (err) {
         console.error("Failed to load members", err);
         setError("Something went wrong");

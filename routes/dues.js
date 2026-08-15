@@ -159,14 +159,18 @@ duesRouter.get(
 // GET PENDING DUES VERIFICATIONS
 // ----------------------------
 duesRouter.get(
-  "/pending/:groupId/:limit",
+  "/pending/:groupId",
   requireRole("treasurer"),
   async (req, res) => {
     try {
-      const limit = Number.parseInt(req.params.limit, 10);
+      const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+      const pageSize = Math.min(
+        100,
+        Math.max(1, Number.parseInt(req.query.pageSize, 10) || 10)
+      );
       const { total, items } = await duesSubmissionsCollection.getPending(
         req.params.groupId,
-        Number.isNaN(limit) ? 0 : limit
+        { page, pageSize }
       );
 
       const members = await usersCollection.findUsersByIds(
@@ -190,7 +194,7 @@ duesRouter.get(
         };
       });
 
-      res.json({ total, pending });
+      res.json({ total, pending, page, pageSize });
     } catch (error) {
       console.error("Error fetching pending dues", error);
       res.status(500).json({ message: "Internal Server Error" });

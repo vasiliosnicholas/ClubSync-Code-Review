@@ -3,8 +3,11 @@ import { useUser } from "../../../../context/UserContext.jsx";
 import { useToast } from "../../../../context/ToastContext.jsx";
 import WidgetCard from "../../../../components/widget/WidgetCard.jsx";
 import PreviewList from "../../../../components/widget/PreviewList.jsx";
+import Pager from "../../../../components/widget/Pager.jsx";
 import DuesReviewModal from "./DuesReviewModal.jsx";
 import PropTypes from "prop-types";
+
+const FULL_PAGE_SIZE = 10;
 
 const formatDate = (value) =>
   value ? new Date(value).toLocaleDateString() : "—";
@@ -33,6 +36,7 @@ export default function DuesVerificationWidget({
 }) {
   const [pending, setPending] = useState([]);
   const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
   const [decision, setDecision] = useState(null);
   const [denyReason, setDenyReason] = useState("");
@@ -50,12 +54,17 @@ export default function DuesVerificationWidget({
   // opens a modal where the treasurer approves or denies the submission.
   const isPreview = previewLimit > 0;
 
+  // preview mode always shows page 1 of previewLimit rows; full mode pages
+  // through FULL_PAGE_SIZE rows at a time via its own page state.
+  const pageSize = isPreview ? previewLimit : FULL_PAGE_SIZE;
+  const effectivePage = isPreview ? 1 : page;
+
   useEffect(() => {
     if (!user?.groupId) return;
     const loadPending = async () => {
       try {
         const res = await fetch(
-          `/api/dues/pending/${user.groupId}/${previewLimit}`,
+          `/api/dues/pending/${user.groupId}?page=${effectivePage}&pageSize=${pageSize}`,
           { credentials: "include" }
         );
         if (!res.ok) return;
@@ -67,7 +76,7 @@ export default function DuesVerificationWidget({
       }
     };
     loadPending();
-  }, [user?.groupId, previewLimit, refreshKey, refreshSignal]);
+  }, [user?.groupId, effectivePage, pageSize, refreshKey, refreshSignal]);
 
   const openReview = (member) => {
     setSelected(member);
@@ -166,6 +175,14 @@ export default function DuesVerificationWidget({
           onSelect={isPreview ? undefined : openReview}
           rowKey={(m) => m.submissionId}
         />
+        {!isPreview && (
+          <Pager
+            page={page}
+            pageSize={FULL_PAGE_SIZE}
+            total={total}
+            onPageChange={setPage}
+          />
+        )}
       </WidgetCard>
 
       <DuesReviewModal

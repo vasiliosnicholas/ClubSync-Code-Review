@@ -39,9 +39,21 @@ function EventsCollection({ collectionName = "events" } = {}) {
     }
   };
 
-  me.getEventsByGroup = async (groupId) => {
+  // Paginated so a club with a long event history doesn't ship and render
+  // every event at once 
+  me.getEventsByGroup = async (groupId, { page = 1, pageSize = 15 } = {}) => {
     try {
-      return await events.find({ groupId }).toArray();
+      const query = { groupId };
+      const [total, items] = await Promise.all([
+        events.countDocuments(query),
+        events
+          .find(query)
+          .sort({ date: -1, _id: 1 })
+          .skip((page - 1) * pageSize)
+          .limit(pageSize)
+          .toArray(),
+      ]);
+      return { total, items };
     } catch (error) {
       console.error("Error finding events from this group", error);
       throw error;
@@ -50,12 +62,34 @@ function EventsCollection({ collectionName = "events" } = {}) {
 
   // Events in a group that the given user has RSVP'd to. Mongo matches an
   // array field ("rsvps") against a single value by checking membership.
-  me.getEventsForUser = async (userId, groupId) => {
+  // Split (and paginated) by "when" so the My RSVPs page's Upcoming/Past
+  // sections each fetch and render only a small page, not the member's whole
+  // RSVP history at once.
+  me.getEventsForUser = async (
+    userId,
+    groupId,
+    { when = "upcoming", page = 1, pageSize = 10 } = {}
+  ) => {
     try {
-      if (!ObjectId.isValid(userId)) return [];
-      return await events
-        .find({ groupId, rsvps: new ObjectId(userId) })
-        .toArray();
+      if (!ObjectId.isValid(userId)) return { total: 0, items: [] };
+      const query = {
+        groupId,
+        rsvps: new ObjectId(userId),
+        date: when === "past" ? { $lt: new Date() } : { $gte: new Date() },
+      };
+      const sort =
+        when === "past" ? { date: -1, _id: 1 } : { date: 1, _id: 1 };
+
+      const [total, items] = await Promise.all([
+        events.countDocuments(query),
+        events
+          .find(query)
+          .sort(sort)
+          .skip((page - 1) * pageSize)
+          .limit(pageSize)
+          .toArray(),
+      ]);
+      return { total, items };
     } catch (error) {
       console.error("Error finding events for user", error);
       throw error;

@@ -45,12 +45,14 @@ export default function DuesExportCard() {
     setExporting(true);
     setError("");
     try {
-      const res = await fetch("/api/users", { credentials: "include" });
+      const res = await fetch("/api/users?pageSize=all", {
+        credentials: "include",
+      });
       if (!res.ok) {
         setError("Could not load members.");
         return;
       }
-      const members = await res.json();
+      const { members } = await res.json();
 
       const csv = toCsv(members);
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });

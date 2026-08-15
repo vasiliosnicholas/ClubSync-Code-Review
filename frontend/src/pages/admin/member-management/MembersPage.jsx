@@ -4,28 +4,46 @@ import { useState, useEffect } from "react";
 import { useUser } from "../../../context/UserContext.jsx";
 import WidgetCard from "../../../components/widget/WidgetCard.jsx";
 import PreviewList from "../../../components/widget/PreviewList.jsx";
+import Pager from "../../../components/widget/Pager.jsx";
 
 const ROLES = ["member", "treasurer", "admin"];
+const PAGE_SIZE = 15;
 
 export default function MembersPage() {
   const { user } = useUser();
   const [members, setMembers] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   // a role change awaiting confirmation: { id, name, currentRole, newRole }
   const [pending, setPending] = useState(null);
 
   useEffect(() => {
     if (!user?.groupId) return;
+    let cancelled = false;
     const loadMembers = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("/api/users", { credentials: "include" });
+        const res = await fetch(
+          `/api/users?page=${page}&pageSize=${PAGE_SIZE}`,
+          { credentials: "include" }
+        );
         if (!res.ok) return;
-        setMembers(await res.json());
+        const data = await res.json();
+        if (cancelled) return;
+        setMembers(data.members);
+        setTotal(data.total);
       } catch (err) {
         console.error("Failed to load club members", err);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     };
     loadMembers();
-  }, [user?.groupId]);
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.groupId, page]);
 
   const changeRole = async (id, role) => {
     try {
@@ -104,13 +122,27 @@ export default function MembersPage() {
 
       <Row className="justify-content-center gy-4">
         <WidgetCard title="Club Members" subtitle="Assign roles">
-          <PreviewList
-            columns={columns}
-            items={members}
-            total={members.length}
-            emptyMessage="No members have joined your club yet."
-            rowKey={(m) => m._id}
-          />
+          {loading ? (
+            <p className="inner-card-context small text-secondary-muted">
+              Loading members…
+            </p>
+          ) : (
+            <>
+              <PreviewList
+                columns={columns}
+                items={members}
+                total={members.length}
+                emptyMessage="No members have joined your club yet."
+                rowKey={(m) => m._id}
+              />
+              <Pager
+                page={page}
+                pageSize={PAGE_SIZE}
+                total={total}
+                onPageChange={setPage}
+              />
+            </>
+          )}
         </WidgetCard>
       </Row>
 

@@ -316,24 +316,44 @@ async function seed() {
       addMember(extra);
     }
 
-    // events for this club, with RSVPs drawn only from eligible members
+    // events for this club, with RSVPs drawn only from eligible members.
+    // demo club, events #1 and #2 are pinned to a definite past date and a
+    // definite future date (open to all, no dues required) with the three
+    // documented demo members RSVP'd — so logging in as any of them reliably
+    // shows both the "Upcoming" and "Past" sections on the My RSVPs page.
+    const pinnedMembers = isDemoClub ? clubMembers.slice(0, 3) : [];
     for (let i = 0; i < EVENTS_PER_CLUB; i++) {
-      const requiredTier = pick(["none", "none", "silver", "gold"]); // weight open
+      const isPinnedPast = isDemoClub && i === 0;
+      const isPinnedFuture = isDemoClub && i === 1;
+
+      const requiredTier =
+        isPinnedPast || isPinnedFuture ? "none" : pick(["none", "none", "silver", "gold"]); // weight open
       const eligible = clubMembers.filter((m) => {
         if (requiredTier === "none") return true;
         if (m.duesStatus !== "approved") return false;
         return (TIER_RANK[m.duesTier] ?? 0) >= TIER_RANK[requiredTier];
       });
       const shuffled = [...eligible].sort(() => Math.random() - 0.5);
-      const rsvps = shuffled
+      let rsvps = shuffled
         .slice(0, randInt(0, Math.min(40, eligible.length)))
         .map((m) => m._id);
+
+      let date = dateWithinDays(60);
+      if (isPinnedPast) {
+        date = dateWithinDays(30);
+        date.setTime(date.getTime() - 31 * 24 * 60 * 60 * 1000); // guaranteed in the past
+        rsvps = [...new Set([...pinnedMembers.map((m) => m._id), ...rsvps])];
+      } else if (isPinnedFuture) {
+        date = dateWithinDays(30);
+        date.setTime(date.getTime() + 31 * 24 * 60 * 60 * 1000); // guaranteed in the future
+        rsvps = [...new Set([...pinnedMembers.map((m) => m._id), ...rsvps])];
+      }
 
       eventDocs.push({
         groupId,
         name: `${pick(EVENT_NAMES)} #${i + 1}`,
         type: pick(TYPES),
-        date: dateWithinDays(60),
+        date,
         location: pick(LOCATIONS),
         requiredTier,
         createdBy: adminId,

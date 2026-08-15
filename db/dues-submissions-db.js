@@ -53,9 +53,8 @@ function DuesSubmissionsCollection({
     }
   };
 
-  // Fetches pending silver or gold submissions for a group and displays the oldest first.
-  // A limit > 0 caps the subset (e.g., 5 for widgets); limit <= 0 returns all.
-  me.getPending = async (groupId, limit = 0) => {
+  // Fetches pending silver or gold submissions for a group, newest first.
+  me.getPending = async (groupId, { page = 1, pageSize = 10 } = {}) => {
     try {
       const groupFilter = ObjectId.isValid(groupId)
         ? new ObjectId(groupId)
@@ -67,11 +66,15 @@ function DuesSubmissionsCollection({
         tier: { $in: ["gold", "silver"] },
       };
 
-      const total = await submissions.countDocuments(query);
-
-      let cursor = submissions.find(query).sort({ submittedAt: -1 });
-      if (limit > 0) cursor = cursor.limit(limit);
-      const items = await cursor.toArray();
+      const [total, items] = await Promise.all([
+        submissions.countDocuments(query),
+        submissions
+          .find(query)
+          .sort({ submittedAt: -1, _id: 1 })
+          .skip((page - 1) * pageSize)
+          .limit(pageSize)
+          .toArray(),
+      ]);
 
       return { total, items };
     } catch (error) {
