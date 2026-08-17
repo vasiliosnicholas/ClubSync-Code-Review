@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router";
 import { useUser } from "../../context/UserContext.jsx";
 import PropTypes from "prop-types";
-
+//this should be handled on the backend via middleware
 export default function ProtectedRoute({ allow }) {
   const { user, loading } = useUser();
 
