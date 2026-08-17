@@ -53,6 +53,7 @@ function UsersCollection({ collectionName = "users" } = {}) {
       console.log("Registered new User in MongoDB 📝");
       return { id: result.insertedId, email, firstName, lastName };
     } catch (error) {
+      //If all you are going to do is print the error to the console than throw it again, why not just do this upstream (block where you are invoking this method)?
       console.error("Error registering new User", error);
       throw error;
     }
@@ -197,7 +198,10 @@ function UsersCollection({ collectionName = "users" } = {}) {
               // amount (even $0), everyone else pays their tier price.
               amount: {
                 $sum: {
-                  $ifNull: ["$discount.amount", { $ifNull: ["$duesAmount", 0] }],
+                  $ifNull: [
+                    "$discount.amount",
+                    { $ifNull: ["$duesAmount", 0] },
+                  ],
                 },
               },
             },
