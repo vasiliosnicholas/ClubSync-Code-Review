@@ -15,7 +15,7 @@ CS 5610 / Web Development — Northeastern University · [Class Link](https://jo
 Deployed on Render using its free tier service· [ClubSync Web App Link](https://clubsync-lfuo.onrender.com/)
 
 ## Video Demonstration
-Demonstration video briefly explaining how to use ClubSync, from a user perspective and how it works behind the scenes · [YouTube Video Link](https://www.youtube.com/watch?v=1FwJAOmcqcg)
+Demonstration video briefly explaining how to use ClubSync, from a user perspective and how it works behind the scenes · [Google Drive Link](https://drive.google.com/file/d/1Jt7LqMzPItGcgHHhhZIaB9ZFkrW6ZFjg/view?usp=sharing)
 
 ## Project Slides
 A Presentation that outlines how the development of the project went (what we struggled on and what we learned) · [Google Slides Link](https://docs.google.com/presentation/d/1DyRUH6mBH0AyMOU-kNr2XrI8XPQqQDpaqNsjXyMaoMo/edit?usp=sharing)
