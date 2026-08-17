@@ -16,6 +16,7 @@ const ROLE_RANK = { member: 1, treasurer: 2, admin: 3 };
 // minRole via closure
 
 export const requireRole = (minRole) => {
+  //Nice middleware factory pattern. I did basically the same thing apart from returning the Authorization middleware as the second element in an array where the first element is the Authentication middleware so I could rest the array reprsenting a middleware stack onto routes for our routers.
   return (req, res, next) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Not authenticated " });
