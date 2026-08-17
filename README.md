@@ -16,7 +16,7 @@ Deployed on Render using its free tier service· [ClubSync Web App Link](https:/
 
 ## Video Demonstrations
 Demonstrations video briefly explaining how to use ClubSync, from a user perspective and how it works behind the scenes 
-- [ClubSync Demo ](https://www.youtube.com/watch?v=JFcx-n_NW2k)
+- [ClubSync Demo ](https://drive.google.com/file/d/1lyvWQ6jIk1CPE28rMWNoCnxx-ZcQNYOM/view?usp=sharing)
 
 ## Project Slides
 A Presentation that outlines how the development of the project went (what we struggled on and what we learned) · [Google Slides Link](https://docs.google.com/presentation/d/1E45CUzRaMcz3wdGzZtzfR0G2vW0j2d6EpNZuzN6xn_8/edit?usp=sharing)
